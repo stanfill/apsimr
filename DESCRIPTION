@@ -1,10 +1,10 @@
 Package: apsimr
 Type: Package
 Title: A package to make accessing and running  APSIM from R straight forward
-Version: 1.0
+Version: 0.1
 Date: 2014-03-14
 Author: Bryan Stanfill
-Maintainer: bryan.stanfill@csiro.au
-Description: Allows for the running of APSIM from R.  The anslysis and
-    visualization of simulation results is also possible.
+Maintainer: Bryan Stanfill <bryan.stanfill@csiro.au>
+Description: Allows for the running of APSIM from R.  The anslysis and 
+             visualization of simulation results is also possible.
 License: What license is it under?
