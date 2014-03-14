@@ -6,7 +6,7 @@
 #' .apsim files that are to be run.  The output from the .apsim files is resturned 
 #' in a list: each item in the list corresponds to a .apsim file in the provided directory.
 #' 
-#' @name apsimr
+#' @name apsim
 #' @param exe The path to the APSIM executable file
 #' @param wd The working directory containing the .apsim files to be run
 #' @return list of output files corresponding to each .apsim file
@@ -16,7 +16,7 @@
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
 #' results <- apsimr(exe, wd)
 
-apsimr<-function(exe, wd){
+apsim<-function(exe, wd){
   setwd(wd)
   sim_file_name<- " *.apsim"
   system(paste(apsimEXE, sim_file_name, sep = " "), show.output.on.console = FALSE)

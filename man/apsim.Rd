@@ -1,8 +1,8 @@
-\name{apsimr}
-\alias{apsimr}
+\name{apsim}
+\alias{apsim}
 \title{Run APSIM simulations from R}
 \usage{
-apsimr(exe, wd)
+apsim(exe, wd)
 }
 \arguments{
   \item{exe}{The path to the APSIM executable file}
