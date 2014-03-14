@@ -2,15 +2,17 @@
 #' 
 #' This function will call APSIM from R.
 #' 
+#' @name apsimr
+#' @param exe The path to the APSIM executable file
 #' @param wd The working directory containing the .apsim files to be run
 #' 
 #' @examples
-#' wd<-"C:/Users/Sta36z/Documents/APSIM"
-#' apsimr(wd)
+#' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
+#' wd <- "C:/Users/Sta36z/Documents/APSIM"
+#' results <- apsimr(exe, wd)
 
-apsimr<-function(wd){
+apsimr<-function(exe, wd){
   setwd(wd)
-  apsimEXE<-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
   sim_file_name<- " *.apsim"
   system(paste(apsimEXE, sim_file_name, sep = " "), show.output.on.console = FALSE)
   flist<-list.files()
