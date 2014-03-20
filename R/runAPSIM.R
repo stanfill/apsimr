@@ -32,6 +32,7 @@ apsimr<-function(exe, wd, files = NULL){
     if(!all(files %in% possibles)){
       stop("One or more of the requested simulations are not in the specified folder.")
     }
+    sim_file_name<-files
     
   }
   
@@ -46,10 +47,13 @@ apsimr<-function(exe, wd, files = NULL){
   out_file<-vector("list",nfiles)
   
   for(i in 1:nfiles){
-    out_file[[i]]<-read.table(outNames[i], header = TRUE, skip=2)
+    out_file[[i]]<-read.table(outNames[i],skip=2,header=T)
+    
     out_file[[i]]<-out_file[[i]][-1,]
+    out_file[[i]][,1]<-factor(out_file[[i]][,1]) #Remove factor level (dd/mm/yyyy)
+    
     for(j in 2:ncol(out_file[[i]])){
-      out_file[[i]][,j]<-as.numeric(as.character(out_file[[i]][,j]))
+      out_file[[i]][,j]<-as.numeric(as.character(out_file[[i]][,j])) #Coerce each output to be numeric
     }
   }
   
