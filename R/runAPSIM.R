@@ -9,6 +9,7 @@
 #' @name apsim
 #' @param exe The path to the APSIM executable file
 #' @param wd The working directory containing the .apsim files to be run
+#' @param files The .apsim files to be run
 #' @return list of output files corresponding to each .apsim file
 #' @export
 #' @examples
@@ -16,10 +17,25 @@
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
 #' results <- apsimr(exe, wd)
 
-apsim<-function(exe, wd){
+apsimr<-function(exe, wd, files = NULL){
   setwd(wd)
-  sim_file_name<- " *.apsim"
-  system(paste(apsimEXE, sim_file_name, sep = " "), show.output.on.console = FALSE)
+  
+  if(is.null(files)){
+    
+    sim_file_name<- " *.apsim"
+    
+  }else{
+    
+    flist<-list.files()
+    possibles <- flist[grep(".apsim",flist)]
+    
+    if(!all(files %in% possibles)){
+      stop("One or more of the requested simulations are not in the specified folder.")
+    }
+    
+  }
+  
+  system(paste(exe, sim_file_name, sep = " "), show.output.on.console = FALSE)
   flist<-list.files()
   
   fileNames<-grep(".out",flist)
@@ -31,7 +47,12 @@ apsim<-function(exe, wd){
   
   for(i in 1:nfiles){
     out_file[[i]]<-read.table(outNames[i], header = TRUE, skip=2)
+    out_file[[i]]<-out_file[[i]][-1,]
+    for(j in 2:ncol(out_file[[i]])){
+      out_file[[i]][,j]<-as.numeric(as.character(out_file[[i]][,j]))
+    }
   }
+  
   return(out_file)
 }
 
