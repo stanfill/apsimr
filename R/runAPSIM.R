@@ -6,7 +6,7 @@
 #' .apsim files that are to be run.  The output from the .apsim files is resturned 
 #' in a list: each item in the list corresponds to a .apsim file in the provided directory.
 #' 
-#' @name apsim
+#' @name apsimr
 #' @param exe The path to the APSIM executable file
 #' @param wd The working directory containing the .apsim files to be run
 #' @param files The .apsim files to be run
@@ -18,6 +18,7 @@
 #' results <- apsimr(exe, wd)
 
 apsimr<-function(exe, wd, files = NULL){
+  oldWD<-getwd()
   setwd(wd)
   
   if(is.null(files)){
@@ -56,8 +57,53 @@ apsimr<-function(exe, wd, files = NULL){
       out_file[[i]][,j]<-as.numeric(as.character(out_file[[i]][,j])) #Coerce each output to be numeric
     }
   }
-  
+  setwd(oldWD)
   return(out_file)
 }
 
+#' Access the examples built into APSIM
+#' 
+#' To run an APSIM simulation, it will need to be saved outside of the APSIM/Exaple folder.
+#' This location needs to be specified by the user.
+#' 
+#' 
+#' @name apsimEX
+#' @param exe The path to the APSIM executable file
+#' @param wd The working directory containing the .apsim files to be run
+#' @param files Which files to extract from the "Examples" folder
+#' @param ... additional arguments passed to \code{\link[base:file.copy]{file.copy}}
+#' @return nothing is returned
+#' @export
+#' @examples
+#' path <-"C:/Program Files (x86)/Apsim75-r3008/Examples"
+#' wd <- "C:/Users/Sta36z/Documents/APSIM"
+#' file <- "Blank Simulation.apsim"
+#' results <- apsimEX(path, wd)
 
+apsimEX<-function(path, wd, files=NULL){
+  
+  oldWD<-getwd()
+  setwd(path)
+  flist<-list.files()
+  possibles <- flist[grep(".apsim",flist)]
+  
+  if(is.null(files)){
+    
+    sim_file_name<-possibles
+    
+  }else{
+    
+    if(!all(files %in% possibles)){
+      stop("One or more of the requested simulations are not in the specified folder.")
+    }
+    sim_file_name<-files
+    
+  }
+  
+  for(i in 1:nfiles){
+    fromI<-paste(path,sim_file_name[i],sep="/")
+    toI<-paste(wd,sim_file_name[i],sep="/")
+    file.copy(from=fromI,to=toI,...)
+  }
+  setwd(oldWD) #Return to origninal working directory
+}

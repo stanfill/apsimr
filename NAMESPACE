@@ -1,1 +1,2 @@
-export(apsim)
+export(apsimEX)
+export(apsimr)
