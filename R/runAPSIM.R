@@ -15,54 +15,54 @@
 #' @examples
 #' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
-#' toRun <- c("Centro.apsim","ContinuousWheat.apsim")
+#' toRun <- c("Centro.apsim","Continuous Wheat.apsim")
 #' results <- apsimr(exe, wd, files = toRun)
 
 apsimr<-function(exe, wd, files = NULL){
   oldWD<-getwd()
   setwd(wd)
+  fList<-dir()
+  fileNames<-fList[grep(".apsim",fList)]
   
   if(is.null(files)){
     
-    sim_file_name<- " *.apsim"
+    #If files is left NULL then run every .apsim file in the provided directory
+    files<- " *.apsim"
+    out_files <- sub(".apsim",".out",fileNames)
     
   }else{
+    #Check that the specified .apsim files exist in the directory
     
-    flist<-list.files()
-    possibles <- flist[grep(".apsim",flist)]
-    
-    if(!all(files %in% possibles)){
+    if(!all(files %in% fileNames)){
       stop("One or more of the requested simulations are not in the specified folder.")
     }
-    sim_file_name<-files
     
+    out_files <- sub(".apsim",".out",files)
   }
   
-  for(i in 1:length(sim_file_name)){  
-    system(paste(exe, sim_file_name[i], sep = " "), show.output.on.console = FALSE)
+  
+  for(i in 1:length(files)){  
+    system(paste(exe, files[i], sep = " "), show.output.on.console = FALSE)
   }
   
-  flist<-list.files()
+
+  nOutFiles<-length(out_files)
+  results<-vector("list",nOutFiles)
   
-  fileNames<-grep(".out",flist)
-  nfiles<-length(fileNames)
-  
-  outNames<-flist[fileNames]
-  
-  out_file<-vector("list",nfiles)
-  
-  for(i in 1:nfiles){
-    out_file[[i]]<-read.table(outNames[i],skip=2,header=T)
+  for(i in 1:nOutFiles){
+    res<-read.table(out_files[i],skip=2,header=T)
     
-    out_file[[i]]<-out_file[[i]][-1,]
-    out_file[[i]][,1]<-factor(out_file[[i]][,1]) #Remove factor level (dd/mm/yyyy)
+    res<-res[-1,]
+    res[,1]<-factor(res[,1]) #Remove factor level (dd/mm/yyyy)
     
-    for(j in 2:ncol(out_file[[i]])){
-      out_file[[i]][,j]<-as.numeric(as.character(out_file[[i]][,j])) #Coerce each output to be numeric
+    for(j in 2:ncol(res)){
+      res[,j]<-as.numeric(as.character(res[,j])) #Coerce each output to be numeric
     }
+    results[[i]]<-res
   }
+  
   setwd(oldWD)
-  return(out_file)
+  return(results)
 }
 
 #' Access the examples built into APSIM
