@@ -15,7 +15,8 @@
 #' @examples
 #' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
-#' results <- apsimr(exe, wd)
+#' toRun <- c("Centro.apsim","ContinuousWheat.apsim")
+#' results <- apsimr(exe, wd, files = toRun)
 
 apsimr<-function(exe, wd, files = NULL){
   oldWD<-getwd()
@@ -37,7 +38,10 @@ apsimr<-function(exe, wd, files = NULL){
     
   }
   
-  system(paste(exe, sim_file_name, sep = " "), show.output.on.console = FALSE)
+  for(i in 1:length(sim_file_name)){  
+    system(paste(exe, sim_file_name[i], sep = " "), show.output.on.console = FALSE)
+  }
+  
   flist<-list.files()
   
   fileNames<-grep(".out",flist)
@@ -77,10 +81,13 @@ apsimr<-function(exe, wd, files = NULL){
 #' @examples
 #' path <-"C:/Program Files (x86)/Apsim75-r3008/Examples"
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
-#' file <- "Blank Simulation.apsim"
-#' results <- apsimEX(path, wd)
+#' file <- "Millet.apsim"
+#' apsimEX(path, wd,file)
+#' 
+#' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
+#' results <- apsimr(exe,wd,files=file)
 
-apsimEX<-function(path, wd, files=NULL){
+apsimEX<-function(path, wd, files=NULL,...){
   
   oldWD<-getwd()
   setwd(path)
@@ -100,7 +107,8 @@ apsimEX<-function(path, wd, files=NULL){
     
   }
   
-  for(i in 1:nfiles){
+  
+  for(i in 1:length(files)){
     fromI<-paste(path,sim_file_name[i],sep="/")
     toI<-paste(wd,sim_file_name[i],sep="/")
     file.copy(from=fromI,to=toI,...)
