@@ -8,3 +8,5 @@ Maintainer: Bryan Stanfill <bryan.stanfill@csiro.au>
 Description: Allows for the running of APSIM from R.  The anslysis and 
              visualization of simulation results is also possible.
 License: What license is it under?
+Imports: lubridate
+Depends: ggplot2

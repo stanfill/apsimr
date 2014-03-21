@@ -53,7 +53,8 @@ apsimr<-function(exe, wd, files = NULL){
     res<-read.table(out_files[i],skip=2,header=T)
     
     res<-res[-1,]
-    res[,1]<-factor(res[,1]) #Remove factor level (dd/mm/yyyy)
+    
+    if("Date"%in%colnames(res)) res$Date<-dmy(res$Date)
     
     for(j in 2:ncol(res)){
       res[,j]<-as.numeric(as.character(res[,j])) #Coerce each output to be numeric
@@ -62,7 +63,9 @@ apsimr<-function(exe, wd, files = NULL){
   }
   
   setwd(oldWD)
-  return(results)
+  if(nOutFiles==1) return(res)
+  
+  else  return(results)
 }
 
 #' Access the examples built into APSIM
@@ -81,11 +84,11 @@ apsimr<-function(exe, wd, files = NULL){
 #' @examples
 #' path <-"C:/Program Files (x86)/Apsim75-r3008/Examples"
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
-#' file <- "Millet.apsim"
-#' apsimEX(path, wd,file)
+#' file <- "Canopy.apsim"
+#' apsimEX(path, wd, file)
 #' 
 #' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
-#' results <- apsimr(exe,wd,files=file)
+#' results <- apsimr(exe, wd, files = file)
 
 apsimEX<-function(path, wd, files=NULL,...){
   
