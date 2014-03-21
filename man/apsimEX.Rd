@@ -2,7 +2,7 @@
 \alias{apsimEX}
 \title{Access the examples built into APSIM}
 \usage{
-  apsimEX(path, wd, files = NULL)
+  apsimEX(path, wd, files = NULL, ...)
 }
 \arguments{
   \item{exe}{The path to the APSIM executable file}
@@ -27,7 +27,10 @@
 \examples{
 path <-"C:/Program Files (x86)/Apsim75-r3008/Examples"
 wd <- "C:/Users/Sta36z/Documents/APSIM"
-file <- "Blank Simulation.apsim"
-results <- apsimEX(path, wd)
+file <- "Canopy.apsim"
+apsimEX(path, wd, file)
+
+exe <-" \\"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\\" "
+results <- apsimr(exe, wd, files = file)
 }
 

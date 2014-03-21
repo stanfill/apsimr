@@ -26,6 +26,7 @@
 \examples{
 exe <-" \\"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\\" "
 wd <- "C:/Users/Sta36z/Documents/APSIM"
-results <- apsimr(exe, wd)
+toRun <- c("Centro.apsim","Continuous Wheat.apsim")
+results <- apsimr(exe, wd, files = toRun)
 }
 

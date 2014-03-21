@@ -37,6 +37,8 @@ apsimr<-function(exe, wd, files = NULL){
       stop("One or more of the requested simulations are not in the specified folder.")
     }
     
+    #For now identify ouput files by assuming they have the same name as the .apsim files
+    #Try to be more general about this by going into the .apsim file and grabbing the name of the ouput file
     out_files <- sub(".apsim",".out",files)
   }
   
@@ -63,9 +65,11 @@ apsimr<-function(exe, wd, files = NULL){
   }
   
   setwd(oldWD)
-  if(nOutFiles==1) return(res)
   
-  else  return(results)
+  if(nOutFiles==1)return(res)
+  else return(results)
+  
+  
 }
 
 #' Access the examples built into APSIM
