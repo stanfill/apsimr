@@ -13,8 +13,22 @@
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
 #' toRun <- c("Centro.apsim","Continuous Wheat.apsim")
 #' results <- apsimr(exe, wd, files = toRun)
-#' plot.apsim(results[[2]],biomass)
+#' plot_apsim(results[[2]])
 
-plot_apsim<-function(data, var, ...){
-  qplot(Date,var,data=data) 
+plot_apsim<-function(data, idVar="Date", measureVar=NULL, ...){
+  ncol<-ncol(data)
+  cNames<-colnames(data)
+  idNum<-which(idVar%in%cNames)
+  
+  if(is.null(measureVar)){
+    measureVar<-cNames[-id.num]
+  }else{
+    measureVar<-measureVar%in%cNames[-id.num]
+  }
+
+  
+  for(i in measureVar){
+    Sys.sleep(1)
+    print(qplot(data[,id.num],data[,i],xlab=idVar,ylab=i,...))
+  }
 }
