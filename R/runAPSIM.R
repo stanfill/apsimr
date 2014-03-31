@@ -122,3 +122,45 @@ apsimEX<-function(path, wd, files=NULL,...){
   }
   setwd(oldWD) #Return to origninal working directory
 }
+
+
+#' Edit an APSIM simulation
+#' 
+#' Edit bits and pieces of an APSIM simulation to automate running
+#' 
+#' @name edit_apsim
+#' @param file file ending in ".apsim" to be edits
+#' @param varP parent variables to be edited
+#' @param varC child variable to be edited
+#' @param value new values for the defined variables
+#' @param overwrite T/F depending on if the old file should be over written or a new one should be saved
+#' @return nothing, new .apsim file
+
+edit_apsim<-function(file,varP,varC,value,overwrite=T){
+  
+  if(!(file%in%list.files())){
+    stop("Specified file could not be found in the current working directory.")
+  }
+  
+  pXML<-xmlParse(file)
+  
+  for(i in 1:length(var)){
+    
+    if(is.null(varC[i])){
+      vari<-pXML[[paste("//",varP[i],sep="")]]
+    }else{
+      vari<-pXML[[paste("//",varP[i],"/",varC[i],sep="")]] 
+    }
+    
+    for(j in 1:xmlSize(vari)){
+      xmlValue(vari[[j]])<-as.character(value[[i]][j])
+    }
+    
+  }
+  
+  if(overwrite){
+    saveXML(pXML,file=paste(file,".apsim",sep=""))
+  }else{
+    saveXML(pXML,file=paste(file,"-edited.apsim",sep=""))
+  }
+}

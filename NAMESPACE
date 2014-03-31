@@ -1,3 +1,4 @@
 export(plot_apsim)
 export(apsimEX)
 export(apsimr)
+importFrom(lubridate,dmy)
