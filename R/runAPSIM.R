@@ -135,6 +135,30 @@ apsimEX<-function(path, wd, files=NULL,...){
 #' @param value new values for the defined variables
 #' @param overwrite T/F depending on if the old file should be over written or a new one should be saved
 #' @return nothing, new .apsim file
+#' @examples
+#' wd <- "C:/Users/Sta36z/Documents/APSIM"
+#' 
+#' #The file I want to edit is called "Canopy.apsim"
+#' file <- "Canopy.apsim"
+#' 
+#' #I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and
+#' #the state at which the simulation is being run.
+#' #Because "State" is not nested under anything, the corresponding child variable 
+#' #is set to "NA"
+#' varP<-c("SoilWater","SoilOrganicMatter","State")
+#' varC<-c("Thickness","SoilCN",NA)
+#' 
+#' #Change SoilWater-Thickness to 200,200,300x9
+#' #Change SoilCN to 10
+#' #Change "State" to "NSW"
+#' value<-list(c(rep(200,2),rep(300,9)),10,"NSW")
+#' 
+#' #Edit the apsim file without overwriting it
+#' edit_apsim(file,varP,varC,value,overwrite=F)
+#' 
+#' #Run the edited simulation
+#' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
+#' results <- apsimr(exe, getwd(), files = "Canopy-edited.apsim")
 
 edit_apsim<-function(file,varP,varC,value,overwrite=T){
   
@@ -144,9 +168,9 @@ edit_apsim<-function(file,varP,varC,value,overwrite=T){
   
   pXML<-xmlParse(file)
   
-  for(i in 1:length(var)){
+  for(i in 1:length(varP)){
     
-    if(is.null(varC[i])){
+    if(is.na(varC[i])){
       vari<-pXML[[paste("//",varP[i],sep="")]]
     }else{
       vari<-pXML[[paste("//",varP[i],"/",varC[i],sep="")]] 
@@ -159,8 +183,24 @@ edit_apsim<-function(file,varP,varC,value,overwrite=T){
   }
   
   if(overwrite){
-    saveXML(pXML,file=paste(file,".apsim",sep=""))
+    saveXML(pXML,file=file)
   }else{
-    saveXML(pXML,file=paste(file,"-edited.apsim",sep=""))
+    
+    #Remove .apsim tag if present and add edited tag
+    newName<-paste(gsub(".apsim","",file),"-edited",sep="")
+    
+    #Rename the simulation
+    wholeSim<-pXML[["//simulation"]]    
+    xmlAttrs(wholeSim)<-c(name=newName)
+    
+    #Rename the output filename to match the new file name
+    outName<-pXML[["//outputfile/filename"]]
+    xmlValue(outName)<-paste(newName,".out",sep="")
+    
+    #Also update title for output file
+    outTitle<-pXML[["//outputfile/title"]]
+    xmlValue(outTitle)<-newName
+    
+    saveXML(pXML,file=paste(newName,".apsim",sep=""))
   }
 }
