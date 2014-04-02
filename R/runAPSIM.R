@@ -145,8 +145,7 @@ apsimEX<-function(path, wd, files=NULL,...){
 #' #the state at which the simulation is being run.
 #' #Because "State" is not nested under anything, the corresponding child variable 
 #' #is set to "NA"
-#' varP<-c("SoilWater","SoilOrganicMatter","State")
-#' varC<-c("Thickness","SoilCN",NA)
+#' var<-c("SoilWater/Thickness","SoilOrganicMatter/SoilCN","State")
 #' 
 #' #Change SoilWater-Thickness to 200,200,300x9
 #' #Change SoilCN to 10
@@ -154,13 +153,13 @@ apsimEX<-function(path, wd, files=NULL,...){
 #' value<-list(c(rep(200,2),rep(300,9)),10,"NSW")
 #' 
 #' #Edit the apsim file without overwriting it
-#' edit_apsim(file,varP,varC,value,overwrite=F)
+#' edit_apsim(file,var,value,overwrite=F)
 #' 
 #' #Run the edited simulation
 #' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
 #' results <- apsimr(exe, getwd(), files = "Canopy-edited.apsim")
 
-edit_apsim<-function(file,varP,varC,value,overwrite=T){
+edit_apsim<-function(file,var,value,overwrite=T){
   
   if(!(file%in%list.files())){
     stop("Specified file could not be found in the current working directory.")
@@ -168,13 +167,10 @@ edit_apsim<-function(file,varP,varC,value,overwrite=T){
   
   pXML<-xmlParse(file)
   
-  for(i in 1:length(varP)){
+  for(i in 1:length(var)){
     
-    if(is.na(varC[i])){
-      vari<-pXML[[paste("//",varP[i],sep="")]]
-    }else{
-      vari<-pXML[[paste("//",varP[i],"/",varC[i],sep="")]] 
-    }
+    vari<-pXML[[paste("//",var[i],sep="")]]
+
     
     for(j in 1:xmlSize(vari)){
       xmlValue(vari[[j]])<-as.character(value[[i]][j])
