@@ -2,14 +2,12 @@
 \alias{edit_apsim}
 \title{Edit an APSIM simulation}
 \usage{
-  edit_apsim(file, varP, varC, value, overwrite = T)
+  edit_apsim(file, var, value, overwrite = T)
 }
 \arguments{
   \item{file}{file ending in ".apsim" to be edits}
 
-  \item{varP}{parent variables to be edited}
-
-  \item{varC}{child variable to be edited}
+  \item{var}{parent variables to be edited beginning}
 
   \item{value}{new values for the defined variables}
 
@@ -22,5 +20,29 @@
 \description{
   Edit bits and pieces of an APSIM simulation to automate
   running
+}
+\examples{
+wd <- "C:/Users/Sta36z/Documents/APSIM"
+
+#The file I want to edit is called "Canopy.apsim"
+file <- "Canopy.apsim"
+
+#I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and
+#the state at which the simulation is being run.
+#Because "State" is not nested under anything, the corresponding child variable
+#is set to "NA"
+var<-c("SoilWater/Thickness","SoilOrganicMatter/SoilCN","State")
+
+#Change SoilWater-Thickness to 200,200,300x9
+#Change SoilCN to 10
+#Change "State" to "NSW"
+value<-list(c(rep(200,2),rep(300,9)),10,"NSW")
+
+#Edit the apsim file without overwriting it
+edit_apsim(file,var,value,overwrite=F)
+
+#Run the edited simulation
+exe <-" \\"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\\" "
+results <- apsimr(exe, getwd(), files = "Canopy-edited.apsim")
 }
 

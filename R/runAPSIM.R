@@ -130,8 +130,7 @@ apsimEX<-function(path, wd, files=NULL,...){
 #' 
 #' @name edit_apsim
 #' @param file file ending in ".apsim" to be edits
-#' @param varP parent variables to be edited
-#' @param varC child variable to be edited
+#' @param var parent variables to be edited beginning
 #' @param value new values for the defined variables
 #' @param overwrite T/F depending on if the old file should be over written or a new one should be saved
 #' @return nothing, new .apsim file
