@@ -2,7 +2,7 @@
 \alias{apsimEX}
 \title{Access the examples built into APSIM}
 \usage{
-  apsimEX(path, wd, files = NULL, ...)
+apsimEX(path, wd, files = NULL, ...)
 }
 \arguments{
   \item{exe}{The path to the APSIM executable file}
@@ -17,20 +17,19 @@
   \code{\link[base:file.copy]{file.copy}}}
 }
 \value{
-  nothing is returned
+nothing is returned
 }
 \description{
-  To run an APSIM simulation, it will need to be saved
-  outside of the APSIM/Exaple folder. This location needs
-  to be specified by the user.
+To run an APSIM simulation, it will need to be saved
+outside of the APSIM/Exaple folder. This location needs to
+be specified by the user.
 }
 \examples{
-path <-"C:/Program Files (x86)/Apsim75-r3008/Examples"
+exe <-" \\"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\\" "
 wd <- "C:/Users/Sta36z/Documents/APSIM"
 file <- "Canopy.apsim"
 apsimEX(path, wd, file)
 
-exe <-" \\"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\\" "
-results <- apsimr(exe, wd, files = file)
+results <- apsim(exe, wd, files = file)
 }
 

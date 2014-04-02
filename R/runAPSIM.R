@@ -6,19 +6,19 @@
 #' .apsim files that are to be run.  The output from the .apsim files is resturned 
 #' in a list: each item in the list corresponds to a .apsim file in the provided directory.
 #' 
-#' @name apsimr
+#' @name apsim
 #' @param exe The path to the APSIM executable file
 #' @param wd The working directory containing the .apsim files to be run
 #' @param files The .apsim files to be run
 #' @return list of output files corresponding to each .apsim file
 #' @export
 #' @examples
-#' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
+#' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
 #' toRun <- c("Centro.apsim","Continuous Wheat.apsim")
-#' results <- apsimr(exe, wd, files = toRun)
+#' results <- apsim(exe, wd, files = toRun)
 
-apsimr<-function(exe, wd, files = NULL){
+apsim<-function(exe, wd, files = NULL){
   oldWD<-getwd()
   setwd(wd)
   fList<-dir()
@@ -27,32 +27,34 @@ apsimr<-function(exe, wd, files = NULL){
   if(is.null(files)){
     
     #If files is left NULL then run every .apsim file in the provided directory
-    files<- " *.apsim"
-    out_files <- sub(".apsim",".out",fileNames)
+    files<- fileNames
     
   }else{
-    #Check that the specified .apsim files exist in the directory
     
-    if(!all(files %in% fileNames)){
-      stop("One or more of the requested simulations are not in the specified folder.")
-    }
+    #Allow for abbreviations and check the files are in there
+    files<-match.arg(files,fileNames)
     
-    #For now identify ouput files by assuming they have the same name as the .apsim files
-    #Try to be more general about this by going into the .apsim file and grabbing the name of the ouput file
-    out_files <- sub(".apsim",".out",files)
   }
   
+  nFiles<-length(files)
+  out_files<-rep(NA,nFiles)
   
-  for(i in 1:length(files)){  
+  for(i in 1:nFiles){  
     system(paste(exe, files[i], sep = " "), show.output.on.console = FALSE)
+    #Grab the name of the ouput file from the simulation file
+    out_files[i]<-paste(xmlAttrs(xmlParse(files[i])[["//simulation"]])[[1]],".out",sep="")
   }
   
 
-  nOutFiles<-length(out_files)
-  results<-vector("list",nOutFiles)
-  
-  for(i in 1:nOutFiles){
-    res<-read.table(out_files[i],skip=2,header=T)
+  results<-vector("list",nFiles)
+  skipline<-1
+  for(i in 1:nFiles){
+    res<-try(read.table(out_files[i],skip=skipline,header=T),TRUE)
+    
+    while(class(res)=="try-error"){
+      skipline<-skipline+1
+      res<-try(read.table(out_files[i],skip=skipline,header=T),TRUE)
+    }
     
     res<-res[-1,]
     
@@ -66,7 +68,7 @@ apsimr<-function(exe, wd, files = NULL){
   
   setwd(oldWD)
   
-  if(nOutFiles==1)return(res)
+  if(nFiles==1)return(res)
   else return(results)
   
   
@@ -86,13 +88,12 @@ apsimr<-function(exe, wd, files = NULL){
 #' @return nothing is returned
 #' @export
 #' @examples
-#' path <-"C:/Program Files (x86)/Apsim75-r3008/Examples"
+#' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
 #' file <- "Canopy.apsim"
 #' apsimEX(path, wd, file)
 #' 
-#' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
-#' results <- apsimr(exe, wd, files = file)
+#' results <- apsim(exe, wd, files = file)
 
 apsimEX<-function(path, wd, files=NULL,...){
   
@@ -155,8 +156,8 @@ apsimEX<-function(path, wd, files=NULL,...){
 #' edit_apsim(file,var,value,overwrite=F)
 #' 
 #' #Run the edited simulation
-#' exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
-#' results <- apsimr(exe, getwd(), files = "Canopy-edited.apsim")
+#' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
+#' results <- apsim(exe, getwd(), files = "Canopy-edited.apsim")
 
 edit_apsim<-function(file,var,value,overwrite=T){
   

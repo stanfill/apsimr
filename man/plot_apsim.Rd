@@ -2,7 +2,7 @@
 \alias{plot_apsim}
 \title{Visualize and APSIM run}
 \usage{
-  \method{plot}{apsim} (x, y = NULL, data, ...)
+\method{plot}{apsim}(x, y = NULL, data, ...)
 }
 \arguments{
   \item{x}{variable to plot on x-axis}
@@ -17,10 +17,10 @@
   \code{\link[ggplot2:qplot]{qplot}}}
 }
 \value{
-  nothing is returned
+nothing is returned
 }
 \description{
-  Visualize and APSIM run
+Visualize and APSIM run
 }
 \examples{
 exe <-" \\"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\\" "

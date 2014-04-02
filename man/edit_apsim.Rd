@@ -2,7 +2,7 @@
 \alias{edit_apsim}
 \title{Edit an APSIM simulation}
 \usage{
-  edit_apsim(file, var, value, overwrite = T)
+edit_apsim(file, var, value, overwrite = T)
 }
 \arguments{
   \item{file}{file ending in ".apsim" to be edits}
@@ -15,11 +15,11 @@
   be over written or a new one should be saved}
 }
 \value{
-  nothing, new .apsim file
+nothing, new .apsim file
 }
 \description{
-  Edit bits and pieces of an APSIM simulation to automate
-  running
+Edit bits and pieces of an APSIM simulation to automate
+running
 }
 \examples{
 wd <- "C:/Users/Sta36z/Documents/APSIM"
@@ -42,7 +42,7 @@ value<-list(c(rep(200,2),rep(300,9)),10,"NSW")
 edit_apsim(file,var,value,overwrite=F)
 
 #Run the edited simulation
-exe <-" \\"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\\" "
-results <- apsimr(exe, getwd(), files = "Canopy-edited.apsim")
+exe <-" \\"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\\" "
+results <- apsim(exe, getwd(), files = "Canopy-edited.apsim")
 }
 
