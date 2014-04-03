@@ -32,7 +32,7 @@ apsim<-function(exe, wd, files = NULL){
   }else{
     
     #Allow for abbreviations and check the files are in there
-    files<-match.arg(files,fileNames)
+    files<-match.arg(files,fileNames,several.ok=TRUE)
     
   }
   
@@ -51,7 +51,7 @@ apsim<-function(exe, wd, files = NULL){
   for(i in 1:nFiles){
     res<-try(read.table(out_files[i],skip=skipline,header=T),TRUE)
     
-    while(class(res)=="try-error"){
+    while(class(res)=="try-error" & skipline < 50){
       skipline<-skipline+1
       res<-try(read.table(out_files[i],skip=skipline,header=T),TRUE)
     }
@@ -137,7 +137,7 @@ apsimEX<-function(path, wd, files=NULL,...){
 #' @return nothing, new .apsim file
 #' @examples
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
-#' 
+#' setwd(wd)
 #' #The file I want to edit is called "Canopy.apsim"
 #' file <- "Canopy.apsim"
 #' 
@@ -170,9 +170,19 @@ edit_apsim<-function(file,var,value,overwrite=T){
   for(i in 1:length(var)){
     
     vari<-pXML[[paste("//",var[i],sep="")]]
-
     
-    for(j in 1:xmlSize(vari)){
+    #If supplied length is shorter then length to replace, then
+    #replicate the last value enough times to fill the void, give message
+    lToReplace<-xmlSize(vari)
+    lReplace<-length(value[[i]])
+    lenDiff<-lToReplace-lReplace
+    
+    if(lenDiff>0){
+      value[[i]]<-c(value[[i]],rep(value[[i]][lReplace],lenDiff))
+      warning(paste("Supplied values for",var[i],"was too short",sep=" "))
+    }
+    
+    for(j in 1:lToReplace){
       xmlValue(vari[[j]])<-as.character(value[[i]][j])
     }
     
