@@ -1,3 +1,4 @@
+export(edit_apsim)
 export(plot_apsim)
 export(apsimEX)
 export(apsim)
