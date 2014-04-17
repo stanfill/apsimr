@@ -131,8 +131,8 @@ apsimEX<-function(path, wd, files=NULL,...){
 #' 
 #' @name edit_apsim
 #' @param file file ending in ".apsim" to be edits
-#' @param var parent variables to be edited beginning
-#' @param value new values for the defined variables
+#' @param var vector of variables to be edited
+#' @param value list of new values for the defined variables
 #' @param overwrite T/F depending on if the old file should be over written or a new one should be saved
 #' @return nothing, new .apsim file
 #' @examples
@@ -159,7 +159,7 @@ apsimEX<-function(path, wd, files=NULL,...){
 #' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
 #' results <- apsim(exe, getwd(), files = "Canopy-edited.apsim")
 
-edit_apsim<-function(file,var,value,overwrite=T){
+edit_apsim<-function(file,var,value,overwrite=F){
   
   if(!(file%in%list.files())){
     stop("Specified file could not be found in the current working directory.")

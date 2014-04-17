@@ -2,14 +2,15 @@
 \alias{edit_apsim}
 \title{Edit an APSIM simulation}
 \usage{
-edit_apsim(file, var, value, overwrite = T)
+edit_apsim(file, var, value, overwrite = F)
 }
 \arguments{
   \item{file}{file ending in ".apsim" to be edits}
 
-  \item{var}{parent variables to be edited beginning}
+  \item{var}{vector of variables to be edited}
 
-  \item{value}{new values for the defined variables}
+  \item{value}{list of new values for the defined
+  variables}
 
   \item{overwrite}{T/F depending on if the old file should
   be over written or a new one should be saved}
@@ -23,7 +24,7 @@ running
 }
 \examples{
 wd <- "C:/Users/Sta36z/Documents/APSIM"
-
+setwd(wd)
 #The file I want to edit is called "Canopy.apsim"
 file <- "Canopy.apsim"
 
