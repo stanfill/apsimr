@@ -106,10 +106,6 @@ edit_apsim<-function(file,var,value,overwrite=F){
 #' 
 #' #Edit the apsim file without overwriting it
 #' edit_sim_file(file,var,value,overwrite=F)
-#' 
-#' #Run the edited simulation
-#' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
-#' results <- apsim(exe, getwd(), files = "Canopy-edited.apsim")
 
 edit_sim_file<-function(file,var,value,overwrite=F){
   
