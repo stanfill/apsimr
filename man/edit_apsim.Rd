@@ -30,8 +30,6 @@ file <- "Canopy.apsim"
 
 #I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and
 #the state at which the simulation is being run.
-#Because "State" is not nested under anything, the corresponding child variable
-#is set to "NA"
 var<-c("SoilWater/Thickness","SoilOrganicMatter/SoilCN","State")
 
 #Change SoilWater-Thickness to 200,200,300x9

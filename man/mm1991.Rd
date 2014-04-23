@@ -1,6 +1,6 @@
 \name{mm1991}
 \alias{mm1991}
-\title{Implement the Morris Method (1991)}
+\title{Implement the Morris Method According to Morris (1991)}
 \usage{
 mm1991(p, k)
 }
