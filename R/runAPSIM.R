@@ -17,7 +17,7 @@
 #' \dontrun{
 #' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
-#' toRun <- c("Centro.apsim","Continuous_Wheat.apsim")
+#' toRun <- c("Centro.apsim","Continuous Wheat.apsim")
 #' results <- apsim(exe, wd, files = toRun)
 #' }
 
@@ -34,16 +34,27 @@ apsim<-function(exe, wd, files = NULL){
     
   }else{
     
+    nFiles<-length(files)
     #Allow for abbreviations and check the files are in there
     files<-match.arg(files,fileNames,several.ok=TRUE)
-    
+    if(nFiles != length(files))
+      warning("Not all of the requested files could be found in the specified directory")
   }
   
   nFiles<-length(files)
   out_files<-rep(NA,nFiles)
   
   for(i in 1:nFiles){  
-    system(paste(exe, files[i], sep = " "), show.output.on.console = FALSE)
+    
+    if(length(grep(" ",files[i]))>0){
+      #If there is a space in the file name, put it in quotes
+      system(paste(exe,paste("\"",files[i],"\"",sep=""), sep = " "), show.output.on.console = FALSE)
+      
+    }else{
+      
+      system(paste(exe, files[i], sep = " "), show.output.on.console = FALSE)
+      
+    }
     #Grab the name of the ouput file from the simulation file
     out_files[i]<-paste(xmlAttrs(xmlParse(files[i])[["//simulation"]])[[1]],".out",sep="")
   }
