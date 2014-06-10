@@ -9,6 +9,7 @@
 #' @param overwrite T/F depending on if the old file should be over written or a new one should be saved
 #' @return nothing, new .apsim file
 #' @examples
+#' \dontrun{
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
 #' setwd(wd)
 #' #The file I want to edit is called "Canopy.apsim"
@@ -29,6 +30,7 @@
 #' #Run the edited simulation
 #' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
 #' results <- apsim(exe, getwd(), files = "Canopy-edited.apsim")
+#' }
 
 edit_apsim<-function(file,var,value,overwrite=F){
   
@@ -93,6 +95,7 @@ edit_apsim<-function(file,var,value,overwrite=F){
 #' @param overwrite T/F depending on if the old file should be over written or a new one should be saved
 #' @return nothing, new .xml file
 #' @examples
+#' \dontrun{
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
 #' setwd(wd)
 #' #The file I want to edit is called "Canopy.apsim"
@@ -106,6 +109,7 @@ edit_apsim<-function(file,var,value,overwrite=F){
 #' 
 #' #Edit the apsim file without overwriting it
 #' edit_sim_file(file,var,value,overwrite=F)
+#' }
 
 edit_sim_file<-function(file,var,value,overwrite=F){
   

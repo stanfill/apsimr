@@ -83,3 +83,21 @@ mm1991mod<-function(delta,k){
   Bstar<-(matrix(1,k+1,1)%*%xstar+p1)%*%Pstar
   return(list(order=toOne,Bstar=Bstar))
 }
+
+#' FAST
+#' 
+#' 
+
+
+Gi1<-function(omega,s,shift=T){
+  #This is the G function proposed by Saltelli et al. (1999).
+  #The shifted version corresponds to equation 20 and the un-shifted
+  #version is equation 19
+  
+  if(shift){
+    psi<-runif(1,0,2*pi)
+    return(.5+asin((sin(omega*s+psi)))/pi)
+  }
+  
+  return(.5+asin((sin(omega*s)))/pi)
+}

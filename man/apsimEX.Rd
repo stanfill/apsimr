@@ -25,11 +25,13 @@ outside of the APSIM/Exaple folder. This location needs to
 be specified by the user.
 }
 \examples{
+\dontrun{
 exe <-" \\"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\\" "
 wd <- "C:/Users/Sta36z/Documents/APSIM"
 file <- "Canopy.apsim"
 apsimEX(path, wd, file)
 
 results <- apsim(exe, wd, files = file)
+}
 }
 

@@ -23,6 +23,7 @@ Edit bits and pieces of an APSIM simulation to automate
 running
 }
 \examples{
+\dontrun{
 wd <- "C:/Users/Sta36z/Documents/APSIM"
 setwd(wd)
 #The file I want to edit is called "Canopy.apsim"
@@ -36,5 +37,6 @@ value<-list(abs(rnorm(1)),abs(rnorm(1)))
 
 #Edit the apsim file without overwriting it
 edit_sim_file(file,var,value,overwrite=F)
+}
 }
 

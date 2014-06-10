@@ -9,14 +9,17 @@
 #' @name apsim
 #' @param exe The path to the APSIM executable file
 #' @param wd The working directory containing the .apsim files to be run
-#' @param files The .apsim files to be run
+#' @param files The .apsim files to be run.  If left empty all .apsim files in wd will be run
 #' @return list of output files corresponding to each .apsim file
 #' @export
 #' @examples
+#' 
+#' \dontrun{
 #' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
-#' toRun <- c("Centro.apsim","Continuous Wheat.apsim")
+#' toRun <- c("Centro.apsim","Continuous_Wheat.apsim")
 #' results <- apsim(exe, wd, files = toRun)
+#' }
 
 apsim<-function(exe, wd, files = NULL){
   oldWD<-getwd()
@@ -88,12 +91,15 @@ apsim<-function(exe, wd, files = NULL){
 #' @return nothing is returned
 #' @export
 #' @examples
+#' 
+#' \dontrun{
 #' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
 #' file <- "Canopy.apsim"
 #' apsimEX(path, wd, file)
 #' 
 #' results <- apsim(exe, wd, files = file)
+#' }
 
 apsimEX<-function(path, wd, files=NULL,...){
   

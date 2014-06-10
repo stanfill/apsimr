@@ -23,6 +23,7 @@ Edit bits and pieces of an APSIM simulation to automate
 running
 }
 \examples{
+\dontrun{
 wd <- "C:/Users/Sta36z/Documents/APSIM"
 setwd(wd)
 #The file I want to edit is called "Canopy.apsim"
@@ -43,5 +44,6 @@ edit_apsim(file,var,value,overwrite=F)
 #Run the edited simulation
 exe <-" \\"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\\" "
 results <- apsim(exe, getwd(), files = "Canopy-edited.apsim")
+}
 }
 
