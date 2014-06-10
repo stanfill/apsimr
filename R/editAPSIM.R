@@ -10,8 +10,6 @@
 #' @return nothing, new .apsim file
 #' @examples
 #' \dontrun{
-#' wd <- "C:/Users/Sta36z/Documents/APSIM"
-#' setwd(wd)
 #' #The file I want to edit is called "Canopy.apsim"
 #' file <- "Canopy.apsim"
 #' 

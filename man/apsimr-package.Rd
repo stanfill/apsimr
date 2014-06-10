@@ -34,7 +34,9 @@ See http://www.apsim.info/
  \code{\link[APSIMBatch:runAPSIM]{APSIMBatch}}
 }
 \examples{
-exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
-wd <- "C:/Users/Sta36z/Documents/APSIM"
-results <- apsimr(exe, wd)
+\dontrun{
+exe <-" \\"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\\" "
+wd <- "../APSIM"
+results <- apsim(exe, wd)
+}
 }

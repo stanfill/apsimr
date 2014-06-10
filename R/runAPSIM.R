@@ -77,6 +77,7 @@ apsim<-function(exe, wd, files = NULL){
     for(j in 2:ncol(res)){
       res[,j]<-as.numeric(as.character(res[,j])) #Coerce each output to be numeric
     }
+    class(res)<-c("apsim","data.frame")
     results[[i]]<-res
   }
   

@@ -2,9 +2,9 @@
 
 library(apsimr)
 exe <-" \"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\" "
-wd <- "C:/Users/Sta36z/Documents/APSIM"
+wd <- "../APSIM"
 toRun <- "Nitrogen Cycle.apsim"
-results <- apsimr(exe, wd, files = toRun)
+results <- apsim(exe, wd, files = toRun)
 
 #Create variable that is the total NO3 over all layers
 results$TotalNO3<-rowSums(results[,14:20])

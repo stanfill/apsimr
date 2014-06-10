@@ -24,9 +24,11 @@
   a .apsim file in the provided directory.
 }
 \examples{
-exe <-" \\"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe\\" "
-wd <- "C:/Users/Sta36z/Documents/APSIM"
+\dontrun{
+exe <-" \\"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\\" "
+wd <- "../APSIM"
 toRun <- c("Centro.apsim","Continuous Wheat.apsim")
-results <- apsimr(exe, wd, files = toRun)
+results <- apsim(exe, wd, files = toRun)
+}
 }
 
