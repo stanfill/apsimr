@@ -96,7 +96,7 @@ apsim<-function(exe, wd, files = NULL){
 #' 
 #' 
 #' @name apsimEX
-#' @param exe The path to the APSIM executable file
+#' @param path The path to the APSIM executable file
 #' @param wd The working directory containing the .apsim files to be run
 #' @param files Which files to extract from the "Examples" folder
 #' @param ... additional arguments passed to \code{\link[base:file.copy]{file.copy}}

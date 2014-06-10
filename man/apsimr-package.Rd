@@ -25,7 +25,7 @@ Bryan Stanfill
 Maintainer: Bryan Stanfill <bryan.stanfill@csiro.au>
 }
 \references{
-See http://www.apsim.info/
+See \url{http://www.apsim.info/}
 }
 %~~ Optionally other standard keywords, one per line, from file KEYWORDS in the ~~
 %~~ R documentation directory ~~

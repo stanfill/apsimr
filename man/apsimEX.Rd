@@ -5,7 +5,7 @@
 apsimEX(path, wd, files = NULL, ...)
 }
 \arguments{
-  \item{exe}{The path to the APSIM executable file}
+  \item{path}{The path to the APSIM executable file}
 
   \item{wd}{The working directory containing the .apsim
   files to be run}
