@@ -38,18 +38,17 @@ plot.apsim<-function(x,y=NULL,ask=TRUE,...){
   
   if(length(y)==1){
 
-    return(qplot(Date,x[,y],data=x,ylab=y,...))
+    return(qplot(x[,'Date'],x[,y],xlab='Date',ylab=y,...))
     
   }else{
     
     if(ask){
       oask <- devAskNewPage(TRUE)
-      on.exit(devAskNewPage(oask))
     }
     
     for(i in y){
-      print(qplot(Date,x[,i],data=x,xlab='Date',ylab=i,...)+theme_bw())
+      print(qplot(x[,'Date'],x[,i],xlab='Date',ylab=i,...)+theme_bw())
     }
-    
+    oask <- devAskNewPage(FALSE)
   }
 }

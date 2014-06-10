@@ -6,8 +6,6 @@ S3method(plot,apsim)
 export(edit_apsim)
 export(apsimEX)
 export(apsim)
-export(mm1991)
-export(mm1991mod)
 export(edit_sim_file)
 
 exportClasses(apsim)
