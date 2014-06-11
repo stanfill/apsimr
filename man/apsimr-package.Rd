@@ -6,7 +6,7 @@
 Run APSIM from R
 }
 \description{
-Allows for the running of APSIM from R.  The anslysis and visualization of simulation results is also possible.
+The \bold{A}gricultural \bold{P}roduction \bold{S}ystems s\bold{IM}ulator (APSIM) is a widely used simulator of agricultural systems.  This package includes a few basic functions to create, edit and run APSIM simulations then visualize the results.  An installation of APSIM is required for this package to be of any use.  Assuming non-commercial use, it can be downloaded it for free from \url{http://www.apsim.info/Products/Downloads.aspx}.
 }
 \details{
 \tabular{ll}{
@@ -16,7 +16,6 @@ Version: \tab 0.1\cr
 Date: \tab 2014-06-10\cr
 License: \tab GPL(>=3) \cr
 }
-%the function \code{\link{apsim}} will call APSIM and run the selected files in the provided directory
 }
 \author{
 Bryan Stanfill
@@ -37,5 +36,6 @@ See \url{http://www.apsim.info/}
 exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
 wd <- "../APSIM"
 results <- apsim(exe, wd, "Centro.apsim")
+plot(results)
 }
 }

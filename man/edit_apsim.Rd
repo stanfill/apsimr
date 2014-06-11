@@ -2,18 +2,18 @@
 \alias{edit_apsim}
 \title{Edit an APSIM simulation}
 \usage{
-edit_apsim(file, var, value, overwrite = F)
+edit_apsim(file, var, value, overwrite = FALSE)
 }
 \arguments{
-  \item{file}{file ending in ".apsim" to be edits}
+  \item{file}{file ending in .apsim to be edited}
 
   \item{var}{vector of variables to be edited}
 
   \item{value}{list of new values for the defined
   variables}
 
-  \item{overwrite}{T/F depending on if the old file should
-  be over written or a new one should be saved}
+  \item{overwrite}{logical; if \code{TRUE} the old file is
+  overwritten, a new file is written otherwise}
 }
 \value{
 nothing, new .apsim file

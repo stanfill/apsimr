@@ -5,13 +5,13 @@
 apsim(exe, wd = getwd(), files = NULL)
 }
 \arguments{
-  \item{exe}{The path to the APSIM executable file}
+  \item{exe}{path to the APSIM executable file}
 
-  \item{wd}{The working directory containing the .apsim
-  files to be run}
+  \item{wd}{working directory containing the .apsim files
+  to be run}
 
-  \item{files}{The .apsim files to be run.  If left empty
-  all .apsim files in wd will be run}
+  \item{files}{.apsim files to be run.  If left empty all
+  .apsim files in \code{wd} will be run}
 }
 \value{
 list of output files corresponding to each .apsim file
@@ -33,7 +33,7 @@ the list has class \code{apsim}.
 \dontrun{
 exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 wd <- "~/APSIM"
-to_run <- c("Centro.apsim","Continuous Wheat.apsim")
+to_run <- c("Centro.apsim", "Continuous Wheat.apsim")
 results <- apsim(exe, wd, files = to_run)
 }
 }

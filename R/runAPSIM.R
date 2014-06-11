@@ -32,6 +32,10 @@ apsim<-function(exe, wd = getwd(), files = NULL){
   fList<-dir()
   fileNames<-fList[grep(".apsim",fList)]
   
+  if(length(fileNames)==0){
+    stop("There are no .apsim files in the folder wd to run.")
+  }
+  
   if(is.null(files)){
     
     #If files is left NULL then run every .apsim file in the provided directory
@@ -121,6 +125,10 @@ example_apsim<-function(path, wd = getwd(), files = NULL,...){
   
   flist<-list.files()
   possibles <- flist[grep(".apsim",flist)]
+  
+  if(length(possibles)==0){
+    stop("There are no .apsim files in the folder wd to copy.")
+  }
   
   if(is.null(files)){
     

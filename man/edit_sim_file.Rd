@@ -2,7 +2,7 @@
 \alias{edit_sim_file}
 \title{Edit an APSIM simulation simulation file}
 \usage{
-edit_sim_file(file, var, value, overwrite = F)
+edit_sim_file(file, var, value, overwrite = FALSE)
 }
 \arguments{
   \item{file}{file ending in ".xml" to be edits}
@@ -26,17 +26,17 @@ running
 \dontrun{
 wd <- "C:/Users/Sta36z/Documents/APSIM"
 setwd(wd)
-#The file I want to edit is called "Canopy.apsim"
-file <- "Soil2.xml"
+#The file I want to edit is called "Soil.xml"
+file <- "Soil.xml"
 
 #I want to change the potential nitrification and N2O from nitrification
-var<-c("nitrification_pot","dnit_nitrf_loss")
+var <- c("nitrification_pot", "dnit_nitrf_loss")
 
 #Change both to absolute values of random N(0,1)
-value<-list(abs(rnorm(1)),abs(rnorm(1)))
+value <- list(abs(rnorm(1)), abs(rnorm(1)))
 
 #Edit the apsim file without overwriting it
-edit_sim_file(file,var,value,overwrite=F)
+edit_sim_file(file, var, value, overwrite = FALSE)
 }
 }
 

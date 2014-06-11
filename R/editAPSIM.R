@@ -3,10 +3,10 @@
 #' Edit bits and pieces of an APSIM simulation to automate running
 #' 
 #' @name edit_apsim
-#' @param file file ending in ".apsim" to be edits
+#' @param file file ending in .apsim to be edited
 #' @param var vector of variables to be edited
 #' @param value list of new values for the defined variables
-#' @param overwrite T/F depending on if the old file should be over written or a new one should be saved
+#' @param overwrite logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise
 #' @return nothing, new .apsim file
 #' @examples
 #' \dontrun{
@@ -31,7 +31,7 @@
 #' results <- apsim(exe, wd, files = "Canopy-edited.apsim")
 #' }
 
-edit_apsim<-function(file,var,value,overwrite=F){
+edit_apsim <- function(file, var, value, overwrite = FALSE){
   
   if(!(file%in%list.files())){
     stop("Specified file could not be found in the current working directory.")
@@ -97,20 +97,20 @@ edit_apsim<-function(file,var,value,overwrite=F){
 #' \dontrun{
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"
 #' setwd(wd)
-#' #The file I want to edit is called "Canopy.apsim"
-#' file <- "Soil2.xml"
+#' #The file I want to edit is called "Soil.xml"
+#' file <- "Soil.xml"
 #' 
 #' #I want to change the potential nitrification and N2O from nitrification
-#' var<-c("nitrification_pot","dnit_nitrf_loss")
+#' var <- c("nitrification_pot", "dnit_nitrf_loss")
 #' 
 #' #Change both to absolute values of random N(0,1) 
-#' value<-list(abs(rnorm(1)),abs(rnorm(1)))
+#' value <- list(abs(rnorm(1)), abs(rnorm(1)))
 #' 
 #' #Edit the apsim file without overwriting it
-#' edit_sim_file(file,var,value,overwrite=F)
+#' edit_sim_file(file, var, value, overwrite = FALSE)
 #' }
 
-edit_sim_file<-function(file,var,value,overwrite=F){
+edit_sim_file <- function(file, var, value, overwrite = FALSE){
   
   if(!(file%in%list.files())){
     stop("Specified file could not be found in the current working directory.")
