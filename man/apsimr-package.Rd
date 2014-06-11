@@ -6,7 +6,7 @@
 Run APSIM from R
 }
 \description{
-The \bold{A}gricultural \bold{P}roduction \bold{S}ystems s\bold{IM}ulator (APSIM) is a widely used simulator of agricultural systems.  This package includes a few basic functions to create, edit and run APSIM simulations then visualize the results.  An installation of APSIM is required for this package to be of any use.  Assuming non-commercial use, it can be downloaded it for free from \url{http://www.apsim.info/Products/Downloads.aspx}.
+The \bold{A}gricultural \bold{P}roduction \bold{S}ystems s\bold{IM}ulator (APSIM) is a widely used simulator of agricultural systems.  This package includes a few basic functions to create, edit and run APSIM simulations then visualize the results.  An installation of APSIM is required for this package to be of any use.  Assuming non-commercial use, APSIM can be downloaded for free from \url{http://www.apsim.info/Products/Downloads.aspx}.
 }
 \details{
 \tabular{ll}{
@@ -23,7 +23,7 @@ Bryan Stanfill
 Maintainer: Bryan Stanfill <bryan.stanfill@csiro.au>
 }
 \references{
-See \url{http://www.apsim.info/}
+See \url{http://www.apsim.info/} for information about APSIM.
 }
 %~~ Optionally other standard keywords, one per line, from file KEYWORDS in the ~~
 %~~ R documentation directory ~~

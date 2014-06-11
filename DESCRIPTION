@@ -10,3 +10,4 @@ Description: Allows for the running of APSIM from R.  The anslysis and
 License: GPL (>=3)
 Imports: lubridate, reshape2
 Depends: ggplot2, XML
+BugReports: https://github.com/stanfill/apsimr/issues

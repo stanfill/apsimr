@@ -15,15 +15,15 @@
 #' 
 #' #I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and
 #' #the state at which the simulation is being run.
-#' var<-c("SoilWater/Thickness","SoilOrganicMatter/SoilCN","State")
+#' var <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN", "State")
 #' 
 #' #Change SoilWater-Thickness to 200,200,300x9
 #' #Change SoilCN to 10
 #' #Change "State" to "NSW"
-#' value<-list(c(rep(200,2),rep(300,9)),10,"NSW")
+#' value <- list(c(rep(200, 2), rep(300, 9)), 10, "NSW")
 #' 
 #' #Edit the apsim file without overwriting it
-#' edit_apsim(file,var,value,overwrite=FALSE)
+#' edit_apsim(file, var, value, overwrite = FALSE)
 #' 
 #' #Run the edited simulation
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
