@@ -18,7 +18,8 @@ example_apsim(path, wd = getwd(), files = NULL, ...)
   \code{\link[base:file.copy]{file.copy}}}
 }
 \value{
-nothing is returned
+logical; if \code{TRUE} the corresponding file was
+successfully copied, \code{FALSE} otherwise
 }
 \description{
 There are quite a few standard APSIM simulations provided
@@ -32,8 +33,10 @@ you can run them or edit them using \code{\link{apsim}} and
 path <-"C:/Program Files (x86)/Apsim76-r3376"
 wd <- "~/APSIM"
 file <- "Canopy.apsim"
-example_apsim(path=path, wd=wd, file)
+example_apsim(path = path, wd = wd, file) #TRUE
 
+file <- c("Canopy.apsim", "Continuous Wheat.apsim")
+example_apsim(path = path, wd = wd, file) #TRUE TRUE
 
 exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 results <- apsim(exe, wd, files = file)

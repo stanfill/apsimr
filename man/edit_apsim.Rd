@@ -16,11 +16,18 @@ edit_apsim(file, var, value, overwrite = FALSE)
   overwritten, a new file is written otherwise}
 }
 \value{
-nothing, new .apsim file
+if the file is successfully written then nothing is
+returned
 }
 \description{
-Edit bits and pieces of an APSIM simulation to automate
-running
+The variables specified by \code{var} within the .apsim
+file specified by \code{file} in the current working
+directory is edited. The old values are replaced with
+\code{value}, which is a list that has the same number of
+objects are the length of \code{var}.  The current .apsim
+file will be overwritten if \code{overwrite} is set to
+\code{TRUE}; otherwise the file \emph{file-edited.apsim}
+will be created.
 }
 \examples{
 \dontrun{

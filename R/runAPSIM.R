@@ -1,7 +1,6 @@
 #' Run APSIM simulations from R
 #' 
-#' 
-#' This function will call APSIM from R.  The only required input is the 
+#' This function will run an APSIM from R.  The only required input is the 
 #' file path to the APSIM executable.  It is assumed the current working directory contains the .apsim file(s)
 #' that is to be run.  If that is not the case then the directory containing the .apsim files to be run
 #' needs to be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
@@ -103,7 +102,7 @@ apsim<-function(exe, wd = getwd(), files = NULL){
 #' @param wd The working directory containing the .apsim files to be run.  Defaults to the current working directory.
 #' @param files Which files to extract from the "Examples" folder
 #' @param ... additional arguments passed to \code{\link[base:file.copy]{file.copy}}
-#' @return nothing is returned
+#' @return logical; if \code{TRUE} the corresponding file was successfully copied, \code{FALSE} otherwise
 #' @export
 #' @examples
 #' 
@@ -111,8 +110,10 @@ apsim<-function(exe, wd = getwd(), files = NULL){
 #' path <-"C:/Program Files (x86)/Apsim76-r3376"
 #' wd <- "~/APSIM"
 #' file <- "Canopy.apsim"
-#' example_apsim(path=path, wd=wd, file)
+#' example_apsim(path = path, wd = wd, file) #TRUE
 #' 
+#' file <- c("Canopy.apsim", "Continuous Wheat.apsim")
+#' example_apsim(path = path, wd = wd, file) #TRUE TRUE
 #' 
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 #' results <- apsim(exe, wd, files = file)
@@ -143,13 +144,12 @@ example_apsim<-function(path, wd = getwd(), files = NULL,...){
     
   }
   
-  
+  res<-rep(NA,length(files))
   for(i in 1:length(files)){
     fromI<-paste(path,"Examples",sim_file_name[i],sep="/")
     toI<-paste(wd,sim_file_name[i],sep="/")
-    if(!file.copy(from=fromI,to=toI,overwrite=TRUE)){
-      stop("Copy failed.")
-    }
+    res[i]<-file.copy(from=fromI,to=toI,overwrite=TRUE)
   }
   setwd(oldWD) #Return to origninal working directory
+  return(res)
 }

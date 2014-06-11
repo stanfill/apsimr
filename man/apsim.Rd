@@ -17,7 +17,7 @@ apsim(exe, wd = getwd(), files = NULL)
 list of output files corresponding to each .apsim file
 }
 \description{
-This function will call APSIM from R.  The only required
+This function will run an APSIM from R.  The only required
 input is the file path to the APSIM executable.  It is
 assumed the current working directory contains the .apsim
 file(s) that is to be run.  If that is not the case then

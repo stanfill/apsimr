@@ -1,13 +1,17 @@
 #' Edit an APSIM simulation
 #' 
-#' Edit bits and pieces of an APSIM simulation to automate running
+#' The variables specified by \code{var} within the .apsim file specified by \code{file} 
+#' in the current working directory is edited. The old values are replaced with \code{value}, which
+#' is a list that has the same number of objects are the length of \code{var}.  The current
+#' .apsim file will be overwritten if \code{overwrite} is set to \code{TRUE}; otherwise the file
+#' \emph{file-edited.apsim} will be created.
 #' 
 #' @name edit_apsim
 #' @param file file ending in .apsim to be edited
 #' @param var vector of variables to be edited
 #' @param value list of new values for the defined variables
 #' @param overwrite logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise
-#' @return nothing, new .apsim file
+#' @return if the file is successfully written then nothing is returned
 #' @examples
 #' \dontrun{
 #' #The file I want to edit is called "Canopy.apsim"
@@ -83,16 +87,23 @@ edit_apsim <- function(file, var, value, overwrite = FALSE){
   }
 }
 
-#' Edit an APSIM simulation simulation file
+#' Edit an APSIM plugin file
 #' 
-#' Edit bits and pieces of an APSIM simulation to automate running
+#' APSIM uses .xml files to dictate how cretain processes are carried out.  Similar to
+#' \code{\link{edit_apsim}} this function edits a file that will be used in an APSIM simulation.  Unlike
+#' \code{\link{edit_apsim}} this function edits the .xml simulation files.
+#' The variables specified by \code{var} within the .xml file specified by \code{file} 
+#' in the current working directory is edited. The old values are replaced with \code{value}, which
+#' is a list that has the same number of objects are the length of \code{var}.  The current
+#' .xml file will be overwritten if \code{overwrite} is set to \code{TRUE}; otherwise the file
+#' \emph{file-edited.xml} will be created.
 #' 
 #' @name edit_sim_file
 #' @param file file ending in ".xml" to be edits
 #' @param var vector of variables to be edited
 #' @param value list of new values for the defined variables
-#' @param overwrite T/F depending on if the old file should be over written or a new one should be saved
-#' @return nothing, new .xml file
+#' @param overwrite logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise
+#' @return if the file is successfully written then nothing is returned
 #' @examples
 #' \dontrun{
 #' wd <- "C:/Users/Sta36z/Documents/APSIM"

@@ -1,6 +1,6 @@
 \name{edit_sim_file}
 \alias{edit_sim_file}
-\title{Edit an APSIM simulation simulation file}
+\title{Edit an APSIM plugin file}
 \usage{
 edit_sim_file(file, var, value, overwrite = FALSE)
 }
@@ -12,15 +12,26 @@ edit_sim_file(file, var, value, overwrite = FALSE)
   \item{value}{list of new values for the defined
   variables}
 
-  \item{overwrite}{T/F depending on if the old file should
-  be over written or a new one should be saved}
+  \item{overwrite}{logical; if \code{TRUE} the old file is
+  overwritten, a new file is written otherwise}
 }
 \value{
-nothing, new .xml file
+if the file is successfully written then nothing is
+returned
 }
 \description{
-Edit bits and pieces of an APSIM simulation to automate
-running
+APSIM uses .xml files to dictate how cretain processes are
+carried out.  Similar to \code{\link{edit_apsim}} this
+function edits a file that will be used in an APSIM
+simulation.  Unlike \code{\link{edit_apsim}} this function
+edits the .xml simulation files. The variables specified by
+\code{var} within the .xml file specified by \code{file} in
+the current working directory is edited. The old values are
+replaced with \code{value}, which is a list that has the
+same number of objects are the length of \code{var}.  The
+current .xml file will be overwritten if \code{overwrite}
+is set to \code{TRUE}; otherwise the file
+\emph{file-edited.xml} will be created.
 }
 \examples{
 \dontrun{
