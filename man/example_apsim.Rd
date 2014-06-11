@@ -1,8 +1,8 @@
-\name{apsim_examples}
-\alias{apsim_examples}
+\name{example_apsim}
+\alias{example_apsim}
 \title{Access the examples built into APSIM}
 \usage{
-apsim_examples(path, wd = getwd(), files = NULL, ...)
+example_apsim(path, wd = getwd(), files = NULL, ...)
 }
 \arguments{
   \item{path}{The path to root of the APSIM installation}
@@ -21,16 +21,18 @@ apsim_examples(path, wd = getwd(), files = NULL, ...)
 nothing is returned
 }
 \description{
-To run an APSIM simulation, it will need to be saved
-outside of the APSIM/Exaple folder. This location needs to
-be specified by the user.
+There are quite a few standard APSIM simulations provided
+in the default APSIM installation. \code{apsim_expample}
+moves those example files into your working directory so
+you can run them or edit them using \code{\link{apsim}} and
+\code{\link{edit_apsim}}, respectively.
 }
 \examples{
 \dontrun{
 path <-"C:/Program Files (x86)/Apsim76-r3376"
 wd <- "~/APSIM"
 file <- "Canopy.apsim"
-apsim_examples(path=path, wd=wd, file)
+example_apsim(path=path, wd=wd, file)
 
 
 exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"

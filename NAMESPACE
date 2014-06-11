@@ -5,7 +5,7 @@ import(ggplot2,XML)
 S3method(plot,apsim)
 
 export(edit_apsim)
-export(apsimEX)
+export(example_apsim)
 export(apsim)
 export(edit_sim_file)
 

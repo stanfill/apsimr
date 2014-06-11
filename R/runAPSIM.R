@@ -1,15 +1,18 @@
 #' Run APSIM simulations from R
 #' 
 #' 
-#' This function will call APSIM from R.  Currently, one needs to supply the 
-#' directory containing the APSIM executable and the folder containing the
-#' .apsim files that are to be run.  The output from the .apsim files is resturned 
-#' in a list: each item in the list corresponds to a .apsim file in the provided directory.
+#' This function will call APSIM from R.  The only required input is the 
+#' file path to the APSIM executable.  It is assumed the current working directory contains the .apsim file(s)
+#' that is to be run.  If that is not the case then the directory containing the .apsim files to be run
+#' needs to be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
+#' directory \code{wd} using the \code{files} arguement, otherwise all .apsim files within \code{wd} are run. 
+#' Each .apsim file that is run is an element of the list that is returned.  Each element of the list has class
+#' \code{apsim}.
 #' 
 #' @name apsim
-#' @param exe The path to the APSIM executable file
-#' @param wd The working directory containing the .apsim files to be run
-#' @param files The .apsim files to be run.  If left empty all .apsim files in wd will be run
+#' @param exe  path to the APSIM executable file
+#' @param wd  working directory containing the .apsim files to be run
+#' @param files  .apsim files to be run.  If left empty all .apsim files in \code{wd} will be run
 #' @return list of output files corresponding to each .apsim file
 #' @export
 #' @examples
@@ -17,11 +20,11 @@
 #' \dontrun{
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 #' wd <- "~/APSIM"
-#' toRun <- c("Centro.apsim","Continuous Wheat.apsim")
-#' results <- apsim(exe, wd, files = toRun)
+#' to_run <- c("Centro.apsim", "Continuous Wheat.apsim")
+#' results <- apsim(exe, wd, files = to_run)
 #' }
 
-apsim<-function(exe, wd, files = NULL){
+apsim<-function(exe, wd = getwd(), files = NULL){
   
   exe<-addCommas(exe) #If there are spaces in the path to APSIM.exe, they need to be added
   oldWD<-getwd()
@@ -86,11 +89,12 @@ apsim<-function(exe, wd, files = NULL){
 
 #' Access the examples built into APSIM
 #' 
-#' To run an APSIM simulation, it will need to be saved outside of the APSIM/Exaple folder.
-#' This location needs to be specified by the user.
+#' There are quite a few standard APSIM simulations provided in the default APSIM installation.
+#' \code{apsim_expample} moves those example files into your working directory so you can run them
+#' or edit them using \code{\link{apsim}} and \code{\link{edit_apsim}}, respectively.
 #' 
 #' 
-#' @name apsim_examples
+#' @name example_apsim
 #' @param path The path to root of the APSIM installation
 #' @param wd The working directory containing the .apsim files to be run.  Defaults to the current working directory.
 #' @param files Which files to extract from the "Examples" folder
@@ -103,14 +107,14 @@ apsim<-function(exe, wd, files = NULL){
 #' path <-"C:/Program Files (x86)/Apsim76-r3376"
 #' wd <- "~/APSIM"
 #' file <- "Canopy.apsim"
-#' apsim_examples(path=path, wd=wd, file)
+#' example_apsim(path=path, wd=wd, file)
 #' 
 #' 
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 #' results <- apsim(exe, wd, files = file)
 #' }
 
-apsim_examples<-function(path, wd = getwd(), files = NULL,...){
+example_apsim<-function(path, wd = getwd(), files = NULL,...){
   
   oldWD<-getwd()
   setwd(paste(path,"Examples/",sep="/"))

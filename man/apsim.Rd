@@ -2,7 +2,7 @@
 \alias{apsim}
 \title{Run APSIM simulations from R}
 \usage{
-apsim(exe, wd, files = NULL)
+apsim(exe, wd = getwd(), files = NULL)
 }
 \arguments{
   \item{exe}{The path to the APSIM executable file}
@@ -17,19 +17,24 @@ apsim(exe, wd, files = NULL)
 list of output files corresponding to each .apsim file
 }
 \description{
-This function will call APSIM from R.  Currently, one needs
-to supply the directory containing the APSIM executable and
-the folder containing the .apsim files that are to be run.
-The output from the .apsim files is resturned in a list:
-each item in the list corresponds to a .apsim file in the
-provided directory.
+This function will call APSIM from R.  The only required
+input is the file path to the APSIM executable.  It is
+assumed the current working directory contains the .apsim
+file(s) that is to be run.  If that is not the case then
+the directory containing the .apsim files to be run needs
+to be specified by \code{wd}.  One can specify a list of
+.apsim files to be run within the directory \code{wd} using
+the \code{files} arguement, otherwise all .apsim files
+within \code{wd} are run. Each .apsim file that is run is
+an element of the list that is returned.  Each element of
+the list has class \code{apsim}.
 }
 \examples{
 \dontrun{
 exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 wd <- "~/APSIM"
-toRun <- c("Centro.apsim","Continuous Wheat.apsim")
-results <- apsim(exe, wd, files = toRun)
+to_run <- c("Centro.apsim","Continuous Wheat.apsim")
+results <- apsim(exe, wd, files = to_run)
 }
 }
 
