@@ -1,4 +1,5 @@
 importFrom(lubridate,dmy)
+importFrom(reshape2,melt)
 import(ggplot2,XML)
 
 S3method(plot,apsim)
