@@ -4,7 +4,6 @@
 \docType{package}
 \title{
 Run APSIM from R
-apsimr
 }
 \description{
 Allows for the running of APSIM from R.  The anslysis and visualization of simulation results is also possible.
@@ -37,6 +36,6 @@ See \url{http://www.apsim.info/}
 \dontrun{
 exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
 wd <- "../APSIM"
-results <- apsim(exe, wd)
+results <- apsim(exe, wd, "Centro.apsim")
 }
 }

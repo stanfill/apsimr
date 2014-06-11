@@ -16,7 +16,7 @@
 #' 
 #' \dontrun{
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
-#' wd <- "../APSIM"
+#' wd <- "~/APSIM"
 #' toRun <- c("Centro.apsim","Continuous Wheat.apsim")
 #' results <- apsim(exe, wd, files = toRun)
 #' }
@@ -110,7 +110,7 @@ apsim<-function(exe, wd, files = NULL){
 #' results <- apsim(exe, wd, files = file)
 #' }
 
-apsimEX<-function(path, wd = getwd(), files=NULL,...){
+apsimEX<-function(path, wd = getwd(), files = NULL,...){
   
   oldWD<-getwd()
   setwd(paste(path,"Examples/",sep="/"))

@@ -12,7 +12,7 @@
 #' @examples
 #' \dontrun{
 #' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
-#' wd <- "../APSIM"
+#' wd <- "~/APSIM"
 #' toRun <- c("Centro.apsim","Continuous Wheat.apsim")
 #' results <- apsim(exe, wd, files = toRun)
 #' 
