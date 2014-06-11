@@ -15,13 +15,15 @@
 #' @examples
 #' 
 #' \dontrun{
-#' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
-#' wd <- "C:/Users/Sta36z/Documents/APSIM"
+#' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
+#' wd <- "../APSIM"
 #' toRun <- c("Centro.apsim","Continuous Wheat.apsim")
 #' results <- apsim(exe, wd, files = toRun)
 #' }
 
 apsim<-function(exe, wd, files = NULL){
+  
+  exe<-addCommas(exe) #If there are spaces in the path to APSIM.exe they need to be added
   oldWD<-getwd()
   setwd(wd)
   fList<-dir()
@@ -46,15 +48,8 @@ apsim<-function(exe, wd, files = NULL){
   
   for(i in 1:nFiles){  
     
-    if(length(grep(" ",files[i]))>0){
-      #If there is a space in the file name, put it in quotes
-      system(paste(exe,paste("\"",files[i],"\"",sep=""), sep = " "), show.output.on.console = FALSE)
-      
-    }else{
-      
-      system(paste(exe, files[i], sep = " "), show.output.on.console = FALSE)
-      
-    }
+    system(paste(exe,addCommas(files[i]), sep = " "), show.output.on.console = FALSE)
+    
     #Grab the name of the ouput file from the simulation file
     out_files[i]<-paste(xmlAttrs(xmlParse(files[i])[["//simulation"]])[[1]],".out",sep="")
   }
@@ -96,8 +91,8 @@ apsim<-function(exe, wd, files = NULL){
 #' 
 #' 
 #' @name apsimEX
-#' @param path The path to the APSIM executable file
-#' @param wd The working directory containing the .apsim files to be run
+#' @param path The path to root of the APSIM installation
+#' @param wd The working directory containing the .apsim files to be run.  Defaults to the current working directory.
 #' @param files Which files to extract from the "Examples" folder
 #' @param ... additional arguments passed to \code{\link[base:file.copy]{file.copy}}
 #' @return nothing is returned
@@ -105,18 +100,21 @@ apsim<-function(exe, wd, files = NULL){
 #' @examples
 #' 
 #' \dontrun{
-#' exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
-#' wd <- "C:/Users/Sta36z/Documents/APSIM"
+#' path <-"C:/Program Files (x86)/Apsim76-r3376"
+#' wd <- "~/APSIM"
 #' file <- "Canopy.apsim"
-#' apsimEX(path, wd, file)
+#' apsimEX(path=path, wd=wd, file)
 #' 
+#' 
+#' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 #' results <- apsim(exe, wd, files = file)
 #' }
 
-apsimEX<-function(path, wd, files=NULL,...){
+apsimEX<-function(path, wd = getwd(), files=NULL,...){
   
   oldWD<-getwd()
-  setwd(path)
+  setwd(paste(path,"Examples/",sep="/"))
+  
   flist<-list.files()
   possibles <- flist[grep(".apsim",flist)]
   
@@ -135,9 +133,11 @@ apsimEX<-function(path, wd, files=NULL,...){
   
   
   for(i in 1:length(files)){
-    fromI<-paste(path,sim_file_name[i],sep="/")
+    fromI<-paste(path,"Examples",sim_file_name[i],sep="/")
     toI<-paste(wd,sim_file_name[i],sep="/")
-    file.copy(from=fromI,to=toI,...)
+    if(!file.copy(from=fromI,to=toI,overwrite=TRUE)){
+      stop("Copy failed.")
+    }
   }
   setwd(oldWD) #Return to origninal working directory
 }
