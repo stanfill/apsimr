@@ -23,7 +23,7 @@
 
 apsim<-function(exe, wd, files = NULL){
   
-  exe<-addCommas(exe) #If there are spaces in the path to APSIM.exe they need to be added
+  exe<-addCommas(exe) #If there are spaces in the path to APSIM.exe, they need to be added
   oldWD<-getwd()
   setwd(wd)
   fList<-dir()
@@ -90,7 +90,7 @@ apsim<-function(exe, wd, files = NULL){
 #' This location needs to be specified by the user.
 #' 
 #' 
-#' @name apsimEX
+#' @name apsim_examples
 #' @param path The path to root of the APSIM installation
 #' @param wd The working directory containing the .apsim files to be run.  Defaults to the current working directory.
 #' @param files Which files to extract from the "Examples" folder
@@ -103,14 +103,14 @@ apsim<-function(exe, wd, files = NULL){
 #' path <-"C:/Program Files (x86)/Apsim76-r3376"
 #' wd <- "~/APSIM"
 #' file <- "Canopy.apsim"
-#' apsimEX(path=path, wd=wd, file)
+#' apsim_examples(path=path, wd=wd, file)
 #' 
 #' 
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 #' results <- apsim(exe, wd, files = file)
 #' }
 
-apsimEX<-function(path, wd = getwd(), files = NULL,...){
+apsim_examples<-function(path, wd = getwd(), files = NULL,...){
   
   oldWD<-getwd()
   setwd(paste(path,"Examples/",sep="/"))

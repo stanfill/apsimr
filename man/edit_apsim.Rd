@@ -37,11 +37,12 @@ var<-c("SoilWater/Thickness","SoilOrganicMatter/SoilCN","State")
 value<-list(c(rep(200,2),rep(300,9)),10,"NSW")
 
 #Edit the apsim file without overwriting it
-edit_apsim(file,var,value,overwrite=F)
+edit_apsim(file,var,value,overwrite=FALSE)
 
 #Run the edited simulation
-exe <-" \\"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\\" "
-results <- apsim(exe, getwd(), files = "Canopy-edited.apsim")
+exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
+wd <- "~/APSIM"
+results <- apsim(exe, wd, files = "Canopy-edited.apsim")
 }
 }
 

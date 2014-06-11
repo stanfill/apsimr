@@ -1,14 +1,15 @@
-\name{apsimEX}
-\alias{apsimEX}
+\name{apsim_examples}
+\alias{apsim_examples}
 \title{Access the examples built into APSIM}
 \usage{
-apsimEX(path, wd, files = NULL, ...)
+apsim_examples(path, wd = getwd(), files = NULL, ...)
 }
 \arguments{
-  \item{path}{The path to the APSIM executable file}
+  \item{path}{The path to root of the APSIM installation}
 
   \item{wd}{The working directory containing the .apsim
-  files to be run}
+  files to be run.  Defaults to the current working
+  directory.}
 
   \item{files}{Which files to extract from the "Examples"
   folder}
@@ -26,11 +27,13 @@ be specified by the user.
 }
 \examples{
 \dontrun{
-exe <-" \\"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\\" "
-wd <- "C:/Users/Sta36z/Documents/APSIM"
+path <-"C:/Program Files (x86)/Apsim76-r3376"
+wd <- "~/APSIM"
 file <- "Canopy.apsim"
-apsimEX(path, wd, file)
+apsim_examples(path=path, wd=wd, file)
 
+
+exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 results <- apsim(exe, wd, files = file)
 }
 }

@@ -48,7 +48,7 @@ plot.apsim<-function(x, y = NULL, ask = TRUE, one_plot = FALSE, ...){
     
     mX <- melt(x,id.vars='Date')
     
-    return(qplot(Date,value,data=mX,...)+facet_wrap(~variable,scales='free'))
+    return(qplot(mX$Date,mX$value,data=mX,...)+facet_wrap(~variable,scales='free'))
     
     
   }else{

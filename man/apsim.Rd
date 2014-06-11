@@ -26,8 +26,8 @@ provided directory.
 }
 \examples{
 \dontrun{
-exe <-" \\"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\\" "
-wd <- "C:/Users/Sta36z/Documents/APSIM"
+exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
+wd <- "~/APSIM"
 toRun <- c("Centro.apsim","Continuous Wheat.apsim")
 results <- apsim(exe, wd, files = toRun)
 }
