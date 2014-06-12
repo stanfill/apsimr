@@ -33,7 +33,7 @@ See \url{http://www.apsim.info/} for information about APSIM.
 }
 \examples{
 \dontrun{
-exe <-" \"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe\" "
+exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 wd <- "../APSIM"
 results <- apsim(exe, wd, "Centro.apsim")
 plot(results)

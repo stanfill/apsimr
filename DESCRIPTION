@@ -1,12 +1,12 @@
 Package: apsimr
 Type: Package
-Title: A package to make accessing and running APSIM from R straight forward
+Title: Edit, run and evaluate APSIM simulations from R easily
 Version: 0.1
-Date: 2014-06-10
+Date: 2014-06-12
 Author: Bryan Stanfill
 Maintainer: Bryan Stanfill <bryan.stanfill@csiro.au>
-Description: Allows for the running of APSIM from R.  The anslysis and 
-             visualization of simulation results is also possible.
+Description: This package includes a few basic functions to create, edit and run APSIM simulations 
+    then visualize the results.
 License: GPL (>=3)
 Imports: lubridate, reshape2
 Depends: ggplot2, XML
