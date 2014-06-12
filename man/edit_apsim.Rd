@@ -7,7 +7,7 @@ edit_apsim(file, wd = getwd(), var, value, overwrite = FALSE)
 \arguments{
   \item{file}{file ending in .apsim to be edited}
 
-  \item{wd}{the directory containin the .apsim file to be
+  \item{wd}{the directory containing the .apsim file to be
   edited; defaults to the current wd}
 
   \item{var}{vector of variables to be edited}

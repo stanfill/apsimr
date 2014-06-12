@@ -24,7 +24,7 @@ file(s) to be run.  If that is not the case then the
 directory containing the .apsim file(s) to be run can to be
 specified by \code{wd}.  One can specify a list of .apsim
 files to be run within the directory \code{wd} using the
-\code{files} arguement, otherwise all .apsim files within
+\code{files} argument, otherwise all .apsim files within
 \code{wd} are run. The results for each .apsim file that is
 run is an element of the list that is returned. Each
 element of the list has class \code{apsim}.

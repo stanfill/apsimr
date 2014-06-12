@@ -8,7 +8,7 @@
 #' 
 #' @name edit_apsim
 #' @param file file ending in .apsim to be edited
-#' @param wd the directory containin the .apsim file to be edited; defaults to the current wd
+#' @param wd the directory containing the .apsim file to be edited; defaults to the current wd
 #' @param var vector of variables to be edited
 #' @param value list of new values for the defined variables
 #' @param overwrite logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise
@@ -99,7 +99,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 
 #' Edit an APSIM plugin file
 #' 
-#' APSIM uses .xml files to dictate how cretain processes are carried out.  Similar to
+#' APSIM uses .xml files to dictate how certain processes are carried out.  Similar to
 #' \code{\link{edit_apsim}} this function edits a file that will be used in an APSIM simulation.  Unlike
 #' \code{\link{edit_apsim}} this function edits the .xml simulation files.
 #' The variables specified by \code{var} within the .xml file specified by \code{file} 
@@ -110,7 +110,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 #' 
 #' @name edit_sim_file
 #' @param file file ending in ".xml" to be edits
-#' @param wd the directory containin the .apsim file to be edited; defaults to the current wd
+#' @param wd the directory containing the .apsim file to be edited; defaults to the current wd
 #' @param var vector of variables to be edited
 #' @param value list of new values for the defined variables
 #' @param overwrite logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise

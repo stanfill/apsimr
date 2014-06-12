@@ -9,10 +9,10 @@
   results of an APSIM simulation}
 
   \item{y}{variable to plot on y-axis.  If left empty all
-  variables will be plotted on seperate plots.}
+  variables will be plotted on separate plots.}
 
   \item{ask}{logical; if \code{TRUE}, the user is asked
-  before ach plot, see \code{\link{par}}(ask=.)}
+  before each plot, see \code{\link{par}}(ask=.)}
 
   \item{one_plot}{logical; if \code{TRUE} all variables are
   plotted on one faceted plot}

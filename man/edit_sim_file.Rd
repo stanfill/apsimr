@@ -7,7 +7,7 @@ edit_sim_file(file, wd = getwd(), var, value, overwrite = FALSE)
 \arguments{
   \item{file}{file ending in ".xml" to be edits}
 
-  \item{wd}{the directory containin the .apsim file to be
+  \item{wd}{the directory containing the .apsim file to be
   edited; defaults to the current wd}
 
   \item{var}{vector of variables to be edited}
@@ -23,7 +23,7 @@ if the file is successfully written then nothing is
 returned
 }
 \description{
-APSIM uses .xml files to dictate how cretain processes are
+APSIM uses .xml files to dictate how certain processes are
 carried out.  Similar to \code{\link{edit_apsim}} this
 function edits a file that will be used in an APSIM
 simulation.  Unlike \code{\link{edit_apsim}} this function
