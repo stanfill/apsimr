@@ -8,14 +8,16 @@
 #' 
 #' @name edit_apsim
 #' @param file file ending in .apsim to be edited
+#' @param wd the directory containin the .apsim file to be edited; defaults to the current wd
 #' @param var vector of variables to be edited
 #' @param value list of new values for the defined variables
 #' @param overwrite logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise
 #' @return if the file is successfully written then nothing is returned
 #' @examples
 #' \dontrun{
-#' #The file I want to edit is called "Canopy.apsim"
+#' #The file I want to edit is called "Canopy.apsim" which is in the directory "~/APSIM"
 #' file <- "Canopy.apsim"
+#' wd <- "~/APSIM"
 #' 
 #' #I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and
 #' #the state at which the simulation is being run.
@@ -27,19 +29,26 @@
 #' value <- list(c(rep(200, 2), rep(300, 9)), 10, "NSW")
 #' 
 #' #Edit the apsim file without overwriting it
-#' edit_apsim(file, var, value, overwrite = FALSE)
+#' edit_apsim(file, wd, var, value, overwrite = FALSE)
 #' 
 #' #Run the edited simulation
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
-#' wd <- "~/APSIM"
+#' 
 #' results <- apsim(exe, wd, files = "Canopy-edited.apsim")
 #' }
 
-edit_apsim <- function(file, var, value, overwrite = FALSE){
+edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
   
-  if(!(file%in%list.files())){
-    stop("Specified file could not be found in the current working directory.")
+  oldWD<-getwd()
+  setwd(wd)
+  
+  fileNames <- dir(,pattern=".apsim$")
+  
+  if(length(fileNames)==0){
+    stop("There are no .apsim files in the folder wd to edit.")
   }
+  
+  file<-match.arg(file,fileNames,several.ok=TRUE)
   
   pXML<-xmlParse(file)
   
@@ -85,6 +94,7 @@ edit_apsim <- function(file, var, value, overwrite = FALSE){
     
     saveXML(pXML,file=paste(newName,".apsim",sep=""))
   }
+  setwd(oldWD)
 }
 
 #' Edit an APSIM plugin file
@@ -100,16 +110,16 @@ edit_apsim <- function(file, var, value, overwrite = FALSE){
 #' 
 #' @name edit_sim_file
 #' @param file file ending in ".xml" to be edits
+#' @param wd the directory containin the .apsim file to be edited; defaults to the current wd
 #' @param var vector of variables to be edited
 #' @param value list of new values for the defined variables
 #' @param overwrite logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise
 #' @return if the file is successfully written then nothing is returned
 #' @examples
 #' \dontrun{
-#' wd <- "C:/Users/Sta36z/Documents/APSIM"
-#' setwd(wd)
-#' #The file I want to edit is called "Soil.xml"
+#' #The file I want to edit is called "Soil.xml" which is the the directory "~/APSIM"
 #' file <- "Soil.xml"
+#' wd <- "~/APSIM"
 #' 
 #' #I want to change the potential nitrification and N2O from nitrification
 #' var <- c("nitrification_pot", "dnit_nitrf_loss")
@@ -118,10 +128,13 @@ edit_apsim <- function(file, var, value, overwrite = FALSE){
 #' value <- list(abs(rnorm(1)), abs(rnorm(1)))
 #' 
 #' #Edit the apsim file without overwriting it
-#' edit_sim_file(file, var, value, overwrite = FALSE)
+#' edit_sim_file(file, wd, var, value, overwrite = FALSE)
 #' }
 
-edit_sim_file <- function(file, var, value, overwrite = FALSE){
+edit_sim_file <- function(file, wd = getwd(), var, value, overwrite = FALSE){
+  
+  oldWD<-getwd()
+  setwd(wd)
   
   if(!(file%in%list.files())){
     stop("Specified file could not be found in the current working directory.")
@@ -159,4 +172,6 @@ edit_sim_file <- function(file, var, value, overwrite = FALSE){
     
     saveXML(pXML,file=paste(newName,".xml",sep=""))
   }
+  setwd(oldWD)
+  
 }

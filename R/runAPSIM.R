@@ -2,11 +2,11 @@
 #' 
 #' This function will run an APSIM from R.  The only required input is the 
 #' file path to the APSIM executable.  It is assumed the current working directory contains the .apsim file(s)
-#' that is to be run.  If that is not the case then the directory containing the .apsim files to be run
-#' needs to be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
+#' to be run.  If that is not the case then the directory containing the .apsim file(s) to be run
+#' can to be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
 #' directory \code{wd} using the \code{files} arguement, otherwise all .apsim files within \code{wd} are run. 
-#' Each .apsim file that is run is an element of the list that is returned.  Each element of the list has class
-#' \code{apsim}.
+#' The results for each .apsim file that is run is an element of the list that is returned.  
+#' Each element of the list has class \code{apsim}.
 #' 
 #' @name apsim
 #' @param exe  path to the APSIM executable file
@@ -28,9 +28,9 @@ apsim<-function(exe, wd = getwd(), files = NULL){
   exe<-addCommas(exe) #If there are spaces in the path to APSIM.exe, they need to be added
   oldWD<-getwd()
   setwd(wd)
-  fList<-dir()
-  fileNames<-fList[grep(".apsim",fList)]
-  
+
+  fileNames <- dir(,pattern=".apsim$")
+
   if(length(fileNames)==0){
     stop("There are no .apsim files in the folder wd to run.")
   }
@@ -94,7 +94,9 @@ apsim<-function(exe, wd = getwd(), files = NULL){
 #' 
 #' There are quite a few standard APSIM simulations provided in the default APSIM installation.
 #' \code{apsim_expample} moves those example files into your working directory so you can run them
-#' or edit them using \code{\link{apsim}} and \code{\link{edit_apsim}}, respectively.
+#' or edit them using \code{\link{apsim}} and \code{\link{edit_apsim}}, respectively.  Generally the
+#' example simulations must be moved because the output file is written to the directory containing
+#' the .apsim file and the ability to write in the "Program Files" folder is limited in most cases.
 #' 
 #' 
 #' @name example_apsim
@@ -107,7 +109,7 @@ apsim<-function(exe, wd = getwd(), files = NULL){
 #' @examples
 #' 
 #' \dontrun{
-#' path <-"C:/Program Files (x86)/Apsim76-r3376"
+#' path <-"C:/Program Files (x86)/Apsim76-r3376/"
 #' wd <- "~/APSIM"
 #' file <- "Canopy.apsim"
 #' example_apsim(path = path, wd = wd, file) #TRUE
@@ -124,8 +126,8 @@ example_apsim<-function(path, wd = getwd(), files = NULL,...){
   oldWD<-getwd()
   setwd(paste(path,"Examples/",sep="/"))
   
-  flist<-list.files()
-  possibles <- flist[grep(".apsim",flist)]
+  possibles <- dir(,pattern=".apsim$")
+  
   
   if(length(possibles)==0){
     stop("There are no .apsim files in the folder wd to copy.")

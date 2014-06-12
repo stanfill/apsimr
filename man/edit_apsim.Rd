@@ -2,10 +2,13 @@
 \alias{edit_apsim}
 \title{Edit an APSIM simulation}
 \usage{
-edit_apsim(file, var, value, overwrite = FALSE)
+edit_apsim(file, wd = getwd(), var, value, overwrite = FALSE)
 }
 \arguments{
   \item{file}{file ending in .apsim to be edited}
+
+  \item{wd}{the directory containin the .apsim file to be
+  edited; defaults to the current wd}
 
   \item{var}{vector of variables to be edited}
 
@@ -31,8 +34,9 @@ will be created.
 }
 \examples{
 \dontrun{
-#The file I want to edit is called "Canopy.apsim"
+#The file I want to edit is called "Canopy.apsim" which is in the directory "~/APSIM"
 file <- "Canopy.apsim"
+wd <- "~/APSIM"
 
 #I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and
 #the state at which the simulation is being run.
@@ -44,11 +48,11 @@ var <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN", "State")
 value <- list(c(rep(200, 2), rep(300, 9)), 10, "NSW")
 
 #Edit the apsim file without overwriting it
-edit_apsim(file, var, value, overwrite = FALSE)
+edit_apsim(file, wd, var, value, overwrite = FALSE)
 
 #Run the edited simulation
 exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
-wd <- "~/APSIM"
+
 results <- apsim(exe, wd, files = "Canopy-edited.apsim")
 }
 }

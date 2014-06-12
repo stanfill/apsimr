@@ -26,11 +26,15 @@ There are quite a few standard APSIM simulations provided
 in the default APSIM installation. \code{apsim_expample}
 moves those example files into your working directory so
 you can run them or edit them using \code{\link{apsim}} and
-\code{\link{edit_apsim}}, respectively.
+\code{\link{edit_apsim}}, respectively.  Generally the
+example simulations must be moved because the output file
+is written to the directory containing the .apsim file and
+the ability to write in the "Program Files" folder is
+limited in most cases.
 }
 \examples{
 \dontrun{
-path <-"C:/Program Files (x86)/Apsim76-r3376"
+path <-"C:/Program Files (x86)/Apsim76-r3376/"
 wd <- "~/APSIM"
 file <- "Canopy.apsim"
 example_apsim(path = path, wd = wd, file) #TRUE

@@ -2,10 +2,13 @@
 \alias{edit_sim_file}
 \title{Edit an APSIM plugin file}
 \usage{
-edit_sim_file(file, var, value, overwrite = FALSE)
+edit_sim_file(file, wd = getwd(), var, value, overwrite = FALSE)
 }
 \arguments{
   \item{file}{file ending in ".xml" to be edits}
+
+  \item{wd}{the directory containin the .apsim file to be
+  edited; defaults to the current wd}
 
   \item{var}{vector of variables to be edited}
 
@@ -35,10 +38,9 @@ is set to \code{TRUE}; otherwise the file
 }
 \examples{
 \dontrun{
-wd <- "C:/Users/Sta36z/Documents/APSIM"
-setwd(wd)
-#The file I want to edit is called "Soil.xml"
+#The file I want to edit is called "Soil.xml" which is the the directory "~/APSIM"
 file <- "Soil.xml"
+wd <- "~/APSIM"
 
 #I want to change the potential nitrification and N2O from nitrification
 var <- c("nitrification_pot", "dnit_nitrf_loss")
@@ -47,7 +49,7 @@ var <- c("nitrification_pot", "dnit_nitrf_loss")
 value <- list(abs(rnorm(1)), abs(rnorm(1)))
 
 #Edit the apsim file without overwriting it
-edit_sim_file(file, var, value, overwrite = FALSE)
+edit_sim_file(file, wd, var, value, overwrite = FALSE)
 }
 }
 
