@@ -4,7 +4,7 @@
 #' in the working directory \code{wd} are edited. The old values are replaced with \code{value}, which
 #' is a list that has the same number of elements as the length of the vector \code{var}.  The current
 #' .apsim file will be overwritten if \code{overwrite} is set to \code{TRUE}; otherwise the file
-#' \emph{file-edited.apsim} will be created.
+#' \emph{file-edited.apsim} will be created.  The name of the written file is returned.
 #' 
 #' @name edit_apsim
 #' @param file file ending in .apsim to be edited
@@ -107,7 +107,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 #' in the working directory \code{wd} are edited. The old values are replaced with \code{value}, which
 #' is a list that has the same number of elements as the vector \code{var} is long.  The current
 #' .xml file will be overwritten if \code{overwrite} is set to \code{TRUE}; otherwise the file
-#' \emph{file-edited.xml} will be created.
+#' \emph{file-edited.xml} will be created.  The name of the written file is returned.
 #' 
 #' @name edit_sim_file
 #' @param file .xml module file to be edited
@@ -128,7 +128,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 #' #Change both to absolute values of random N(0,1) 
 #' value <- list(abs(rnorm(1)), abs(rnorm(1)))
 #' 
-#' #Edit the apsim file without overwriting it
+#' #Edit Soil.xml without overwriting it
 #' edit_sim_file(file, wd, var, value, overwrite = FALSE)
 #' }
 
