@@ -6,13 +6,13 @@
 #' can to be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
 #' directory \code{wd} using the \code{files} argument, otherwise all .apsim files within \code{wd} are run. 
 #' The results for each .apsim file that is run is an element of the list that is returned.  
-#' Each element of the list has class \code{apsim}.
+#' Each element of the list is of the class \code{"apsim"}.
 #' 
 #' @name apsim
-#' @param exe  path to the APSIM executable file
+#' @param exe  path to the APSIM executable
 #' @param wd  working directory containing the .apsim files to be run
-#' @param files  .apsim files to be run.  If left empty all .apsim files in \code{wd} will be run
-#' @return list of output files corresponding to each .apsim file
+#' @param files  .apsim files to be run; if left empty all .apsim files in \code{wd} will be run
+#' @return list of output files; each element corresponds to an .apsim file
 #' @export
 #' @examples
 #' 
@@ -90,19 +90,19 @@ apsim<-function(exe, wd = getwd(), files = NULL){
   
 }
 
-#' Access the examples built into APSIM
+#' Access example APSIM simulations
 #' 
 #' There are quite a few standard APSIM simulations provided in the default APSIM installation.
-#' \code{apsim_expample} moves those example files into your working directory so you can run them
+#' \code{apsim_expample} moves those example files into the working directory \code{wd} so you can run them
 #' or edit them using \code{\link{apsim}} and \code{\link{edit_apsim}}, respectively.  Generally the
 #' example simulations must be moved because the output file is written to the directory containing
 #' the .apsim file and the ability to write in the "Program Files" folder is limited in most cases.
 #' 
 #' 
 #' @name example_apsim
-#' @param path The path to root of the APSIM installation
-#' @param wd The working directory containing the .apsim files to be run.  Defaults to the current working directory.
-#' @param files Which files to extract from the "Examples" folder
+#' @param path path to the APSIM installation
+#' @param wd working directory containing the .apsim files to be copied; defaults to the current working directory
+#' @param files files to extract from the "Examples" folder
 #' @param ... additional arguments passed to \code{\link[base:file.copy]{file.copy}}
 #' @return logical; if \code{TRUE} the corresponding file was successfully copied, \code{FALSE} otherwise
 #' @export

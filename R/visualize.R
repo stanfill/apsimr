@@ -7,12 +7,11 @@
 #' in \code{x}.
 #' 
 #' @name plot.apsim
-#' @param x Data frame of class 'apsim' including the results of an APSIM simulation
-#' @param y variable to plot on y-axis.  If left empty all variables will be plotted on separate plots.
-#' @param ask logical; if \code{TRUE}, the user is asked before each plot, see \code{\link{par}}(ask=.) 
+#' @param x data frame of class "apsim" including the results of an APSIM simulation
+#' @param y variable to plot on y-axis; if left empty all variables will be plotted on separate plots
+#' @param ask logical; if \code{TRUE}, the user is asked before each plot, see \code{\link{par}(ask=.)} 
 #' @param one_plot logical; if \code{TRUE} all variables are plotted on one faceted plot
 #' @param ... additional arguments passed to \code{\link[ggplot2:qplot]{qplot}}
-#' @return nothing is returned
 #' @S3method plot apsim
 #' @method plot apsim
 #' @export
@@ -54,7 +53,7 @@ plot.apsim<-function(x, y = NULL, ask = TRUE, one_plot = FALSE, ...){
     
     mX <- melt(x,id.vars='Date')
     
-    return(qplot(mX$Date,mX$value,data=mX,...)+facet_wrap(~variable,scales='free'))
+    return(qplot(mX$Date,mX$value,data=mX,ylab="Value",xlab='Date',...)+facet_wrap(~variable,scales='free'))
     
     
   }else{

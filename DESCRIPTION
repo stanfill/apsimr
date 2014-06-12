@@ -9,5 +9,5 @@ Description: This package includes a few basic functions to create, edit and run
     then visualize the results.
 License: GPL (>=3)
 Imports: lubridate, reshape2
-Depends: ggplot2, XML
+Depends: R (>= 3.0), ggplot2, XML
 BugReports: https://github.com/stanfill/apsimr/issues
