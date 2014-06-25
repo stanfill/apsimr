@@ -5,7 +5,7 @@
 \usepackage{amsmath,amssymb,array}
 \usepackage{booktabs}
 %\VignetteIndexEntry{Introduction to rotations}
-%\VignetteDepends{knitr,onion,orientlib}
+%\VignetteDepends{knitr}
 %\VignetteEngine{knitr::knitr}
 
 %% load any required packages here
@@ -76,7 +76,7 @@ plot(results[[2]], one_plot = TRUE, geom = 'line') + theme_bw()
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{figures/allon1}
+\includegraphics[width=1\textwidth]{figures/allon1.png}
 \caption{Figures produced by \code{plot.apsim} with argument \code{one\_plot = TRUE}.}
 \label{fig:allon1}
 \end{figure}
@@ -88,7 +88,7 @@ plot(results[[2]], y = 'yield') + geom_line(colour = 'red') + theme_bw()
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{figures/yield}
+\includegraphics[width=1\textwidth]{figures/yield.png}
 \caption{Plot produced by \code{plot.apsim} with argument \code{y = 'yield'}.}
 \label{fig:yield}
 \end{figure}
