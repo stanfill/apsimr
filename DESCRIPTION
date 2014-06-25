@@ -9,4 +9,6 @@ Description: The Agricultural Production Systems sIMulator (APSIM) is a widely u
 License: GPL (>=3)
 Imports: lubridate, reshape2
 Depends: R (>= 3.0), ggplot2, XML
+Suggests: knitr
+VignetteBuilder: knitr
 BugReports: https://github.com/stanfill/apsimr/issues

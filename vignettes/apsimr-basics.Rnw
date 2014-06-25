@@ -1,0 +1,29 @@
+\documentclass[a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{RJournal_edited}
+\usepackage{amsmath,amssymb,array}
+\usepackage{booktabs}
+%\VignetteIndexEntry{Introduction to rotations}
+%\VignetteDepends{knitr,onion,orientlib}
+%\VignetteEngine{knitr::knitr}
+
+%% load any required packages here
+\usepackage{bm,subcaption,amsfonts}
+\begin{document}
+
+
+%% do not edit, for illustration only
+\sectionhead{}
+\volume{}
+\volnumber{}
+\year{}
+\month{}
+\begin{article}
+%% replace RJtemplate with your article
+\title{\pkg{apsimr}: Edit, run and evaluate APSIM simulatsion from R easily}
+\author{by Bryan Stanfill}
+
+\maketitle
+\end{article}
+\end{document}
