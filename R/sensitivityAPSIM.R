@@ -41,10 +41,10 @@ apsimSEN<-function(X, exe, wd, vars, file, overwrite=FALSE, g){
     }
     
     #edit the .apsim file
-    edit_apsim(file=file,wd=wd,var=vars,value=valueI,overwrite=overwrite)
+    edit_apsim(file=file,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
     
     #Run the edited apsim file and collect the output
-    res <- apsim(exe=exe, wd=wd, files = file)
+    res <- apsim(exe=exe, wd=wd, files = "Canopy-edited.apsim") #This needs to be changed, otherwise should be OK
     y[i] <- g(res)
   }
   return(y)
