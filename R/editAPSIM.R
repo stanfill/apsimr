@@ -13,6 +13,7 @@
 #' @param value list of new values for the specified variables
 #' @param overwrite logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise
 #' @return character string containing the resulting XML content
+#' @export
 #' @examples
 #' \dontrun{
 #' #The file I want to edit is called "Canopy.apsim" which is in the directory "~/APSIM"
@@ -116,6 +117,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 #' @param value list of new values for the specified variables
 #' @param overwrite logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise
 #' @return character string containing the resulting XML content
+#' @export
 #' @examples
 #' \dontrun{
 #' #The file I want to edit is called "Soil.xml" which is the the directory "~/APSIM"
