@@ -2,7 +2,8 @@
 #' @param exe where to find the APSIM executable
 #' @param wd directory where the .apsim file lives and where the results will be saved
 #' @param vars names of the variables, must be of the same length as 'X' has columns
-#' @param file the .apsim file to be edited and run
+#' @param toRun the .apsim file in \code{wd} to run
+#' @param toEdit the .apsim file or .xml file to be edited
 #' @param g a function of the output returned by apsim - must give univariate result
 #' @examples
 #' g<-function(X){
@@ -15,9 +16,9 @@
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 #' file <- "Canopy.apsim"
 #' 
-#' res <- apsimSEN(X=value,exe=exe, wd=wd,vars=var,file=file,g=g)
+#' res <- apsimSEN(X=value,exe=exe, wd=wd,vars=var,toRun=file,g=g)
 
-apsimSEN<-function(X, exe, wd, vars, file, overwrite=FALSE, g){
+apsimSEN<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g){
   #This is a version of the 'apsim' function that can be 
   #used with the sensitivity package
   
@@ -40,11 +41,24 @@ apsimSEN<-function(X, exe, wd, vars, file, overwrite=FALSE, g){
       valueI[[j]] <- X[i,which(vars==unVar[j])]
     }
     
-    #edit the .apsim file
-    edit_apsim(file=file,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
+    if(grep(".apsim$",toEdit)>0){
+      #edit the .apsim file
+      edit_apsim(file=toEdit,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
+      
+      #When overwrite==FALSE then an new .apsim file is created with the title "___-edited.apsim"
+      #Therefore, if toRun==toEdit and overwirte==FALSE then the unchanged version of toEdit is executed
+      #This updates the file name so the correct (new) .apsim file is run
+      if(!overwrite & toEdit==toRun){
+        newName<-paste(gsub(".apsim","",file),"-edited",sep="")
+        toRun<-paste(newName,".apsim",sep="")
+      }
+      
+    }else{
+      edit_sim_file(file=toEdit,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
+    }
     
     #Run the edited apsim file and collect the output
-    res <- apsim(exe=exe, wd=wd, files = "Canopy-edited.apsim") #This needs to be changed, otherwise should be OK
+    res <- apsim(exe=exe, wd=wd, files = toRun)
     y[i] <- g(res)
   }
   return(y)
