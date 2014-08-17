@@ -110,7 +110,6 @@ apsim<-function(exe, wd = getwd(), files = NULL){
 #' @return logical; if \code{TRUE} the corresponding file was successfully copied, \code{FALSE} otherwise
 #' @export
 #' @examples
-#' 
 #' \dontrun{
 #' path <-"C:/Program Files (x86)/Apsim76-r3376/"
 #' wd <- "~/APSIM"

@@ -1,3 +1,9 @@
+#'Edit and run an APSIM simulation
+#'
+#'This function will both edit and run the edited APSIM simulation.  This function is primarily for use
+#'with the sensitivity package but it can be useful on its own as well.
+#'
+#'
 #' @param X N-by-p matrix of inputs with rows corresponding to runs and columns for variables
 #' @param exe where to find the APSIM executable
 #' @param wd directory where the .apsim file lives and where the results will be saved
@@ -5,7 +11,10 @@
 #' @param toRun the .apsim file in \code{wd} to run
 #' @param toEdit the .apsim file or .xml file to be edited
 #' @param g a function of the output returned by apsim - must give univariate result
+#' @return a vector of univariate responses
+#' @export
 #' @examples
+#' \dontrun{
 #' g<-function(X){
 #'  return(mean(X$lai_cowpea))
 #' }
@@ -17,6 +26,7 @@
 #' file <- "Canopy.apsim"
 #' 
 #' res <- apsimSEN(X=value,exe=exe, wd=wd,vars=var,toRun=file,g=g)
+#' }
 
 apsimSEN<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g){
   #This is a version of the 'apsim' function that can be 
