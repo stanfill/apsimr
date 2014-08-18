@@ -65,7 +65,6 @@ apsimSEN<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g){
       #edit the .apsim file
       edit_apsim(file=toEdit,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
     }else{
-      print("sim")
       edit_sim_file(file=toEdit,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
     }
 
