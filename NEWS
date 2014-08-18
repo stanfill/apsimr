@@ -1,0 +1,12 @@
+apsimr version 0.2
+===================================================================
+New Featurs - 
+-------------------------------------------------------------------
+* The 'apsimSEN' function has been added.  This function is compatible with
+the sensitivity package.  This allows for a easy sensitivity/uncertainty analysis of APSIM
+with minimal overhead.
+
+
+apsimr version 0.1
+===================================================================
+* First CRAN release
