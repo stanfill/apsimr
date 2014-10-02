@@ -11,7 +11,7 @@
 #' @param toRun the .apsim file in \code{wd} to run
 #' @param toEdit the .apsim file or .xml file to be edited
 #' @param g a function of the output returned by apsim - must give univariate result
-#' @return a vector of univariate responses
+#' @return a vector of length N
 #' @export
 #' @examples
 #' \dontrun{

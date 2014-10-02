@@ -50,14 +50,13 @@ wd <- "~/APSIM"
 I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and the state at which the simulation is being run.
 Change SoilWater-Thickness to 200,200,300x9
 Change SoilCN to 10
-Change "State" to "NSW"
 
 <<vars,eval=FALSE>>=
-var <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN", "State")
-value <- list(c(rep(200, 2), rep(300, 9)), 10, "NSW")
+var <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN")
+value <- list(c(rep(200, 2), rep(300, 9)), 10)
 @
 
-Edit the apsim file without overwriting it
+The next snippit edits the apsim file without overwriting it.  This results in the new file being written into the \code{wd} with the additional tage "-updated.apsim".  In this case the new file "Canopy-edited.apsim" is identical to "Canopy.apsim" except for the variables that have been changed by the above code snippet.  If the option \code{overwrite=TRUE} then "Canopy.apsim" is overwritten with the new variable values.
 <<edit,eval=FALSE>>=
 edit_apsim(file, wd, var, value, overwrite = FALSE)
 @
@@ -76,7 +75,7 @@ plot(results[[2]], one_plot = TRUE, geom = 'line') + theme_bw()
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{figures/allon1.png}
+\includegraphics[width=1\textwidth]{figures/allon1}
 \caption{Figures produced by \code{plot.apsim} with argument \code{one\_plot = TRUE}.}
 \label{fig:allon1}
 \end{figure}
@@ -88,9 +87,32 @@ plot(results[[2]], y = 'yield') + geom_line(colour = 'red') + theme_bw()
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{figures/yield.png}
+\includegraphics[width=1\textwidth]{figures/yield}
 \caption{Plot produced by \code{plot.apsim} with argument \code{y = 'yield'}.}
 \label{fig:yield}
 \end{figure}
+
+\section{Sensitivity Analysis}
+
+The function \code{apsimSEN} is a version of \code{apsim} that has been adapted so it can be used with the package \CRANpkg{sensitivity}.  In particular, the function \code{apsim} returns a data frame that includes different outputs over the specified time frame at specified time intervals.  The \code{apsimSEN} function takes and argument \code{g} that translates the output of \code{apsim} into a single, univaraite outcome.  This way, the function \code{apsimSEN} can be passed to functions in the \code{sensitivity} package as the \code{model} argument.  
+
+Below is an example of a \code{g} function and how sensitivity analysis of APSIM can be accomplished.  First, load the sensitivity package and define a \code{g} function.  In this example we are interested in how sensitive the average cowpea yield is to initial values in the soil organic matter and soil water, therefore we define the \code{g} function so that the average cowpea yield is returned.  We define the  three inputs of interest in the \code{vars} argument: the soil organic matters soil carbon (\code{SoiCN}), the soilwaters diffuse constant (\code{DiffusConst}) and the carbon-nitrogen covariance (\code{CNCov}).  We option to use the \code{soboljansen} function in \pkg{sensitivity} which requires two data frame \code{X1} and \code{X2} to define the points in the input space at which to run the \code{model}, which in this case is set to \code{model=apsimSEN}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on the appropriate interval.  The additional arguments passed to \code{apsimSEN} define where to find the APSIM executable \code{exe}, the working directory to find the .apsim file to fun \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.
+
+<<apsimSA,eval=FALSE>>=
+library(sensitivity)
+
+meanYield<-function(x){
+  return(mean(x$paddock.cowpea.yield))
+}
+
+vars <- c("SoilOrganicMatter/SoilCN","SoilWater/DiffusConst","SoilWater/CNCov")
+
+n <- 50
+X1 <- data.frame(SoilCN=runif(n, 5, 25), DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
+X2 <- data.frame(SoilCN=runif(n, 5, 25), DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
+
+sobolRes <- soboljansen(apsimSEN, X1, X2, exe=exe, wd=wd, vars=vars,toRun=file, g=meanYield, overwrite=TRUE)
+@
+
 
 \end{document}

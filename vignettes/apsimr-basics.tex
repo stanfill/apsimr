@@ -108,18 +108,17 @@ The file I want to edit is called "Canopy.apsim" which is in the directory "$\si
 I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and the state at which the simulation is being run.
 Change SoilWater-Thickness to 200,200,300x9
 Change SoilCN to 10
-Change "State" to "NSW"
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{var} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SoilWater/Thickness"}\hlstd{,} \hlstr{"SoilOrganicMatter/SoilCN"}\hlstd{,} \hlstr{"State"}\hlstd{)}
-\hlstd{value} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlnum{200}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{300}\hlstd{,} \hlnum{9}\hlstd{)),} \hlnum{10}\hlstd{,} \hlstr{"NSW"}\hlstd{)}
+\hlstd{var} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SoilWater/Thickness"}\hlstd{,} \hlstr{"SoilOrganicMatter/SoilCN"}\hlstd{)}
+\hlstd{value} \hlkwb{<-} \hlkwd{list}\hlstd{(}\hlkwd{c}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlnum{200}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwd{rep}\hlstd{(}\hlnum{300}\hlstd{,} \hlnum{9}\hlstd{)),} \hlnum{10}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
-Edit the apsim file without overwriting it
+The next snippit edits the apsim file without overwriting it.  This results in the new file being written into the \code{wd} with the additional tage "-updated.apsim".  In this case the new file "Canopy-edited.apsim" is identical to "Canopy.apsim" except for the variables that have been changed by the above code snippet.  If the option \code{overwrite=TRUE} then "Canopy.apsim" is overwritten with the new variable values.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -150,7 +149,7 @@ Put all variables on one faceted plot.  See Figure \ref{fig:allon1}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{figures/allon1.png}
+\includegraphics[width=1\textwidth]{figures/allon1}
 \caption{Figures produced by \code{plot.apsim} with argument \code{one\_plot = TRUE}.}
 \label{fig:allon1}
 \end{figure}
@@ -166,9 +165,36 @@ Plot just yield as a function of time.  See Figure \ref{fig:yield}.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{figures/yield.png}
+\includegraphics[width=1\textwidth]{figures/yield}
 \caption{Plot produced by \code{plot.apsim} with argument \code{y = 'yield'}.}
 \label{fig:yield}
 \end{figure}
+
+\section{Sensitivity Analysis}
+
+The function \code{apsimSEN} is a version of \code{apsim} that has been adapted so it can be used with the package \CRANpkg{sensitivity}.  In particular, the function \code{apsim} returns a data frame that includes different outputs over the specified time frame at specified time intervals.  The \code{apsimSEN} function takes and argument \code{g} that translates the output of \code{apsim} into a single, univaraite outcome.  This way, the function \code{apsimSEN} can be passed to functions in the \code{sensitivity} package as the \code{model} argument.  
+
+Below is an example of a \code{g} function and how sensitivity analysis of APSIM can be accomplished.  First, load the sensitivity package and define a \code{g} function.  In this example we are interested in how sensitive the average cowpea yield is to initial values in the soil organic matter and soil water, therefore we define the \code{g} function so that the average cowpea yield is returned.  We define the  three inputs of interest in the \code{vars} argument: the soil organic matters soil carbon (\code{SoiCN}), the soilwaters diffuse constant (\code{DiffusConst}) and the carbon-nitrogen covariance (\code{CNCov}).  We option to use the \code{soboljansen} function in \pkg{sensitivity} which requires two data frame \code{X1} and \code{X2} to define the points in the input space at which to run the \code{model}, which in this case is set to \code{model=apsimSEN}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on the appropriate interval.  The additional arguments passed to \code{apsimSEN} define where to find the APSIM executable \code{exe}, the working directory to find the .apsim file to fun \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(sensitivity)}
+
+\hlstd{meanYield}\hlkwb{<-}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)\{}
+  \hlkwd{return}\hlstd{(}\hlkwd{mean}\hlstd{(x}\hlopt{$}\hlstd{paddock.cowpea.yield))}
+\hlstd{\}}
+
+\hlstd{vars} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SoilOrganicMatter/SoilCN"}\hlstd{,}\hlstr{"SoilWater/DiffusConst"}\hlstd{,}\hlstr{"SoilWater/CNCov"}\hlstd{)}
+
+\hlstd{n} \hlkwb{<-} \hlnum{50}
+\hlstd{X1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{SoilCN}\hlstd{=}\hlkwd{runif}\hlstd{(n,} \hlnum{5}\hlstd{,} \hlnum{25}\hlstd{),} \hlkwc{DiffusConst} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{20}\hlstd{,} \hlnum{50}\hlstd{),} \hlkwc{CNCov} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{))}
+\hlstd{X2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{SoilCN}\hlstd{=}\hlkwd{runif}\hlstd{(n,} \hlnum{5}\hlstd{,} \hlnum{25}\hlstd{),} \hlkwc{DiffusConst} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{20}\hlstd{,} \hlnum{50}\hlstd{),} \hlkwc{CNCov} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{))}
+
+\hlstd{sobolRes} \hlkwb{<-} \hlkwd{soboljansen}\hlstd{(apsimSEN, X1, X2,} \hlkwc{exe}\hlstd{=exe,} \hlkwc{wd}\hlstd{=wd,} \hlkwc{vars}\hlstd{=vars,}\hlkwc{toRun}\hlstd{=file,} \hlkwc{g}\hlstd{=meanYield,} \hlkwc{overwrite}\hlstd{=}\hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
 
 \end{document}
