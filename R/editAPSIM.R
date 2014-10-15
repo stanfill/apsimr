@@ -73,14 +73,16 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
     }
     
   }
+  #Be sure the edited file is written to the specified wd and not the current wd
+  addWd <- paste(wd,file,sep="/")
   
   if(overwrite){
     setwd(oldWD)
-    return(saveXML(pXML,file=file))
+    return(saveXML(pXML,file=addWd))
   }else{
     
     #Remove .apsim tag if present and add edited tag
-    newName<-paste(gsub(".apsim","",file),"-edited",sep="")
+    newName<-paste(gsub(".apsim","",addWd),"-edited",sep="")
     
     #Rename the simulation
     wholeSim<-pXML[["//simulation"]]    
@@ -165,14 +167,14 @@ edit_sim_file <- function(file, wd = getwd(), var, value, overwrite = FALSE){
     }
     
   }
-  
+  addWd <- paste(wd,file,sep="/")
   if(overwrite){
     setwd(oldWD)
-    return(saveXML(pXML,file=file))
+    return(saveXML(pXML,file=addWd))
   }else{
     
     #Remove .apsim tag if present and add edited tag
-    newName<-paste(gsub(".xml","",file),"-edited",sep="")
+    newName<-paste(gsub(".xml","",addWd),"-edited",sep="")
     setwd(oldWD)
     return(saveXML(pXML,file=paste(newName,".xml",sep="")))
   }  
