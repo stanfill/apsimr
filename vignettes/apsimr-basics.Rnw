@@ -21,7 +21,7 @@
 \month{}
 \begin{article}
 %% replace RJtemplate with your article
-\title{\pkg{apsimr}: Edit, run and evaluate APSIM simulations from R easily}
+\title{Extending the capabilities of agriculture simulators using R, an introduction to the \pkg{apsimr} package}
 \author{by Bryan Stanfill}
 
 \maketitle
@@ -41,16 +41,19 @@ APSIM is currently run either from a clunky and unappealing user interface (Figu
 \end{figure}
 
 \section{APSIM Overview}
+
 This section gives a brief account of how APSIM works because it will inform the construction of the package.  For a detailed description see \cite{keating2003overview}, \cite{holzworth2014apsim} and the references therein.
 
 APSIM is composed of several independent modules, each of which controls a specific apsect of the simulation.  Modules control everything, including crop growth, soil water balance, soil nitrogen levels, and farming practices (e.g.~how much fertilizer to apply and when).  Crop growth statistics are produced for each day in the simulation and are determined by daily weather information, soil characteristics and management choices.  The weather data is provided by the user in the form of a \verb=.met= file.  Soil characteristics and management choices are controlled by the soil and management modules, respectively.
 
 
-Each module relies on a separate \verb=.xml= file for instructions including parameter values.  The module \verb=.xml= files can have any name, but are often titled \verb=Soil.xml=, \verb=Wheat.xml= or something similar.  These separate \verb=.xml= files are called by the \verb=.apsim= file, which controls the entire simulation.  Note that \verb=.apsim= files are also simple \verb=.xml= files with a different extension.
+Each module relies on a separate \verb=.xml= file for instructions including parameter values.  The module \verb=.xml= files can have any name, but are often titled \verb=Soil.xml=, \verb=Wheat.xml= or something similar.  These separate \verb=.xml= files are called by the \verb=.apsim= file, which controls the entire simulation.  Note that \verb=.apsim= files are also simple \verb=.xml= files with a different extension.  The simulation file controls the simulation metadata, such as what outputs to report, how often to report those outputs, where to find the module files and where to write the results file.  
 
-\section{Run}
+Every APSIM simulation run will produce a text file with the file extension \verb=.sum=, which contains a detailed summary of the simulation including possible errors.  When an APSIM simulation has run successfully, an additional text file with the extension \verb=.out= is written, which contains the specifed outcomes at the specified time steps.  The user can specify the file names as well as where the files are written.  By default, both files inheret the name of the simulation and are written in the same directory as the run simulation.  For example, if no output name or location is specified by the user then the results of the simulation \verb=Millet.apsim= currently stored on the user's desktop, then APSIM will create files \verb=Millet.sum= and \verb=Millet.out= on the user's desktop. 
 
-The function used to run APSIM from R is called \code{apsim}.  Its only required argument is \code{exe}, which is the path to the APSIM executable file on your machine.  Additional, optional arguments include  \code{wd} and \code{files}.  The \code{wd} argument specifies the working directory to which the results will be written and is set to the current working directory by default.  The argument \code{files} is the list of \verb=.apsim= simulation files to be run, which is set to all \verb=.apsim= files in the specified working directory by default.
+\section{Running APSIM}
+
+The function used to run APSIM from R is called \code{apsim}.  Its only required argument is \code{exe}, which is the path to the APSIM executable file on your machine.  Additional arguments include  \code{wd} and \code{files}.  The \code{wd} argument specifies the working directory to which the results will be written and is set to the current working directory by default.  The argument \code{files} is the list of \verb=.apsim= simulation files to be run, which is set to all \verb=.apsim= files in the specified working directory by default.
 <<run,eval=FALSE>>=
 exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 wd <- "~/APSIM"
@@ -59,7 +62,7 @@ results <- apsim(exe = exe, wd = wd, files = to_run)
 @
 
 
-\section{Edit}
+\section{Editing APSIM}
 
 The file I want to edit is called "Canopy.apsim" which is in the directory "$\sim$/APSIM"
 <<file,eval=FALSE>>=
@@ -80,7 +83,9 @@ The next snippit edits the apsim file without overwriting it.  This results in t
 edit_apsim(file, wd, var, value, overwrite = FALSE)
 @
 
-\section{Visualize}
+\section{Going Beyond the Conventional}
+
+\subsection{Advanced Visualizations}
 
 Visualize all of the results as a function of time in separate plots
 <<p1,eval=FALSE>>=
@@ -111,13 +116,14 @@ plot(results[[2]], y = 'yield') + geom_line(colour = 'red') + theme_bw()
 \label{fig:yield}
 \end{figure}
 
-\section{Sensitivity Analysis}
+
+\subsection{Sensitivity Analysis}
 
 The function \code{apsimSEN} is a version of \code{apsim} that has been adapted so it can be used with the package \CRANpkg{sensitivity}.  In particular, the function \code{apsim} returns a data frame that includes different outputs over the specified time frame at specified time intervals.  The \code{apsimSEN} function takes and argument \code{g} that translates the output of \code{apsim} into a single, univaraite outcome.  This way, the function \code{apsimSEN} can be passed to functions in the \code{sensitivity} package as the \code{model} argument.  
 
 Below is an example of a \code{g} function and how sensitivity analysis of APSIM can be accomplished.  First, load the sensitivity package and define a \code{g} function.  In this example we are interested in how sensitive the average cowpea yield is to initial values in the soil organic matter and soil water, therefore we define the \code{g} function so that the average cowpea yield is returned.  We define the  three inputs of interest in the \code{vars} argument: the soil organic matters soil carbon (\code{SoiCN}), the soilwaters diffuse constant (\code{DiffusConst}) and the carbon-nitrogen covariance (\code{CNCov}).  We option to use the \code{soboljansen} function in \pkg{sensitivity} which requires two data frame \code{X1} and \code{X2} to define the points in the input space at which to run the \code{model}, which in this case is set to \code{model=apsimSEN}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on the appropriate interval.  The additional arguments passed to \code{apsimSEN} define where to find the APSIM executable \code{exe}, the working directory to find the .apsim file to fun \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.
 
-<<apsimSA,eval=FALSE>>=
+<<apsimSA,eval=FALSE,size="footnotesize">>=
 library(sensitivity)
 
 meanYield<-function(x){
@@ -127,10 +133,13 @@ meanYield<-function(x){
 vars <- c("SoilOrganicMatter/SoilCN","SoilWater/DiffusConst","SoilWater/CNCov")
 
 n <- 50
-X1 <- data.frame(SoilCN=runif(n, 5, 25), DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
-X2 <- data.frame(SoilCN=runif(n, 5, 25), DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
+X1 <- data.frame(SoilCN=runif(n, 5, 25),
+                 DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
+X2 <- data.frame(SoilCN=runif(n, 5, 25),
+                 DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
 
-sobolRes <- soboljansen(apsimSEN, X1, X2, exe=exe, wd=wd, vars=vars,toRun=file, g=meanYield, overwrite=TRUE)
+sobolRes <- soboljansen(apsimSEN, X1, X2, exe=exe, wd=wd,
+                        vars=vars,toRun=file, g=meanYield, overwrite=TRUE)
 @
 
 \bibliography{apsimr_refs}
