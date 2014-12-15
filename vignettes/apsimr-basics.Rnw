@@ -21,7 +21,7 @@
 \month{}
 \begin{article}
 %% replace RJtemplate with your article
-\title{\pkg{apsimr}: Edit, run and evaluate APSIM simulatsion from R easily}
+\title{\pkg{apsimr}: Edit, run and evaluate APSIM simulations from R easily}
 \author{by Bryan Stanfill}
 
 \maketitle
@@ -29,9 +29,28 @@
 
 \section{Introduction}
 
+The {\bf A}gricultural {\bf P}roduction {\bf S}ystem s{\bf IM}ulator (APSIM) is a widely used, powerful and highly complex computer program \citep{keating2003overview, holzworth2014apsim}.  Based on information about weather, soil properties, farming practices and land use, APSIM can predict crop and environmental outcomes such as yield, nitrogen runoff and sediment loss as a function of time and space.  
+
+APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) with limited analysis and visualization tools available, or from the command line which requires a high level of familiarity with APSIM and a substantial amount of ad hoc programming.  The \CRANpkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations easily using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which has given APSIM users access to a wide variety of uncertainty quantification tools that APSIM needs \citep{pujol2014sensitivity}.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=.9\textwidth]{figures/APSIMUI.png}
+\caption{The user interface for APSIM version 7.6.}
+\label{fig:UI}
+\end{figure}
+
+\section{APSIM Overview}
+This section gives a brief account of how APSIM works because it will inform the construction of the package.  For a detailed description see \cite{keating2003overview}, \cite{holzworth2014apsim} and the references therein.
+
+APSIM is composed of several independent modules, each of which controls a specific apsect of the simulation.  Modules control everything, including crop growth, soil water balance, soil nitrogen levels, and farming practices (e.g.~how much fertilizer to apply and when).  Crop growth statistics are produced for each day in the simulation and are determined by daily weather information, soil characteristics and management choices.  The weather data is provided by the user in the form of a \verb=.met= file.  Soil characteristics and management choices are controlled by the soil and management modules, respectively.
+
+
+Each module relies on a separate \verb=.xml= file for instructions including parameter values.  The module \verb=.xml= files can have any name, but are often titled \verb=Soil.xml=, \verb=Wheat.xml= or something similar.  These separate \verb=.xml= files are called by the \verb=.apsim= file, which controls the entire simulation.  Note that \verb=.apsim= files are also simple \verb=.xml= files with a different extension.
+
 \section{Run}
 
-To run an APSIM simulation the only required argument is the path to the APSIM executible with \code{exe}.  Two additional arguments are optional.  \code{wd} specifies the working directory to which the results \verb=.out= file will be written to which is set to the current working direcory by default.  \code{files} is the list of \verb=.apsim= simulation files to be run which is set to all files in the specified working directory by default.
+The function used to run APSIM from R is called \code{apsim}.  Its only required argument is \code{exe}, which is the path to the APSIM executable file on your machine.  Additional, optional arguments include  \code{wd} and \code{files}.  The \code{wd} argument specifies the working directory to which the results will be written and is set to the current working directory by default.  The argument \code{files} is the list of \verb=.apsim= simulation files to be run, which is set to all \verb=.apsim= files in the specified working directory by default.
 <<run,eval=FALSE>>=
 exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 wd <- "~/APSIM"
@@ -48,7 +67,7 @@ file <- "Canopy.apsim"
 wd <- "~/APSIM"
 @
 I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and the state at which the simulation is being run.
-Change SoilWater-Thickness to 200,200,300x9
+Change SoilWater-Thickness to 200,200,300$\times$9
 Change SoilCN to 10
 
 <<vars,eval=FALSE>>=
@@ -63,12 +82,12 @@ edit_apsim(file, wd, var, value, overwrite = FALSE)
 
 \section{Visualize}
 
-Visualize all of the results as a function of time in seperate plots
+Visualize all of the results as a function of time in separate plots
 <<p1,eval=FALSE>>=
 plot(results[[2]])
 @
 
-Put all variables on one faceted plot.  See Figure \ref{fig:allon1}.
+Put all variables on one faceted plot (Figure \ref{fig:allon1}).
 <<p2,eval=FALSE>>=
 plot(results[[2]], one_plot = TRUE, geom = 'line') + theme_bw()
 @
@@ -80,7 +99,7 @@ plot(results[[2]], one_plot = TRUE, geom = 'line') + theme_bw()
 \label{fig:allon1}
 \end{figure}
 
-Plot just yield as a function of time.  See Figure \ref{fig:yield}.
+Plot just yield as a function of time (Figure \ref{fig:yield}).
 <<p3,eval=FALSE>>=
 plot(results[[2]], y = 'yield') + geom_line(colour = 'red') + theme_bw()
 @
@@ -114,5 +133,6 @@ X2 <- data.frame(SoilCN=runif(n, 5, 25), DiffusConst = runif(n, 20, 50), CNCov =
 sobolRes <- soboljansen(apsimSEN, X1, X2, exe=exe, wd=wd, vars=vars,toRun=file, g=meanYield, overwrite=TRUE)
 @
 
+\bibliography{apsimr_refs}
 
 \end{document}

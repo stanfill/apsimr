@@ -71,7 +71,7 @@
 \month{}
 \begin{article}
 %% replace RJtemplate with your article
-\title{\pkg{apsimr}: Edit, run and evaluate APSIM simulatsion from R easily}
+\title{\pkg{apsimr}: Edit, run and evaluate APSIM simulations from R easily}
 \author{by Bryan Stanfill}
 
 \maketitle
@@ -79,9 +79,20 @@
 
 \section{Introduction}
 
+The {\bf A}gricultural {\bf P}roduction {\bf S}ystem s{\bf IM}ulator (APSIM) is a widely used, powerful and highly complex computer program \citep{keating2003overview,holzworth2014apsim}.  Based on information about weather, soil properties, farming practices and land use, APSIM can predict crop and environmental outcomes such as yield, nitrogen runoff and sediment loss as a function of time and space.  
+
+APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) with limited analysis and visualization tools available, or from the command line which requires a high level of familiarity with APSIM and a substantial amount of ad hoc programming.  The \CRANpkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations easily using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which has given APSIM users access to a wide variety of uncertainty quantification tools that APSIM needs \citep{pujol2014sensitivity}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=.9\textwidth]{figures/APSIMUI.png}
+\caption{The user interface for APSIM version 7.6.}
+\label{fig:UI}
+\end{figure}
+
 \section{Run}
 
-To run an APSIM simulation the only required argument is the path to the APSIM executible with \code{exe}.  Two additional arguments are optional.  \code{wd} specifies the working directory to which the results \verb=.out= file will be written to which is set to the current working direcory by default.  \code{files} is the list of \verb=.apsim= simulation files to be run which is set to all files in the specified working directory by default.
+The function used to run APSIM from R is called \code{apsim}.  Its only required argument is \code{exe}, which is the path to the APSIM executable file on your machine.  Additional, optional arguments include  \code{wd} and \code{files}.  The \code{wd} argument specifies the working directory to which the results will be written and is set to the current working directory by default.  The argument \code{files} is the list of \verb=.apsim= simulation files to be run, which is set to all \verb=.apsim= files in the specified working directory by default.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -106,7 +117,7 @@ The file I want to edit is called "Canopy.apsim" which is in the directory "$\si
 \end{kframe}
 \end{knitrout}
 I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and the state at which the simulation is being run.
-Change SoilWater-Thickness to 200,200,300x9
+Change SoilWater-Thickness to 200,200,300$\times$9
 Change SoilCN to 10
 
 \begin{knitrout}
@@ -129,7 +140,7 @@ The next snippit edits the apsim file without overwriting it.  This results in t
 
 \section{Visualize}
 
-Visualize all of the results as a function of time in seperate plots
+Visualize all of the results as a function of time in separate plots
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -138,7 +149,7 @@ Visualize all of the results as a function of time in seperate plots
 \end{kframe}
 \end{knitrout}
 
-Put all variables on one faceted plot.  See Figure \ref{fig:allon1}.
+Put all variables on one faceted plot (Figure \ref{fig:allon1}).
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -154,7 +165,7 @@ Put all variables on one faceted plot.  See Figure \ref{fig:allon1}.
 \label{fig:allon1}
 \end{figure}
 
-Plot just yield as a function of time.  See Figure \ref{fig:yield}.
+Plot just yield as a function of time (Figure \ref{fig:yield}).
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -196,5 +207,6 @@ Below is an example of a \code{g} function and how sensitivity analysis of APSIM
 \end{kframe}
 \end{knitrout}
 
+\bibliography{apsimr_refs}
 
 \end{document}
