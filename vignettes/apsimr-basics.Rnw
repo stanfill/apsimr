@@ -134,7 +134,7 @@ meanYield<-function(x){
 
 vars <- c("SoilOrganicMatter/SoilCN","SoilWater/DiffusConst","SoilWater/CNCov")
 
-n <- 250
+n <- 500
 X1 <- data.frame(SoilCN = runif(n, 5, 25),
                  DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
 X2 <- data.frame(SoilCN = runif(n, 5, 25),
