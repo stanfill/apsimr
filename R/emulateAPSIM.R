@@ -6,20 +6,20 @@
 #' @param model The model that is of interest
 #' @param X The matrix of inputs at which to evaluate the model
 #' @param method The method to use to emulate the model
+#' @param y Optional vector of model evaluations that can be used in place of the model statement
 #' @param ... Additional arguments passed to the choosen method
 #' @return A data frame of results, the exact form depends on the method
 #' @export
-
-emulate <- function(model, X, method = "singleGAM",...){
+emulate <- function(model, X, method = "singleGAM", y = NULL, ...){
   
   method <- try(match.arg(method,c("singleGAM","separateGAM")),silent=TRUE)
   if(class(method)=='try-error')
     stop("the only method currently available is 'singleGAM'")
   
   if(method=='singleGAM'){
-    res <- singleGAM(model = model, X = X, ...)
+    res <- singleGAM(model = model, X = X, y = y, ...)
   }else if(method == 'separateGAM'){
-    res <- separateGAM(model = model, X = X, ...)
+    res <- separateGAM(model = model, X = X, y = y, ...)
   }  
   
   return(res)
@@ -70,7 +70,7 @@ singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
   V <- gamFit$Vp
   xstarNames <- colnames(xStar)
   
-  Sidf <- STdf <- data.frame(X=cnames,Est=0,SE=0,Bias=0,Lower=0,Upper=0)
+  Sidf <- STdf <- data.frame(Variable=cnames,Est=0,SE=0,Bias=0,Lower=0,Upper=0)
   STdf$EstAlt <- 0
   
   for(i in 1:p){
@@ -119,19 +119,44 @@ singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
   return(list(FirstOrder=Sidf,Total=STdf,Ehat=gamFit$residuals,Yhat=gamFit$fitted))
 }
 
-separateGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL,...){
+
+separateGAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
+  #model - the function to produce outputs y, can't be left empty but it's not necessary if y is not null
+  #y - the vector of length n of model outputs (takes precedence over model argument)
+  #X - the n-by-p matrix of input values
+  #B - the number of bootstrap replicates to use to estimate SE and confidence interval
+  #conf - in interval (0,1), level of confidence of interval to return
+  #Use nonparameteric regression to estimate first order sensitivity indices along with
+  #parameteric bootstrap SE estimate
   
-  if(is.null(y)){
-    y <- model(X,...)
+  nparam <- ncol(X)
+  n <- nrow(X)
+  Vy <- var(Y)
+  SiEst <- BootSiSE <- Bias <- rep(0,nparam)
+  Cis <- matrix(0,nparam,2)
+  resids <- fitted <- matrix(0,nrow(X),ncol(X))
+  
+  for(i in 1:nparam){
+    
+    GAMfit <- gam(Y~s(X[,i]))
+    resids[,i] <- GAMfit$residuals
+    fitted[,i] <- GAMfit$fitted.values
+    
+    SiEst[i] <- var(GAMfit$fitted)/Vy
+    
+    beta.hat <- GAMfit$coef
+    V <- GAMfit$Vp
+    Xstar <- predict(GAMfit,type='lpmatrix')
+    sample.coef <- mvrnorm(boot,beta.hat,V)
+    ghats <- sample.coef%*%t(Xstar)
+    
+    BootVis <- apply(ghats,1,var)
+    BootSis <- BootVis/Vy
+    BootSiSE[i] <- sd(BootSis)
+    Cis[i,] <- quantile(BootSis,c((1-conf)/2,1-(1-conf)/2))
+    Bias[i] <- mean(BootSis) - SiEst[i]
   }
-  vY <- var(y)
-  p <- ncol(X)
-  Si <- rep(0,p)
-  for(i in 1:p){
-    yhat <- predict(gam(y~s(X[,i])))
-    Si[i] <- var(yhat)/vY
-  }
   
-  return(Si)
-  
+  return(list(df=data.frame(Variable=colnames(X),Est=SiEst,SE=BootSiSE,Bias=Bias,Lower=Cis[,1],Upper=Cis[,2]),
+              ehat=resids,yhat=fitted)) 
 }

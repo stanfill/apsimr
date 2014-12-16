@@ -9,5 +9,5 @@ export(apsimSEN)
 export(edit_apsim)
 export(edit_sim_file)
 export(example_apsim)
-
+export(emulate)
 exportClasses(apsim)
