@@ -1,25 +1,30 @@
-#' A function to emulate complex computer models
+#' A function to estimate sensitivity indices based on emulation methods
 #' 
-#' This is a generic function that can be used to emulate complex computer models
-#' such as APSIM.
+#' This is a generic function that can be used to estimate the sensitivity
+#' indices for complex computer models using GAM-based emulators.
 #' 
 #' @param model The model that is of interest
 #' @param X The matrix of inputs at which to evaluate the model
-#' @param method The method to use to emulate the model
 #' @param y Optional vector of model evaluations that can be used in place of the model statement
+#' @param method The method to use to emulate the model
 #' @param ... Additional arguments passed to the choosen method
 #' @return A data frame of results, the exact form depends on the method
 #' @export
-emulate <- function(model, X, method = "singleGAM", y = NULL, ...){
+SAemulator <- function(model, X, y = NULL, method, ...){
   
   method <- try(match.arg(method,c("singleGAM","separateGAM")),silent=TRUE)
+  
   if(class(method)=='try-error')
-    stop("the only method currently available is 'singleGAM'")
+    stop("currently available methods are 'singleGAM' and 'separateGAM'")
   
   if(method=='singleGAM'){
+    
     res <- singleGAM(model = model, X = X, y = y, ...)
+    
   }else if(method == 'separateGAM'){
+    
     res <- separateGAM(model = model, X = X, y = y, ...)
+    
   }  
   
   return(res)
