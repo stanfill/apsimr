@@ -17,7 +17,9 @@ Imports:
 Depends:
     R (>= 3.0),
     ggplot2,
-    XML
+    XML,
+    mgcv,
+    MASS
 Suggests:
     knitr
 VignetteBuilder: knitr
@@ -28,3 +30,4 @@ Collate:
     'runAPSIM.R'
     'sensitivityAPSIM.R'
     'visualize.R'
+    'emulateAPSIM.R'
