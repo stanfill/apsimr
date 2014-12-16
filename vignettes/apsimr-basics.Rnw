@@ -147,7 +147,7 @@ plot(sobolRes)
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{figures/soboljan}
+\includegraphics[width=1\textwidth]{figures/soboljan.pdf}
 \caption{The results of the sensitivity analysis of the APSIM Canopy simulation for the average cowpea yield over time.}
 \label{fig:yield}
 \end{figure}
