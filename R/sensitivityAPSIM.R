@@ -29,7 +29,7 @@
 #' res
 #' }
 
-apsimSEN<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g){
+apsimSEN<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g, multivariate=FALSE){
   #This is a version of the 'apsim' function that can be 
   #used with the sensitivity package
   oldWd<-getwd()
@@ -38,8 +38,7 @@ apsimSEN<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g){
     stop("X must have same number of columns as 'var' is long")
   }
   
-  N <- nrow(X)
-  y <- rep(0,N)
+  N <- nrow(X)  
   
   #Some variables have multiple values that need to be changed, for example
   #soil properties often need to be specified at multiple depths
@@ -70,7 +69,18 @@ apsimSEN<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g){
 
     #Run the edited apsim file and collect the output
     res <- apsim(exe=exe, wd=wd, files = toRun)
-    y[i] <- g(res)
+    if(i==1 & multivariate){
+      y <- rep(0,N)
+    }else if(i==1 & !multivariate){
+      g1 <- g(res)
+      y <- matrix(0,length(g1),N)
+    }
+    
+    if(multivariate){
+      y[i] <- g(res)
+    }else{
+      y[,i] <- g(res)
+    }
   }
   setwd(oldWd)
   return(y)

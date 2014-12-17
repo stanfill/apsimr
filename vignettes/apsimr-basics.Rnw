@@ -134,7 +134,7 @@ meanYield<-function(x){
 
 vars <- c("SoilOrganicMatter/SoilCN","SoilWater/DiffusConst","SoilWater/CNCov")
 
-n <- 100
+n <- 10
 X1 <- data.frame(SoilCN = runif(n, 5, 25),
                  DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
 X2 <- data.frame(SoilCN = runif(n, 5, 25),
@@ -177,6 +177,22 @@ plot(emulRes)
 @
 
 The ability to simply include model runs instead of the model itself sets the \code{SAemulator} is a crucial difference between the it and the sensitivity analysis functions in \pkg{sensitivity}.  In particular, a multivariate global sensitivity analysis of APSIM is possible with \code{SAemulator} because the basis functions of the APSIM runs can be passed with the \code{y} argument.  See \cite{campbell2006sensitivity} for more about multivariate global sensitivity analysis. 
+
+<<apsimMGSA,eval=FALSE,size="footnotesize">>=
+
+rawYield <- function(x){
+  return(x$paddock.cowpea.yield)
+}
+
+cowpeaY <- apsimSEN(X = X1, exe = exe, wd = wd, vars = vars, toRun = file, g = rawYield, overwrite = TRUE)
+  
+vCowpea<-var(cowpeaY)
+pcsY<-svd(vCowpea)$u
+N<-nrow(cowpeaY)
+ones<-matrix(rep(1,N),ncol=1)
+yBar<-(1/N)*ones%*%t(ones)%*%cowpeaY
+cowpeaPCS<-(cowpeaY-yBar)%*%pcsY
+@
 
 
 \bibliography{apsimr_refs}
