@@ -17,6 +17,10 @@ SAemulator <- function(model, X, y = NULL, method, ...){
   if(class(method)=='try-error')
     stop("currently available methods are 'singleGAM' and 'separateGAM'")
   
+  if(!is.null(y) & length(y) != nrow(X)){
+    stop("The length of y must match the number of rows in X")
+  }
+  
   if(method=='singleGAM'){
     
     res <- singleGAM(model = model, X = X, y = y, ...)
@@ -78,7 +82,7 @@ singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
   xstarNames <- colnames(xStar)
   
   Sidf <- STdf <- data.frame(Parameter=cnames,Est=0,SE=0,Bias=0,Lower=0,Upper=0)
-  STdf$EstAlt <- 0
+  #STdf$EstAlt <- 0
   
   for(i in 1:p){
     #Estimate STi
