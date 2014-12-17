@@ -198,8 +198,8 @@ plot.gamSA <- function(saRes){
     
   }else{
     
-    pp <- qplot(Parameter,Estimate,data=togDF,geom='bar',stat='identity',fill=Index,position='dodge')+theme_bw()+
-      geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
+    pp <- qplot(Parameter,Estimate,data=togDF,geom='bar',stat='identity',fill=Index,position='dodge')+
+      theme_bw()+geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
     
   }
   return(pp)
