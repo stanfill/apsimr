@@ -156,7 +156,7 @@ plot(sobolRes)
 
 \begin{subfigure}[b]{1\textwidth}
 \includegraphics[width=\textwidth]{figures/emulRespic.pdf}%\vspace{-2.5em}
-\caption{Index estimates using \code{SAemulator} function}
+\caption{Index estimates using \code{SAemulator} function and the \code{singleGAM} method}
 \label{fig:SAemulator}
 \end{subfigure}%\vspace{-1em}
 \caption{The results of the sensitivity analysis of the APSIM Canopy simulation for the average cowpea yield over time.}
@@ -164,10 +164,10 @@ plot(sobolRes)
 \end{figure}
 
 
-An alternative method for sensitivity analysis is the use of an emulator.  The function \code{SAemulator} performs a sensitivity analysis of the provided \code{model}.  Alternatively, if simulator runs are available then one can forgo the \code{model} argument and include the computer model runs as the \code{y} argument.  \empg{Note:} the \code{y} argument takes precidence over the \code{model} argument and an error is returned if the number of rows in \code{X} does not match the length of \code{y}.  
+An alternative, and potentially more efficient, method for sensitivity analysis is via emulators.  The function \code{SAemulator} performs a sensitivity analysis of the provided \code{model}.  If simulator runs are available then the one can forgo the \code{model} argument and include the computer model runs as the \code{y} argument.  \empg{Note:} the \code{y} argument takes precidence over the \code{model} argument and an error is returned if the number of rows in \code{X} does not match the length of \code{y}.  
 
 <<apsimSAEmulator,eval=FALSE,size="footnotesize">>=
-emulRes <- SAemulator(model = apsimSEN, X = X1, method = "singleGAM", exe = exe, wd = wd,
+emulRes <- SAemulator(model = apsimSEN, X = X1, method = "separateGAM", exe = exe, wd = wd,
                         vars = vars, toRun = file, g = meanYield, overwrite = TRUE)
 plot(emulRes)
 @

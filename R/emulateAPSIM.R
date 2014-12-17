@@ -137,16 +137,20 @@ separateGAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
   #Use nonparameteric regression to estimate first order sensitivity indices along with
   #parameteric bootstrap SE estimate
   
+  if(is.null(y)){
+    y <- model(X,...)
+  }
+  
   nparam <- ncol(X)
   n <- nrow(X)
-  Vy <- var(Y)
+  Vy <- var(y)
   SiEst <- BootSiSE <- Bias <- rep(0,nparam)
   Cis <- matrix(0,nparam,2)
   resids <- fitted <- matrix(0,nrow(X),ncol(X))
   
   for(i in 1:nparam){
     
-    GAMfit <- gam(Y~s(X[,i]))
+    GAMfit <- gam(y~s(X[,i]))
     resids[,i] <- GAMfit$residuals
     fitted[,i] <- GAMfit$fitted.values
     
@@ -165,7 +169,7 @@ separateGAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
     Bias[i] <- mean(BootSis) - SiEst[i]
   }
   
-  return(list(df=data.frame(Parameter=colnames(X),Est=SiEst,SE=BootSiSE,Bias=Bias,Lower=Cis[,1],Upper=Cis[,2]),
+  return(list(FirstOrder=data.frame(Parameter=colnames(X),Est=SiEst,SE=BootSiSE,Bias=Bias,Lower=Cis[,1],Upper=Cis[,2]),
               ehat=resids,yhat=fitted)) 
 }
 
@@ -182,9 +186,18 @@ plot.gamSA <- function(saRes){
   CIlimits<-aes(ymin=Lower, ymax=Upper)
   dodge <- position_dodge(width=.9)
   
-  pp <- qplot(Parameter,Estimate,data=togDF,geom='bar',stat='identity',fill=Index,position='dodge')+theme_bw()+
-    geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
-  
+  if(is.null(saRes$Total)){
+    
+    togDF <- subset(togDF,Index=="First-order")
+    pp <- qplot(Parameter,Estimate,data=togDF,geom='bar',stat='identity')+theme_bw()+
+      geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
+    
+  }else{
+    
+    pp <- qplot(Parameter,Estimate,data=togDF,geom='bar',stat='identity',fill=Index,position='dodge')+theme_bw()+
+      geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
+    
+  }
   return(pp)
   
 }
