@@ -51,7 +51,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{RJournal_edited}
-\usepackage{amsmath,amssymb,array,float}
+\usepackage{amsmath,amssymb,array,float,subcaption}
 \usepackage{booktabs}
 %\VignetteIndexEntry{Introduction to rotations}
 %\VignetteDepends{knitr}
@@ -201,7 +201,7 @@ The function \code{apsimSEN} is a version of \code{apsim} that has been adapted 
 
 Below is an example of a \code{g} function and how sensitivity analysis of APSIM can be accomplished.  First, load the sensitivity package and define a \code{g} function.  In this example we are interested in how sensitive the average cowpea yield is to initial values in the soil organic matter and soil water.  Therefore we define the \code{g} function so that the average cowpea yield is returned everytime APSIM is executed.  We define the  three inputs of interest in the \code{vars} argument: the soil organic matters soil carbon (\code{SoiCN}), the soilwaters diffuse constant (\code{DiffusConst}) and the carbon-nitrogen covariance (\code{CNCov}).  
 
-The \pkg{sensitivity} package includes several methods to perform sensitivity analysis.  For this example we chose the \code{soboljansen} function which estimates first and total Sobol' indices as described in \cite{saltelli2010variance}. The \code{soboljansen} function requires two data frames, \code{X1} and \code{X2}, to define the points in the input space at which to run the \code{model}.  The function in the \pkg{apsimr} package to use for sensntivity analysis is \code{apsimSEN}, therefore we set \code{model=apsimSEN}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on an appropriate interval.  The \code{soboljansen} function allows for additional arguments to be passed to the \code{model} argument.  The function \code{apsimSEN} requires the following additional arguments: the APSIM executable location \code{exe}, the working directory to find the .apsim file to run \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.  The results of this sensitivity analysis are give in Figure \ref{fig:sobjan}, which was produced by the \code{print} routine for the outputs from the \code{soboljansen}.
+The \pkg{sensitivity} package includes several methods to perform sensitivity analysis.  For this example we chose the \code{soboljansen} function which estimates first and total Sobol' indices as described in \cite{saltelli2010variance}. The \code{soboljansen} function requires two data frames, \code{X1} and \code{X2}, to define the points in the input space at which to run the \code{model}.  The function in the \pkg{apsimr} package to use for sensntivity analysis is \code{apsimSEN}, therefore we set \code{model=apsimSEN}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on an appropriate interval.  The \code{soboljansen} function allows for additional arguments to be passed to the \code{model} argument.  The function \code{apsimSEN} requires the following additional arguments: the APSIM executable location \code{exe}, the working directory to find the .apsim file to run \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.  The results of this sensitivity analysis are give in Figure \ref{fig:sobjan}, which was produced by the \code{print} routine for the outputs from the \code{soboljansen}.  \emph{Note:} the function \code{soboljansen} requires $p\times n$ model evaluations, where $n$ is a user specified number of model evaluations (500 below) and $p$ is the number of input parameter considered (3 below).
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -227,12 +227,39 @@ The \pkg{sensitivity} package includes several methods to perform sensitivity an
 \end{kframe}
 \end{knitrout}
 
+
 \begin{figure}[H]
 \centering
-\includegraphics[width=1\textwidth]{figures/soboljan.pdf}
+\begin{subfigure}[b]{1\textwidth}
+\includegraphics[width=\textwidth]{figures/soboljan.pdf}%\vspace{-2.5em}
+\caption{Index estimates using \code{soboljansen} function}
+\label{fig:soboljansen}
+\end{subfigure}
+
+\begin{subfigure}[b]{1\textwidth}
+\includegraphics[width=\textwidth]{figures/emulRespic.pdf}%\vspace{-2.5em}
+\caption{Index estimates using \code{SAemulator} function}
+\label{fig:SAemulator}
+\end{subfigure}%\vspace{-1em}
 \caption{The results of the sensitivity analysis of the APSIM Canopy simulation for the average cowpea yield over time.}
 \label{fig:yield}
 \end{figure}
+
+
+An alternative method for sensitivity analysis is the use of an emulator.  The function \code{SAemulator} performs a sensitivity analysis of the provided \code{model}.  Alternatively, if simulator runs are available then one can forgo the \code{model} argument and include the computer model runs as the \code{y} argument.  \empg{Note:} the \code{y} argument takes precidence over the \code{model} argument and an error is returned if the number of rows in \code{X} does not match the length of \code{y}.  
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{emulRes} \hlkwb{<-} \hlkwd{SAemulator}\hlstd{(}\hlkwc{model} \hlstd{= apsimSEN,} \hlkwc{X} \hlstd{= X1,} \hlkwc{method} \hlstd{=} \hlstr{"singleGAM"}\hlstd{,} \hlkwc{exe} \hlstd{= exe,} \hlkwc{wd} \hlstd{= wd,}
+                        \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= file,} \hlkwc{g} \hlstd{= meanYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(emulRes)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+The ability to simply include model runs instead of the model itself sets the \code{SAemulator} is a crucial difference between the it and the sensitivity analysis functions in \pkg{sensitivity}.  In particular, a multivariate global sensitivity analysis of APSIM is possible with \code{SAemulator} because the basis functions of the APSIM runs can be passed with the \code{y} argument.  See \cite{campbell2006sensitivity} for more about multivariate global sensitivity analysis. 
+
 
 \bibliography{apsimr_refs}
 

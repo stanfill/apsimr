@@ -1,8 +1,10 @@
 importFrom(lubridate,dmy)
 importFrom(reshape2,melt)
+importFrom(MASS,mvrnorm)
 import(ggplot2,XML)
 
 S3method(plot,apsim)
+S3method(plot,gamSA)
 
 export(apsim)
 export(apsimSEN)
@@ -12,3 +14,4 @@ export(example_apsim)
 export(SAemulator)
 
 exportClasses(apsim)
+exportClasses(gamSA)

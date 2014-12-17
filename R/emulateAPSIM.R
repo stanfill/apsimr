@@ -27,6 +27,8 @@ SAemulator <- function(model, X, y = NULL, method, ...){
     
   }  
   
+  class(res) <- "gamSA"
+  
   return(res)
 }
 
@@ -75,7 +77,7 @@ singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
   V <- gamFit$Vp
   xstarNames <- colnames(xStar)
   
-  Sidf <- STdf <- data.frame(Variable=cnames,Est=0,SE=0,Bias=0,Lower=0,Upper=0)
+  Sidf <- STdf <- data.frame(Parameter=cnames,Est=0,SE=0,Bias=0,Lower=0,Upper=0)
   STdf$EstAlt <- 0
   
   for(i in 1:p){
@@ -85,15 +87,16 @@ singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
     xStari[,c(xiCols)] <- 0 #Every column that has to do with Xi is made zero
     ghati <- xStari%*%bhat
     STdf$Est[i] <- 1-var(ghati)/vY
+    
     #Try the other way, that is, include all terms involving Xi and use
     #variance explained by that divided by total variance
-    XstariAlt <- xStar
-    XstariAlt[,-c(xiCols)] <- 0
-    ghatiAlt <- XstariAlt%*%bhat
-    STdf$EstAlt[i] <- var(ghatiAlt)/vY
+    #XstariAlt <- xStar
+    #XstariAlt[,-c(xiCols)] <- 0
+    #ghatiAlt <- XstariAlt%*%bhat
+    #STdf$EstAlt[i] <- var(ghatiAlt)/vY
     
     #Bootstrap the bhats to get SE and CIs for total indices
-    sample.coef <- mvrnorm(boot,bhat,V)
+    sample.coef <- MASS::mvrnorm(boot,bhat,V)
     ghats <- sample.coef%*%t(xStari)
     BootVis <- apply(ghats,1,var)
     BootSTis <- 1-BootVis/vY
@@ -152,7 +155,7 @@ separateGAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
     beta.hat <- GAMfit$coef
     V <- GAMfit$Vp
     Xstar <- predict(GAMfit,type='lpmatrix')
-    sample.coef <- mvrnorm(boot,beta.hat,V)
+    sample.coef <- MASS::mvrnorm(boot,beta.hat,V)
     ghats <- sample.coef%*%t(Xstar)
     
     BootVis <- apply(ghats,1,var)
@@ -162,6 +165,26 @@ separateGAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
     Bias[i] <- mean(BootSis) - SiEst[i]
   }
   
-  return(list(df=data.frame(Variable=colnames(X),Est=SiEst,SE=BootSiSE,Bias=Bias,Lower=Cis[,1],Upper=Cis[,2]),
+  return(list(df=data.frame(Parameter=colnames(X),Est=SiEst,SE=BootSiSE,Bias=Bias,Lower=Cis[,1],Upper=Cis[,2]),
               ehat=resids,yhat=fitted)) 
+}
+
+
+#Plotting routine for the gam based SA functions
+plot.gamSA <- function(saRes){
+  
+  p <- length(saRes$FirstOrder$Est)
+  togDF <- data.frame(Parameter=rep(saRes$FirstOrder$Parameter,2))
+  togDF$Estimate <- c(saRes$FirstOrder$Est,saRes$Total$Est)
+  togDF$Index <- rep(c("First-order","Total"),each=p)
+  togDF$Lower <- c(saRes$FirstOrder$Lower,saRes$Total$Lower)
+  togDF$Upper <- c(saRes$FirstOrder$Upper,saRes$Total$Upper)
+  CIlimits<-aes(ymin=Lower, ymax=Upper)
+  dodge <- position_dodge(width=.9)
+  
+  pp <- qplot(Parameter,Estimate,data=togDF,geom='bar',stat='identity',fill=Index,position='dodge')+theme_bw()+
+    geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
+  
+  return(pp)
+  
 }
