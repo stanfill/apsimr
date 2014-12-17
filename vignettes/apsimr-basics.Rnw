@@ -150,7 +150,7 @@ plot(sobolRes)
 \centering
 \begin{subfigure}[b]{1\textwidth}
 \includegraphics[width=\textwidth]{figures/soboljan.pdf}%\vspace{-2.5em}
-\caption{Index estimates using \code{soboljansen} function}
+\caption{Index estimates using \code{soboljansen} function.}
 \label{fig:soboljansen}
 \end{subfigure}
 

@@ -5,6 +5,7 @@ import(ggplot2,XML)
 
 S3method(plot,apsim)
 S3method(plot,gamSA)
+S3method(print,gamSA)
 
 export(apsim)
 export(apsimSEN)

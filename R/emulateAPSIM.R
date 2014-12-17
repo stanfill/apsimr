@@ -128,7 +128,7 @@ singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
     Sidf$Bias[i] <- mean(BootSis) - Sidf$Est[i]
   }
   
-  return(list(FirstOrder=Sidf,Total=STdf,Ehat=gamFit$residuals,Yhat=gamFit$fitted))
+  return(list(FirstOrder=Sidf,Total=STdf,ehat=gamFit$residuals,yhat=gamFit$fitted))
 }
 
 
@@ -203,5 +203,16 @@ plot.gamSA <- function(saRes){
     
   }
   return(pp)
+  
+}
+
+#Print function for objects of class "gamSA"
+#Prints the whole thing except the yhat and ehat objects
+print.gamSA <- function(saRes,...){
+  
+  saRes$ehat <- NULL
+  saRes$yhat <- NULL
+  
+  print.default(saRes,...)
   
 }
