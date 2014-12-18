@@ -81,7 +81,7 @@
 
 The {\bf A}gricultural {\bf P}roduction {\bf S}ystem s{\bf IM}ulator (APSIM) is a widely used, powerful and highly complex computer program \citep{keating2003overview, holzworth2014apsim}.  Based on information about weather, soil properties, farming practices and land use, APSIM can predict crop and environmental outcomes such as yield, nitrogen runoff and sediment loss as a function of time and space.  
 
-APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) with limited analysis and visualization tools available, or from the command line which requires a high level of familiarity with APSIM and a substantial amount of ad hoc programming.  The \CRANpkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations easily using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which has given APSIM users access to a wide variety of uncertainty quantification tools that APSIM needs \citep{pujol2014sensitivity}.
+APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) with limited analysis and visualization tools available, or from the command line which requires a high level of familiarity with APSIM and a substantial amount of ad hoc programming.  The \CRANpkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations easily using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which has given APSIM users access to a wide variety of uncertainty quantification tools that APSIM needs \citep{pujol2014sensitivity}.  Other packages that could be of interest for uncertainty/sensitivity analysis of APSIM are \CRANpkg{spartan} and \CRANpkg{multisensi} \citep{alden2014applying,lamboni2011multivariate}.
 
 \begin{figure}[h]
 \centering
@@ -214,7 +214,7 @@ The \pkg{sensitivity} package includes several methods to perform sensitivity an
 
 \hlstd{vars} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SoilOrganicMatter/SoilCN"}\hlstd{,}\hlstr{"SoilWater/DiffusConst"}\hlstd{,}\hlstr{"SoilWater/CNCov"}\hlstd{)}
 
-\hlstd{n} \hlkwb{<-} \hlnum{100}
+\hlstd{n} \hlkwb{<-} \hlnum{10}
 \hlstd{X1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{SoilCN} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{5}\hlstd{,} \hlnum{25}\hlstd{),}
                  \hlkwc{DiffusConst} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{20}\hlstd{,} \hlnum{50}\hlstd{),} \hlkwc{CNCov} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{))}
 \hlstd{X2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{SoilCN} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{5}\hlstd{,} \hlnum{25}\hlstd{),}
@@ -232,7 +232,7 @@ The \pkg{sensitivity} package includes several methods to perform sensitivity an
 \centering
 \begin{subfigure}[b]{1\textwidth}
 \includegraphics[width=\textwidth]{figures/soboljan.pdf}%\vspace{-2.5em}
-\caption{Index estimates using \code{soboljansen} function}
+\caption{Index estimates using \code{soboljansen} function.}
 \label{fig:soboljansen}
 \end{subfigure}
 
@@ -262,7 +262,32 @@ The \code{SAemulator} function returns an object of class \code{"gamSA"}, which 
 \end{kframe}
 \end{knitrout}
 
-The ability to simply include model runs instead of the model itself sets the \code{SAemulator} is a crucial difference between the it and the sensitivity analysis functions in \pkg{sensitivity}.  In particular, a multivariate global sensitivity analysis of APSIM is possible with \code{SAemulator} because the basis functions of the APSIM runs can be passed with the \code{y} argument.  See \cite{campbell2006sensitivity} for more about multivariate global sensitivity analysis. 
+The ability to simply include model runs instead of the model itself sets the \code{SAemulator} is a crucial difference between it and the sensitivity analysis functions in \pkg{sensitivity}.  This crucial difference makes multivariate global sensitivity analysis of APSIM possible because the basis functions of the APSIM runs can be passed with the \code{y} argument.  See \cite{campbell2006sensitivity} for more about multivariate global sensitivity analysis. 
+
+\begin{knitrout}\footnotesize
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{rawYield} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)\{}
+  \hlkwd{return}\hlstd{(x}\hlopt{$}\hlstd{paddock.cowpea.yield)}
+\hlstd{\}}
+
+\hlstd{cowpeaY} \hlkwb{<-} \hlkwd{apsimSEN}\hlstd{(}\hlkwc{X} \hlstd{= X1,} \hlkwc{exe} \hlstd{= exe,} \hlkwc{wd} \hlstd{= wd,} \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= file,} \hlkwc{g} \hlstd{= rawYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+
+\hlstd{vCowpea}\hlkwb{<-}\hlkwd{var}\hlstd{(cowpeaY)}
+\hlstd{pcsY}\hlkwb{<-}\hlkwd{svd}\hlstd{(vCowpea)}\hlopt{$}\hlstd{u}
+\hlstd{N}\hlkwb{<-}\hlkwd{nrow}\hlstd{(cowpeaY)}
+\hlstd{ones}\hlkwb{<-}\hlkwd{matrix}\hlstd{(}\hlkwd{rep}\hlstd{(}\hlnum{1}\hlstd{,N),}\hlkwc{ncol}\hlstd{=}\hlnum{1}\hlstd{)}
+\hlstd{yBar}\hlkwb{<-}\hlstd{(}\hlnum{1}\hlopt{/}\hlstd{N)}\hlopt{*}\hlstd{ones}\hlopt{%*%}\hlkwd{t}\hlstd{(ones)}\hlopt{%*%}\hlstd{cowpeaY}
+\hlstd{cowpeaPCS}\hlkwb{<-}\hlstd{(cowpeaY}\hlopt{-}\hlstd{yBar)}\hlopt{%*%}\hlstd{pcsY}
+
+\hlstd{mgsaRes} \hlkwb{<-} \hlkwd{vector}\hlstd{(}\hlstr{"list"}\hlstd{,}\hlnum{5}\hlstd{)}
+
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{5}\hlstd{)\{}
+  \hlstd{mgsaRes[[i]]} \hlkwb{<-} \hlkwd{SAemulator}\hlstd{(}\hlkwc{y} \hlstd{= cowpeaPCS[,i],} \hlkwc{X} \hlstd{= X1,} \hlkwc{method} \hlstd{=} \hlstr{"separateGAM"}\hlstd{)}
+\hlstd{\}}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
 
 
 \bibliography{apsimr_refs}

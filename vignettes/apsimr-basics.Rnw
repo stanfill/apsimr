@@ -31,7 +31,7 @@
 
 The {\bf A}gricultural {\bf P}roduction {\bf S}ystem s{\bf IM}ulator (APSIM) is a widely used, powerful and highly complex computer program \citep{keating2003overview, holzworth2014apsim}.  Based on information about weather, soil properties, farming practices and land use, APSIM can predict crop and environmental outcomes such as yield, nitrogen runoff and sediment loss as a function of time and space.  
 
-APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) with limited analysis and visualization tools available, or from the command line which requires a high level of familiarity with APSIM and a substantial amount of ad hoc programming.  The \CRANpkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations easily using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which has given APSIM users access to a wide variety of uncertainty quantification tools that APSIM needs \citep{pujol2014sensitivity}.
+APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) with limited analysis and visualization tools available, or from the command line which requires a high level of familiarity with APSIM and a substantial amount of ad hoc programming.  The \CRANpkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations easily using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which has given APSIM users access to a wide variety of uncertainty quantification tools that APSIM needs \citep{pujol2014sensitivity}.  Other packages that could be of interest for uncertainty/sensitivity analysis of APSIM are \CRANpkg{spartan} and \CRANpkg{multisensi} \citep{alden2014applying,lamboni2011multivariate}.
 
 \begin{figure}[h]
 \centering
@@ -176,7 +176,7 @@ emulRes <- SAemulator(model = apsimSEN, X = X1, method = "singleGAM", exe = exe,
 plot(emulRes)
 @
 
-The ability to simply include model runs instead of the model itself sets the \code{SAemulator} is a crucial difference between the it and the sensitivity analysis functions in \pkg{sensitivity}.  In particular, a multivariate global sensitivity analysis of APSIM is possible with \code{SAemulator} because the basis functions of the APSIM runs can be passed with the \code{y} argument.  See \cite{campbell2006sensitivity} for more about multivariate global sensitivity analysis. 
+The ability to simply include model runs instead of the model itself sets the \code{SAemulator} is a crucial difference between it and the sensitivity analysis functions in \pkg{sensitivity}.  This crucial difference makes multivariate global sensitivity analysis of APSIM possible because the basis functions of the APSIM runs can be passed with the \code{y} argument.  See \cite{campbell2006sensitivity} for more about multivariate global sensitivity analysis. 
 
 <<apsimMGSA,eval=FALSE,size="footnotesize">>=
 
@@ -192,6 +192,13 @@ N<-nrow(cowpeaY)
 ones<-matrix(rep(1,N),ncol=1)
 yBar<-(1/N)*ones%*%t(ones)%*%cowpeaY
 cowpeaPCS<-(cowpeaY-yBar)%*%pcsY
+
+mgsaRes <- vector("list",5)
+
+for(i in 1:5){
+  mgsaRes[[i]] <- SAemulator(y = cowpeaPCS[,i], X = X1, method = "separateGAM")
+}
+
 @
 
 

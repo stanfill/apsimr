@@ -73,13 +73,13 @@ apsimSEN<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g, mu
       y <- rep(0,N)
     }else if(i==1 & !multivariate){
       g1 <- g(res)
-      y <- matrix(0,length(g1),N)
+      y <- matrix(0,N,length(g1))
     }
     
     if(multivariate){
       y[i] <- g(res)
     }else{
-      y[,i] <- g(res)
+      y[i,] <- g(res)
     }
   }
   setwd(oldWd)
