@@ -20,8 +20,8 @@
 #' }
 #' 
 #' wd <- "~/APSIM"
-#' var <- c(rep("SoilWater/Thickness",11), "SoilOrganicMatter/SoilCN")
-#' value <- matrix(c(rep(200, 2), rep(300, 9), 10,rep(350, 2), rep(350, 9), 5),nrow=2,byrow=T)
+#' var <- c(rep("SoilWater/Thickness",10), "SoilOrganicMatter/SoilCN")
+#' value <- matrix(c(rep(200, 2), rep(300, 8), 10,rep(350, 2), rep(350, 8), 5),nrow=2,byrow=T)
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 #' file <- "Canopy.apsim"
 #' 
