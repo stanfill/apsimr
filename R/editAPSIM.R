@@ -27,7 +27,7 @@
 #' #Change SoilWater-Thickness to 200,200,300x9
 #' #Change SoilCN to 10
 #' #Change "State" to "NSW"
-#' value <- list(c(rep(200, 2), rep(300, 9)), 10, "NSW")
+#' value <- list(c(rep(11, 2), rep(10, 0)), 9, "NSW")
 #' 
 #' #Edit the apsim file without overwriting it
 #' edit_apsim(file, wd, var, value, overwrite = FALSE)
@@ -46,7 +46,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
   fileNames <- dir(,pattern=".apsim$")
   
   if(length(fileNames)==0){
-    stop("There are no .apsim files in the folder wd to edit.")
+    stop("There are no .apsim files in the specified directory 'wd' to edit.")
   }
   
   file<-match.arg(file,fileNames,several.ok=TRUE)
@@ -58,17 +58,17 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
     vari<-pXML[[paste("//",var[i],sep="")]]
     
     #If supplied length is shorter then length to replace, then
-    #replicate the last value enough times to fill the void, give message
+    #leave the remaining values unchanged
     lToReplace<-xmlSize(vari)
     lReplace<-length(value[[i]])
     lenDiff<-lToReplace-lReplace
     
     if(lenDiff>0){
-      value[[i]]<-c(value[[i]],rep(value[[i]][lReplace],lenDiff))
-      warning(paste("Supplied values for",var[i],"was too short",sep=" "))
+      #value[[i]]<-c(value[[i]],rep(value[[i]][lReplace],lenDiff))
+      warning(paste("Only the first",lReplace,"elements were changed",sep=" "))
     }
     
-    for(j in 1:lToReplace){
+    for(j in 1:lReplace){
       xmlValue(vari[[j]])<-as.character(value[[i]][j])
     }
     
@@ -158,11 +158,11 @@ edit_sim_file <- function(file, wd = getwd(), var, value, overwrite = FALSE){
     lenDiff<-lToReplace-lReplace
     
     if(lenDiff>0){
-      value[[i]]<-c(value[[i]],rep(value[[i]][lReplace],lenDiff))
-      #warning(paste("Supplied values for",var[i],"was too short",sep=" "))
+      #value[[i]]<-c(value[[i]],rep(value[[i]][lReplace],lenDiff))
+      warning(paste("Only the first",lReplace,"elements were changed",sep=" "))
     }
     
-    for(j in 1:lToReplace){
+    for(j in 1:lReplace){
       xmlValue(vari[[j]])<-as.character(value[[i]][j])
     }
     
