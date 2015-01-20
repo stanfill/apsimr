@@ -78,7 +78,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
   
   if(overwrite){
     setwd(oldWD)
-    return(saveXML(pXML,file=addWd,prefix=NULL))
+    return(saveXML(pXML,file=addWd))
   }else{
     
     #Remove .apsim tag if present and add edited tag
@@ -97,7 +97,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
     xmlValue(outTitle)<-newName
     
     setwd(oldWD)
-    return(saveXML(pXML,file=paste(newName,".apsim",sep=""),prefix=NULL))
+    return(saveXML(pXML,file=paste(newName,".apsim",sep="")))
   }
 }
 
@@ -170,12 +170,12 @@ edit_sim_file <- function(file, wd = getwd(), var, value, overwrite = FALSE){
   addWd <- paste(wd,file,sep="/")
   if(overwrite){
     setwd(oldWD)
-    return(saveXML(pXML,file=addWd,prefix=NULL))
+    return(saveXML(pXML,file=addWd))
   }else{
     
     #Remove .apsim tag if present and add edited tag
     newName<-paste(gsub(".xml","",addWd),"-edited",sep="")
     setwd(oldWD)
-    return(saveXML(pXML,file=paste(newName,".xml",sep=""),prefix=NULL))
+    return(saveXML(pXML,file=paste(newName,".xml",sep="")))
   }  
 }
