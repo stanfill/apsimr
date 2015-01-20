@@ -127,10 +127,10 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 #' wd <- "~/APSIM"
 #' 
 #' #I want to change the potential nitrification and N2O from nitrification
-#' var <- c("nitrification_pot", "dnit_nitrf_loss")
+#' var <- c("nitrification_pot", "dnit_nitrf_loss","wfnit_values")
 #' 
 #' #Change both to absolute values of random N(0,1) 
-#' value <- list(abs(rnorm(1)), abs(rnorm(1)))
+#' value <- list(abs(rnorm(1)), abs(rnorm(1)), c(0,2,2,1))
 #' 
 #' #Edit Soil.xml without overwriting it
 #' edit_sim_file(file, wd, var, value, overwrite = FALSE)
@@ -153,17 +153,20 @@ edit_sim_file <- function(file, wd = getwd(), var, value, overwrite = FALSE){
     
     #If supplied length is shorter then length to replace, then
     #replicate the last value enough times to fill the void, give message
-    lToReplace<-xmlSize(vari)
+    lengthVari <- xmlSize(vari)
     lReplace<-length(value[[i]])
-    lenDiff<-lToReplace-lReplace
     
-    if(lenDiff>0){
-      #value[[i]]<-c(value[[i]],rep(value[[i]][lReplace],lenDiff))
-      warning(paste("Only the first",lReplace,"elements were changed",sep=" "))
+    if(lReplace>1){
+      newVar <- as.character(value[[i]][1])
+      for(k in 2:lReplace){
+        newVar <- paste(newVar,value[[i]][k],sep=" ")
+      }
+    }else{
+      newVar <- as.character(value[[i]])
     }
     
-    for(j in 1:lReplace){
-      xmlValue(vari[[j]])<-as.character(value[[i]][j])
+    for(k in 1:lengthVari){
+      xmlValue(vari[[k]]) <- newVar
     }
     
   }
