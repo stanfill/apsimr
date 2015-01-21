@@ -21,6 +21,10 @@ SAemulator <- function(model, X, y = NULL, method, ...){
     stop("The length of y must match the number of rows in X")
   }
   
+  if(is.null(colnames(X))){
+    colnames(X) <- paste0("V",1:ncol(X))
+  }
+  
   if(method=='singleGAM'){
     
     res <- singleGAM(model = model, X = X, y = y, ...)
