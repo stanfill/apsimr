@@ -183,8 +183,8 @@ separateGAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
 
 
 #Plotting routine for the gam based SA functions
-plot.gamSA <- function(saRes){
-  
+plot.gamSA <- function(x,...){
+  saRes <- x
   p <- length(saRes$FirstOrder$Est)
   togDF <- data.frame(Parameter=rep(saRes$FirstOrder$Parameter,2))
   togDF$Estimate <- c(saRes$FirstOrder$Est,saRes$Total$Est)
@@ -197,12 +197,12 @@ plot.gamSA <- function(saRes){
   if(is.null(saRes$Total)){
     
     togDF <- subset(togDF,Index=="First-order")
-    pp <- qplot(Parameter,Estimate,data=togDF,geom='bar',stat='identity')+theme_bw()+
+    pp <- qplot(togDF$Parameter,togDF$Estimate,geom='bar',stat='identity')+theme_bw()+
       geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
     
   }else{
     
-    pp <- qplot(Parameter,Estimate,data=togDF,geom='bar',stat='identity',fill=Index,position='dodge')+
+    pp <- qplot(togDF$Parameter,togDF$Estimate,data=togDF,geom='bar',stat='identity',fill=Index,position='dodge')+
       theme_bw()+geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
     
   }
@@ -210,10 +210,18 @@ plot.gamSA <- function(saRes){
   
 }
 
-#Print function for objects of class "gamSA"
-#Prints the whole thing except the yhat and ehat objects
-print.gamSA <- function(saRes,...){
-  
+#' Print Sensitivity Analysis Results
+#' 
+#' The default print method for the results of a sensitivity analysis of APSIM using
+#' the single or separate GAM-based emulator.
+#' 
+#' @name print.gamSA
+#' @param x,... Results of a successful call to \code{SAemulator}
+#' @return The results of the sensitivity analysis without the estimated output and residuals
+#' @export
+
+print.gamSA <- function(x,...){
+  saRes <- x
   saRes$ehat <- NULL
   saRes$yhat <- NULL
   

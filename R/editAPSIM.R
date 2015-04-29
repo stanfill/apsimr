@@ -1,4 +1,4 @@
-#' Edit an APSIM simulation
+#' Edit an APSIM Simulation
 #' 
 #' The variables specified by \code{var} within the .apsim file specified by \code{file} 
 #' in the working directory \code{wd} are edited. The old values are replaced with \code{value}, which
@@ -101,7 +101,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
   }
 }
 
-#' Edit an APSIM module file
+#' Edit an APSIM Module File
 #' 
 #' APSIM uses .xml files to dictate how certain processes are carried out.  Similar to
 #' \code{\link{edit_apsim}} this function edits a file that will be used in an APSIM simulation.  Unlike
