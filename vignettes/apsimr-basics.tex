@@ -107,10 +107,10 @@ The function used to run APSIM from R is called \code{apsim}.  Its only required
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{exe} \hlkwb{<-}\hlstr{"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"}
-\hlstd{wd} \hlkwb{<-} \hlstr{"~/APSIM"}
-\hlstd{to_run} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Centro.apsim"}\hlstd{,} \hlstr{"Continuous Wheat.apsim"}\hlstd{)}
-\hlstd{results} \hlkwb{<-} \hlkwd{apsim}\hlstd{(}\hlkwc{exe} \hlstd{= exe,} \hlkwc{wd} \hlstd{= wd,} \hlkwc{files} \hlstd{= to_run)}
+\hlstd{apsimExe} \hlkwb{<-}\hlstr{"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"}
+\hlstd{apsimWD} \hlkwb{<-} \hlstr{"~/APSIM"}
+\hlstd{to_run} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Canopy.apsim"}\hlstd{,} \hlstr{"Continuous Wheat.apsim"}\hlstd{)}
+\hlstd{results} \hlkwb{<-} \hlkwd{apsim}\hlstd{(}\hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWD,} \hlkwc{files} \hlstd{= to_run)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -123,7 +123,7 @@ The file I want to edit is called "Canopy.apsim" which is in the directory "$\si
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{file} \hlkwb{<-} \hlstr{"Canopy.apsim"}
-\hlstd{wd} \hlkwb{<-} \hlstr{"~/APSIM"}
+\hlstd{apsimWD} \hlkwb{<-} \hlstr{"~/APSIM"}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -144,7 +144,7 @@ The next snippit edits the apsim file without overwriting it.  This results in t
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{edit_apsim}\hlstd{(file, wd, var, value,} \hlkwc{overwrite} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlkwd{edit_apsim}\hlstd{(file, apsimWD, var, value,} \hlkwc{overwrite} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -157,7 +157,7 @@ Visualize all of the results as a function of time in separate plots
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(results[[}\hlnum{2}\hlstd{]])}
+\hlkwd{plot}\hlstd{(results[[}\hlnum{2}\hlstd{]],} \hlkwc{geom} \hlstd{=} \hlstr{'line'}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -197,11 +197,11 @@ Plot just yield as a function of time (Figure \ref{fig:yield}).
 
 \subsection{Sensitivity Analysis}
 
-The function \code{apsimSEN} is a version of \code{apsim} that has been adapted so it can be used with the package \CRANpkg{sensitivity}.  In particular, the function \code{apsim} returns a data frame that includes different outputs over the specified time frame at specified time intervals.  The \code{apsimSEN} function takes and argument \code{g} that translates the output of \code{apsim} into a single, univaraite outcome.  This way, the function \code{apsimSEN} can be passed to functions in the \code{sensitivity} package as the \code{model} argument.  
+The function \code{apsim\_sen} is a version of \code{apsim} that has been adapted so it can be used with the package \CRANpkg{sensitivity}.  In particular, the function \code{apsim} returns a data frame that includes different outputs over the specified time frame at specified time intervals.  The \code{apsim\_sen} function takes and argument \code{g} that translates the output of \code{apsim} into a single, univaraite outcome.  This way, the function \code{apsim\_sen} can be passed to functions in the \code{sensitivity} package as the \code{model} argument.  
 
 Below is an example of a \code{g} function and how sensitivity analysis of APSIM can be accomplished.  First, load the sensitivity package and define a \code{g} function.  In this example we are interested in how sensitive the average cowpea yield is to initial values in the soil organic matter and soil water.  Therefore we define the \code{g} function so that the average cowpea yield is returned everytime APSIM is executed.  We define the  three inputs of interest in the \code{vars} argument: the soil organic matters soil carbon (\code{SoiCN}), the soilwaters diffuse constant (\code{DiffusConst}) and the carbon-nitrogen covariance (\code{CNCov}).  
 
-The \pkg{sensitivity} package includes several methods to perform sensitivity analysis.  For this example we chose the \code{soboljansen} function which estimates first and total Sobol' indices as described in \cite{saltelli2010variance}. The \code{soboljansen} function requires two data frames, \code{X1} and \code{X2}, to define the points in the input space at which to run the \code{model}.  The function in the \pkg{apsimr} package to use for sensntivity analysis is \code{apsimSEN}, therefore we set \code{model=apsimSEN}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on an appropriate interval.  The \code{soboljansen} function allows for additional arguments to be passed to the \code{model} argument.  The function \code{apsimSEN} requires the following additional arguments: the APSIM executable location \code{exe}, the working directory to find the .apsim file to run \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.  The results of this sensitivity analysis are give in Figure \ref{fig:soboljansen}, which was produced by the \code{print} routine for the outputs from the \code{soboljansen}.  \emph{Note:} the function \code{soboljansen} requires $p\times n$ model evaluations, where $n$ is a user specified number of model evaluations (500 below) and $p$ is the number of input parameter considered (3 below).
+The \pkg{sensitivity} package includes several methods to perform sensitivity analysis.  For this example we chose the \code{soboljansen} function which estimates first and total Sobol' indices as described in \cite{saltelli2010variance}. The \code{soboljansen} function requires two data frames, \code{X1} and \code{X2}, to define the points in the input space at which to run the \code{model}.  The function in the \pkg{apsimr} package to use for sensntivity analysis is \code{apsim\_sen}, therefore we set \code{model=apsim\_sen}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on an appropriate interval.  The \code{soboljansen} function allows for additional arguments to be passed to the \code{model} argument.  The function \code{apsim\_sen} requires the following additional arguments: the APSIM executable location \code{exe}, the working directory to find the .apsim file to run \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.  The results of this sensitivity analysis are give in Figure \ref{fig:soboljansen}, which was produced by the \code{print} routine for the outputs from the \code{soboljansen}.  \emph{Note:} the function \code{soboljansen} requires $p\times n$ model evaluations, where $n$ is a user specified number of model evaluations (500 below) and $p$ is the number of input parameter considered (3 below).
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -209,20 +209,20 @@ The \pkg{sensitivity} package includes several methods to perform sensitivity an
 \hlkwd{library}\hlstd{(sensitivity)}
 
 \hlstd{meanYield}\hlkwb{<-}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)\{}
-  \hlkwd{return}\hlstd{(}\hlkwd{mean}\hlstd{(x}\hlopt{$}\hlstd{paddock.cowpea.yield))}
+  \hlkwd{return}\hlstd{(}\hlkwd{mean}\hlstd{(x}\hlopt{$}\hlstd{cowpea.yield))}
 \hlstd{\}}
 
-\hlstd{vars} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SoilOrganicMatter/SoilCN"}\hlstd{,}\hlstr{"SoilWater/DiffusConst"}\hlstd{,}\hlstr{"SoilWater/CNCov"}\hlstd{)}
+\hlstd{vars} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SoilOrganicMatter/SoilCN"}\hlstd{,} \hlstr{"SoilWater/DiffusConst"}\hlstd{,} \hlstr{"SoilWater/CNCov"}\hlstd{)}
 
-\hlstd{n} \hlkwb{<-} \hlnum{10}
+\hlstd{n} \hlkwb{<-} \hlnum{75}
 \hlstd{X1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{SoilCN} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{5}\hlstd{,} \hlnum{25}\hlstd{),}
                  \hlkwc{DiffusConst} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{20}\hlstd{,} \hlnum{50}\hlstd{),} \hlkwc{CNCov} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{))}
 \hlstd{X2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{SoilCN} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{5}\hlstd{,} \hlnum{25}\hlstd{),}
                  \hlkwc{DiffusConst} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{20}\hlstd{,} \hlnum{50}\hlstd{),} \hlkwc{CNCov} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{))}
 
-\hlstd{sobolRes} \hlkwb{<-} \hlkwd{soboljansen}\hlstd{(}\hlkwc{model} \hlstd{= apsimSEN, X1, X2,} \hlkwc{exe} \hlstd{= exe,} \hlkwc{wd} \hlstd{= wd,}
+\hlstd{sobolResults} \hlkwb{<-} \hlkwd{soboljansen}\hlstd{(}\hlkwc{model} \hlstd{= apsim_sen, X1, X2,} \hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWD,}
                         \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= file,} \hlkwc{g} \hlstd{= meanYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlkwd{plot}\hlstd{(sobolRes)}
+\hlkwd{plot}\hlstd{(sobolResults)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -250,12 +250,12 @@ An alternative, and potentially more efficient, method for sensitivity analysis 
 
 There are two methods to emulating the \code{model}: a single GAM emulation method or a separate GAM method differentiated by \code{method = "singleGAM"} and \code{method = "separateGAM"}, respecitvely.  Data frames consisting of first-order and total sensitivity index estimates along with a standard error, bias, lower and upper confidence bounds are returned along with the fitted means and residuals for each fitted model to assess model assumptions such as homoscedasticity.  The separate GAM method cannot be used to estimate the total sensitivity indices, but the single GAM method can.  
 
-The \code{SAemulator} function returns an object of class \code{"gamSA"}, which has its own plotting routine included in the package.  The example code below demonstrates how to call the \code{SAemulator} function and plot the results of the \code{method = "singleGAM"} option.  Figure \ref{fig:SAemulator} is the result of \code{plot(emulRes)} using the \code{ggplot2} functionality.
+The \code{SAemulator} function returns an object of class \code{"gamSA"}, which has its own plotting routine included in the package.  The example code below demonstrates how to call the \code{SAemulator} function and plot the results of the \code{method = "singleGAM"} option.  Figure \ref{fig:SAemulator} is the result of \code{plot(emulRes)} using the \code{ggplot2} functionality.  Note that atleast $8p^2-4p+1$ model runs are required to fit the single GAM where $p$ is the number of parameters included in the.
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{emulRes} \hlkwb{<-} \hlkwd{SAemulator}\hlstd{(}\hlkwc{model} \hlstd{= apsimSEN,} \hlkwc{X} \hlstd{= X1,} \hlkwc{method} \hlstd{=} \hlstr{"singleGAM"}\hlstd{,} \hlkwc{exe} \hlstd{= exe,} \hlkwc{wd} \hlstd{= wd,}
+\hlstd{emulRes} \hlkwb{<-} \hlkwd{apsim_emulator}\hlstd{(}\hlkwc{model} \hlstd{= apsim_sen,} \hlkwc{X} \hlstd{= X1,} \hlkwc{method} \hlstd{=} \hlstr{"singleGAM"}\hlstd{,} \hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWD,}
                         \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= file,} \hlkwc{g} \hlstd{= meanYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlkwd{plot}\hlstd{(emulRes)}
 \end{alltt}
@@ -268,10 +268,10 @@ The ability to simply include model runs instead of the model itself sets the \c
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{rawYield} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)\{}
-  \hlkwd{return}\hlstd{(x}\hlopt{$}\hlstd{paddock.cowpea.yield)}
+  \hlkwd{return}\hlstd{(x}\hlopt{$}\hlstd{cowpea.yield)}
 \hlstd{\}}
 
-\hlstd{cowpeaY} \hlkwb{<-} \hlkwd{apsimSEN}\hlstd{(}\hlkwc{X} \hlstd{= X1,} \hlkwc{exe} \hlstd{= exe,} \hlkwc{wd} \hlstd{= wd,} \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= file,} \hlkwc{g} \hlstd{= rawYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{cowpeaY} \hlkwb{<-} \hlkwd{apsim_sen}\hlstd{(}\hlkwc{X} \hlstd{= X1,} \hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWD,} \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= file,} \hlkwc{g} \hlstd{= rawYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 
 \hlstd{vCowpea}\hlkwb{<-}\hlkwd{var}\hlstd{(cowpeaY)}
 \hlstd{pcsY}\hlkwb{<-}\hlkwd{svd}\hlstd{(vCowpea)}\hlopt{$}\hlstd{u}

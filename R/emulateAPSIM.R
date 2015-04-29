@@ -211,7 +211,7 @@ plot.gamSA <- function(x,...){
   
   if(is.null(saRes$Total)){
     
-    togDF <- subset(togDF,Index=="First-order")
+    togDF <- togDF[togDF$Index=="First-order",]
     pp <- qplot(togDF$Parameter,togDF$Estimate,geom='bar',stat='identity')+theme_bw()+
       geom_errorbar(aes(ymin=togDF$Lower, ymax=togDF$Upper),position=dodge,width=.25)+ylab("")+xlab("")
     
