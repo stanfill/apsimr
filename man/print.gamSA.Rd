@@ -7,7 +7,7 @@
 \method{print}{gamSA}(x, ...)
 }
 \arguments{
-\item{x,...}{Results of a successful call to \code{SAemulator}}
+\item{x,...}{Results of a successful call to \code{apsim_emulator}}
 }
 \value{
 The results of the sensitivity analysis without the estimated output and residuals

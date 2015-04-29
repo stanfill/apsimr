@@ -10,7 +10,7 @@
 #' @param ... Additional arguments passed to the choosen method
 #' @return A data frame of results, the exact form depends on the method
 #' @export
-SAemulator <- function(model, X, y = NULL, method, ...){
+apsim_emulator <- function(model, X, y = NULL, method, ...){
   
   method <- try(match.arg(method,c("singleGAM","separateGAM")),silent=TRUE)
   
@@ -182,7 +182,18 @@ separateGAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
 }
 
 
-#Plotting routine for the gam based SA functions
+#' Plot Sensitivity Analysis Results
+#' 
+#' The default plot method for the results of a sensitivity analysis of APSIM using
+#' the single or separate GAM-based emulator.  Produces a bar chart where the heights of the
+#' bar represents the magnitude of the estimated sensitivity index estimate.  Error bars represent
+#' bootstrap calibrated confidence regions.
+#' 
+#' @name plot.gamSA
+#' @param x,... Results of a successful call to \code{apsim_emulator}
+#' @return The results of the sensitivity analysis without the estimated output and residuals
+#' @export
+
 plot.gamSA <- function(x,...){
   saRes <- x
   p <- length(saRes$FirstOrder$Est)
@@ -216,7 +227,7 @@ plot.gamSA <- function(x,...){
 #' the single or separate GAM-based emulator.
 #' 
 #' @name print.gamSA
-#' @param x,... Results of a successful call to \code{SAemulator}
+#' @param x,... Results of a successful call to \code{apsim_emulator}
 #' @return The results of the sensitivity analysis without the estimated output and residuals
 #' @export
 

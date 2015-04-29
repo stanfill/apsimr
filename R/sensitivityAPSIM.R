@@ -25,11 +25,11 @@
 #' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 #' file <- "Canopy.apsim"
 #' 
-#' res <- apsimSEN(X=value,exe=exe, wd=wd,vars=var,toRun=file, toEdit=file,g=g)
+#' res <- apsim_sen(X=value,exe=exe, wd=wd,vars=var,toRun=file, toEdit=file,g=g)
 #' res
 #' }
 
-apsimSEN<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g, multivariate=FALSE){
+apsim_sen<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g, multivariate=FALSE){
   #This is a version of the 'apsim' function that can be 
   #used with the sensitivity package
   oldWd<-getwd()
