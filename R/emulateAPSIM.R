@@ -78,7 +78,7 @@ singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
   formi <- formula(paste0(formi,")"))
   
   #Fit the GAM and predict from it, i.e. emulate
-  gamFit <- gam(formi,data=data.frame(cbind(y,X)))
+  gamFit <- mgcv::gam(formi,data=data.frame(cbind(y,X)))
   #vY <- var(predict(gamFit))
   xStar <- predict(gamFit,type='lpmatrix')
   bhat <- gamFit$coef
@@ -158,7 +158,7 @@ separateGAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
   
   for(i in 1:nparam){
     
-    GAMfit <- gam(y~s(X[,i]))
+    GAMfit <- mgcv::gam(y~s(X[,i]))
     resids[,i] <- GAMfit$residuals
     fitted[,i] <- GAMfit$fitted.values
     

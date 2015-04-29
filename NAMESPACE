@@ -1,6 +1,7 @@
 importFrom(lubridate,dmy)
 importFrom(reshape2,melt)
 importFrom(MASS,mvrnorm)
+importFrom(mgcv,gam)
 import(ggplot2,XML)
 
 S3method(plot,apsim)

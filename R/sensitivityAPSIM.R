@@ -10,7 +10,9 @@
 #' @param vars names of the variables, must be of the same length as 'X' has columns
 #' @param toRun the .apsim file in \code{wd} to run
 #' @param toEdit the .apsim file or .xml file to be edited
+#' @param overwrite argument passed to the \code{edit_apsim} and \code{edit_sim_file} functions
 #' @param g a function of the output returned by apsim - must give univariate result
+#' @param multivariate Is the desired analysis univariate (\code{FALSE}) or multivariate (\code{TRUE})
 #' @return a vector of length N
 #' @export
 #' @examples
