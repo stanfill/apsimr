@@ -20,7 +20,11 @@ apsim_sen(X, exe, wd, vars, toRun, toEdit = toRun, overwrite = FALSE, g,
 
 \item{toEdit}{the .apsim file or .xml file to be edited}
 
+\item{overwrite}{argument passed to the \code{edit_apsim} and \code{edit_sim_file} functions}
+
 \item{g}{a function of the output returned by apsim - must give univariate result}
+
+\item{multivariate}{Is the desired analysis univariate (\code{FALSE}) or multivariate (\code{TRUE})}
 }
 \value{
 a vector of length N

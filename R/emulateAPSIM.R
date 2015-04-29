@@ -55,6 +55,11 @@ singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
     y <- model(X,...)
   }
   p <- ncol(X)
+  
+  if(nrow(X)<(8*p^2-4*p+1)){
+    stop(paste("More data points are needed to fit the single GAM.  Please try again with at least ",8*p^2-4*p+1," rows in X."))
+  }
+  
   vY <- var(y)
   if(is.null(colnames(X))){
     colnames(X) <- 1:p
@@ -202,19 +207,19 @@ plot.gamSA <- function(x,...){
   togDF$Index <- rep(c("First-order","Total"),each=p)
   togDF$Lower <- c(saRes$FirstOrder$Lower,saRes$Total$Lower)
   togDF$Upper <- c(saRes$FirstOrder$Upper,saRes$Total$Upper)
-  CIlimits<-aes(ymin=Lower, ymax=Upper)
   dodge <- position_dodge(width=.9)
   
   if(is.null(saRes$Total)){
     
     togDF <- subset(togDF,Index=="First-order")
     pp <- qplot(togDF$Parameter,togDF$Estimate,geom='bar',stat='identity')+theme_bw()+
-      geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
+      geom_errorbar(aes(ymin=togDF$Lower, ymax=togDF$Upper),position=dodge,width=.25)+ylab("")+xlab("")
     
   }else{
     
-    pp <- qplot(togDF$Parameter,togDF$Estimate,data=togDF,geom='bar',stat='identity',fill=Index,position='dodge')+
-      theme_bw()+geom_errorbar(CIlimits,position=dodge,width=.25)+ylab("")+xlab("")
+    pp <- qplot(togDF$Parameter,togDF$Estimate,geom='bar',stat='identity',fill=togDF$Index,position='dodge')+
+      theme_bw()+geom_errorbar(aes(ymin=togDF$Lower, ymax=togDF$Upper),position=dodge,width=.25)+ylab("")+xlab("")+
+      guides(fill=guide_legend(title="Index"))
     
   }
   return(pp)

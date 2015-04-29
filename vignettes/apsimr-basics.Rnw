@@ -55,10 +55,10 @@ Every APSIM simulation run will produce a text file with the file extension \ver
 
 The function used to run APSIM from R is called \code{apsim}.  Its only required argument is \code{exe}, which is the path to the APSIM executable file on your machine.  Additional arguments include  \code{wd} and \code{files}.  The \code{wd} argument specifies the working directory to which the results will be written and is set to the current working directory by default.  The argument \code{files} is the list of \verb=.apsim= simulation files to be run, which is set to all \verb=.apsim= files in the specified working directory by default.
 <<run,eval=FALSE>>=
-exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
-wd <- "~/APSIM"
-to_run <- c("Centro.apsim", "Continuous Wheat.apsim")
-results <- apsim(exe = exe, wd = wd, files = to_run)
+apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
+apsimWD <- "~/APSIM"
+to_run <- c("Canopy.apsim", "Continuous Wheat.apsim")
+results <- apsim(exe = apsimExe, wd = apsimWD, files = to_run)
 @
 
 
@@ -67,7 +67,7 @@ results <- apsim(exe = exe, wd = wd, files = to_run)
 The file I want to edit is called "Canopy.apsim" which is in the directory "$\sim$/APSIM"
 <<file,eval=FALSE>>=
 file <- "Canopy.apsim"
-wd <- "~/APSIM"
+apsimWD <- "~/APSIM"
 @
 I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and the state at which the simulation is being run.
 Change SoilWater-Thickness to 200,200,300$\times$9
@@ -80,7 +80,7 @@ value <- list(c(rep(200, 2), rep(300, 9)), 10)
 
 The next snippit edits the apsim file without overwriting it.  This results in the new file being written into the \code{wd} with the additional tage "-updated.apsim".  In this case the new file "Canopy-edited.apsim" is identical to "Canopy.apsim" except for the variables that have been changed by the above code snippet.  If the option \code{overwrite=TRUE} then "Canopy.apsim" is overwritten with the new variable values.
 <<edit,eval=FALSE>>=
-edit_apsim(file, wd, var, value, overwrite = FALSE)
+edit_apsim(file, apsimWD, var, value, overwrite = FALSE)
 @
 
 \section{Beyond the Conventional}
@@ -89,7 +89,7 @@ edit_apsim(file, wd, var, value, overwrite = FALSE)
 
 Visualize all of the results as a function of time in separate plots
 <<p1,eval=FALSE>>=
-plot(results[[2]])
+plot(results[[2]], geom = 'line')
 @
 
 Put all variables on one faceted plot (Figure \ref{fig:allon1}).
@@ -119,30 +119,30 @@ plot(results[[2]], y = 'yield') + geom_line(colour = 'red') + theme_bw()
 
 \subsection{Sensitivity Analysis}
 
-The function \code{apsimSEN} is a version of \code{apsim} that has been adapted so it can be used with the package \CRANpkg{sensitivity}.  In particular, the function \code{apsim} returns a data frame that includes different outputs over the specified time frame at specified time intervals.  The \code{apsimSEN} function takes and argument \code{g} that translates the output of \code{apsim} into a single, univaraite outcome.  This way, the function \code{apsimSEN} can be passed to functions in the \code{sensitivity} package as the \code{model} argument.  
+The function \code{apsim_sen} is a version of \code{apsim} that has been adapted so it can be used with the package \CRANpkg{sensitivity}.  In particular, the function \code{apsim} returns a data frame that includes different outputs over the specified time frame at specified time intervals.  The \code{apsim_sen} function takes and argument \code{g} that translates the output of \code{apsim} into a single, univaraite outcome.  This way, the function \code{apsim_sen} can be passed to functions in the \code{sensitivity} package as the \code{model} argument.  
 
 Below is an example of a \code{g} function and how sensitivity analysis of APSIM can be accomplished.  First, load the sensitivity package and define a \code{g} function.  In this example we are interested in how sensitive the average cowpea yield is to initial values in the soil organic matter and soil water.  Therefore we define the \code{g} function so that the average cowpea yield is returned everytime APSIM is executed.  We define the  three inputs of interest in the \code{vars} argument: the soil organic matters soil carbon (\code{SoiCN}), the soilwaters diffuse constant (\code{DiffusConst}) and the carbon-nitrogen covariance (\code{CNCov}).  
 
-The \pkg{sensitivity} package includes several methods to perform sensitivity analysis.  For this example we chose the \code{soboljansen} function which estimates first and total Sobol' indices as described in \cite{saltelli2010variance}. The \code{soboljansen} function requires two data frames, \code{X1} and \code{X2}, to define the points in the input space at which to run the \code{model}.  The function in the \pkg{apsimr} package to use for sensntivity analysis is \code{apsimSEN}, therefore we set \code{model=apsimSEN}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on an appropriate interval.  The \code{soboljansen} function allows for additional arguments to be passed to the \code{model} argument.  The function \code{apsimSEN} requires the following additional arguments: the APSIM executable location \code{exe}, the working directory to find the .apsim file to run \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.  The results of this sensitivity analysis are give in Figure \ref{fig:soboljansen}, which was produced by the \code{print} routine for the outputs from the \code{soboljansen}.  \emph{Note:} the function \code{soboljansen} requires $p\times n$ model evaluations, where $n$ is a user specified number of model evaluations (500 below) and $p$ is the number of input parameter considered (3 below).
+The \pkg{sensitivity} package includes several methods to perform sensitivity analysis.  For this example we chose the \code{soboljansen} function which estimates first and total Sobol' indices as described in \cite{saltelli2010variance}. The \code{soboljansen} function requires two data frames, \code{X1} and \code{X2}, to define the points in the input space at which to run the \code{model}.  The function in the \pkg{apsimr} package to use for sensntivity analysis is \code{apsim_sen}, therefore we set \code{model=apsim_sen}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on an appropriate interval.  The \code{soboljansen} function allows for additional arguments to be passed to the \code{model} argument.  The function \code{apsim_sen} requires the following additional arguments: the APSIM executable location \code{exe}, the working directory to find the .apsim file to run \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.  The results of this sensitivity analysis are give in Figure \ref{fig:soboljansen}, which was produced by the \code{print} routine for the outputs from the \code{soboljansen}.  \emph{Note:} the function \code{soboljansen} requires $p\times n$ model evaluations, where $n$ is a user specified number of model evaluations (500 below) and $p$ is the number of input parameter considered (3 below).
 
 <<apsimSA,eval=FALSE,size="footnotesize">>=
 library(sensitivity)
 
 meanYield<-function(x){
-  return(mean(x$paddock.cowpea.yield))
+  return(mean(x$cowpea.yield))
 }
 
-vars <- c("SoilOrganicMatter/SoilCN","SoilWater/DiffusConst","SoilWater/CNCov")
+vars <- c("SoilOrganicMatter/SoilCN", "SoilWater/DiffusConst", "SoilWater/CNCov")
 
-n <- 10
+n <- 75
 X1 <- data.frame(SoilCN = runif(n, 5, 25),
                  DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
 X2 <- data.frame(SoilCN = runif(n, 5, 25),
                  DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
 
-sobolRes <- soboljansen(model = apsimSEN, X1, X2, exe = exe, wd = wd,
+sobolResults <- soboljansen(model = apsim_sen, X1, X2, exe = apsimExe, wd = apsimWD,
                         vars = vars, toRun = file, g = meanYield, overwrite = TRUE)
-plot(sobolRes)
+plot(sobolResults)
 @
 
 
@@ -168,10 +168,10 @@ An alternative, and potentially more efficient, method for sensitivity analysis 
 
 There are two methods to emulating the \code{model}: a single GAM emulation method or a separate GAM method differentiated by \code{method = "singleGAM"} and \code{method = "separateGAM"}, respecitvely.  Data frames consisting of first-order and total sensitivity index estimates along with a standard error, bias, lower and upper confidence bounds are returned along with the fitted means and residuals for each fitted model to assess model assumptions such as homoscedasticity.  The separate GAM method cannot be used to estimate the total sensitivity indices, but the single GAM method can.  
 
-The \code{SAemulator} function returns an object of class \code{"gamSA"}, which has its own plotting routine included in the package.  The example code below demonstrates how to call the \code{SAemulator} function and plot the results of the \code{method = "singleGAM"} option.  Figure \ref{fig:SAemulator} is the result of \code{plot(emulRes)} using the \code{ggplot2} functionality.
+The \code{SAemulator} function returns an object of class \code{"gamSA"}, which has its own plotting routine included in the package.  The example code below demonstrates how to call the \code{SAemulator} function and plot the results of the \code{method = "singleGAM"} option.  Figure \ref{fig:SAemulator} is the result of \code{plot(emulRes)} using the \code{ggplot2} functionality.  Note that atleast $8p^2-4p+1$ model runs are required to fit the single GAM where $p$ is the number of parameters included in the.
 
 <<apsimSAEmulator,eval=FALSE,size="footnotesize">>=
-emulRes <- SAemulator(model = apsimSEN, X = X1, method = "singleGAM", exe = exe, wd = wd,
+emulRes <- apsim_emulator(model = apsim_sen, X = X1, method = "singleGAM", exe = apsimExe, wd = apsimWD,
                         vars = vars, toRun = file, g = meanYield, overwrite = TRUE)
 plot(emulRes)
 @
@@ -181,10 +181,10 @@ The ability to simply include model runs instead of the model itself sets the \c
 <<apsimMGSA,eval=FALSE,size="footnotesize">>=
 
 rawYield <- function(x){
-  return(x$paddock.cowpea.yield)
+  return(x$cowpea.yield)
 }
 
-cowpeaY <- apsimSEN(X = X1, exe = exe, wd = wd, vars = vars, toRun = file, g = rawYield, overwrite = TRUE)
+cowpeaY <- apsim_sen(X = X1, exe = apsimExe, wd = apsimWD, vars = vars, toRun = file, g = rawYield, overwrite = TRUE)
   
 vCowpea<-var(cowpeaY)
 pcsY<-svd(vCowpea)$u
