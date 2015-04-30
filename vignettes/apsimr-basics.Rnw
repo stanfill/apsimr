@@ -56,9 +56,9 @@ Every APSIM simulation run will produce a text file with the file extension \ver
 The function used to run APSIM from R is called \code{apsim}.  Its only required argument is \code{exe}, which is the path to the APSIM executable file on your machine.  Additional arguments include  \code{wd} and \code{files}.  The \code{wd} argument specifies the working directory to which the results will be written and is set to the current working directory by default.  The argument \code{files} is the list of \verb=.apsim= simulation files to be run, which is set to all \verb=.apsim= files in the specified working directory by default.
 <<run,eval=FALSE>>=
 apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
-apsimWD <- "~/APSIM"
+apsimWd <- "~/APSIM"
 to_run <- c("Canopy.apsim", "Continuous Wheat.apsim")
-results <- apsim(exe = apsimExe, wd = apsimWD, files = to_run)
+results <- apsim(exe = apsimExe, wd = apsimWd, files = to_run)
 @
 
 
@@ -66,8 +66,8 @@ results <- apsim(exe = apsimExe, wd = apsimWD, files = to_run)
 
 The file I want to edit is called "Canopy.apsim" which is in the directory "$\sim$/APSIM"
 <<file,eval=FALSE>>=
-file <- "Canopy.apsim"
-apsimWD <- "~/APSIM"
+apsimFile <- "Canopy.apsim"
+apsimWd <- "~/APSIM"
 @
 I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and the state at which the simulation is being run.
 Change SoilWater-Thickness to 200,200,300$\times$9
@@ -80,7 +80,7 @@ value <- list(c(rep(200, 2), rep(300, 9)), 10)
 
 The next snippit edits the apsim file without overwriting it.  This results in the new file being written into the \code{wd} with the additional tage "-updated.apsim".  In this case the new file "Canopy-edited.apsim" is identical to "Canopy.apsim" except for the variables that have been changed by the above code snippet.  If the option \code{overwrite=TRUE} then "Canopy.apsim" is overwritten with the new variable values.
 <<edit,eval=FALSE>>=
-edit_apsim(file, apsimWD, var, value, overwrite = FALSE)
+edit_apsim(apsimFile, apsimWd, var, value, overwrite = FALSE)
 @
 
 \section{Beyond the Conventional}
@@ -129,19 +129,19 @@ The \pkg{sensitivity} package includes several methods to perform sensitivity an
 library(sensitivity)
 
 meanYield<-function(x){
-  return(mean(x$cowpea.yield))
+  return(mean(x$lai_cowpea))
 }
 
 vars <- c("SoilOrganicMatter/SoilCN", "SoilWater/DiffusConst", "SoilWater/CNCov")
 
-n <- 75
+n <- 20
 X1 <- data.frame(SoilCN = runif(n, 5, 25),
                  DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
 X2 <- data.frame(SoilCN = runif(n, 5, 25),
                  DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
 
-sobolResults <- soboljansen(model = apsim_vector, X1, X2, exe = apsimExe, wd = apsimWD,
-                        vars = vars, toRun = file, g = meanYield, overwrite = TRUE)
+sobolResults <- soboljansen(model = apsim_vector, X1, X2, exe = apsimExe, wd = apsimWd,
+                        vars = vars, to.run = apsimFile, g = meanYield, overwrite = TRUE)
 plot(sobolResults)
 @
 
@@ -171,8 +171,8 @@ There are two methods to emulating the \code{model}: a single GAM emulation meth
 The \code{SAemulator} function returns an object of class \code{"gamSA"}, which has its own plotting routine included in the package.  The example code below demonstrates how to call the \code{SAemulator} function and plot the results of the \code{method = "singleGAM"} option.  Figure \ref{fig:SAemulator} is the result of \code{plot(emulRes)} using the \code{ggplot2} functionality.  Note that atleast $8p^2-4p+1$ model runs are required to fit the single GAM where $p$ is the number of parameters included in the.
 
 <<apsimSAEmulator,eval=FALSE,size="footnotesize">>=
-emulRes <- apsim_emulator(model = apsim_vector, X = X1, method = "singleGAM", exe = apsimExe, wd = apsimWD,
-                        vars = vars, toRun = file, g = meanYield, overwrite = TRUE)
+emulRes <- apsim_emul_sa(model = apsim_vector, X = X1, method = "singleGAM", exe = apsimExe, wd = apsimWd,
+                        vars = vars, to.run = apsimFile, g = meanYield, overwrite = TRUE)
 plot(emulRes)
 @
 
@@ -184,7 +184,7 @@ rawYield <- function(x){
   return(x$cowpea.yield)
 }
 
-cowpeaY <- apsim_vector(X = X1, exe = apsimExe, wd = apsimWD, vars = vars, toRun = file, g = rawYield, overwrite = TRUE)
+cowpeaY <- apsim_vector(X = X1, exe = apsimExe, wd = apsimWd, vars = vars, toRun = apsimFile, g = rawYield, overwrite = TRUE)
   
 vCowpea<-var(cowpeaY)
 pcsY<-svd(vCowpea)$u
