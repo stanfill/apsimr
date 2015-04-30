@@ -8,8 +8,8 @@
 #' @param exe where to find the APSIM executable
 #' @param wd directory where the .apsim file lives and where the results will be saved
 #' @param vars names of the variables, must be of the same length as 'X' has columns
-#' @param toRun the .apsim file in \code{wd} to run
-#' @param toEdit the .apsim file or .xml file to be edited
+#' @param to.run the .apsim file in \code{wd} to run
+#' @param to.edit the .apsim file or .xml file to be edited
 #' @param overwrite argument passed to the \code{edit_apsim} and \code{edit_sim_file} functions
 #' @param g a function of the output returned by apsim - must give univariate result
 #' @param multivariate Is the desired analysis univariate (\code{FALSE}) or multivariate (\code{TRUE})
@@ -17,21 +17,22 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' g<-function(X){
+#' meanCowpea<-function(X){
 #'  return(mean(X$lai_cowpea))
 #' }
 #' 
-#' wd <- "~/APSIM"
-#' var <- c(rep("SoilWater/Thickness",10), "SoilOrganicMatter/SoilCN")
-#' value <- matrix(c(rep(200, 2), rep(300, 8), 10,rep(350, 2), rep(350, 8), 5),nrow=2,byrow=T)
-#' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
-#' file <- "Canopy.apsim"
+#' apsimWd <- "~/APSIM"
+#' apsimVar <- c(rep("SoilWater/Thickness",10), "SoilOrganicMatter/SoilCN")
+#' apsimValue <- matrix(c(rep(200, 2), rep(300, 8), 10,rep(350, 2), rep(350, 8), 5),nrow=2,byrow=T)
+#' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
+#' apsimFile <- "Canopy.apsim"
 #' 
-#' res <- apsim_sen(X=value,exe=exe, wd=wd,vars=var,toRun=file, toEdit=file,g=g)
-#' res
+#' saRes <- apsim_sen(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar, to.run = apsimFile, 
+#'                  to.edit = apsimFile, g = meanCowpea)
+#' saRes
 #' }
 
-apsim_sen<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g, multivariate=FALSE){
+apsim_sen<-function(X, exe, wd, vars, to.run, to.edit=to.run, overwrite=FALSE, g, multivariate=FALSE){
   #This is a version of the 'apsim' function that can be 
   #used with the sensitivity package
   oldWd<-getwd()
@@ -49,11 +50,11 @@ apsim_sen<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g, m
   valueI<-vector("list",numVar)
   
   #When overwrite==FALSE then an new .apsim file is created with the title "___-edited.apsim"
-  #Therefore, if toRun==toEdit and overwirte==FALSE then the unchanged version of toEdit is executed
+  #Therefore, if to.run==to.edit and overwirte==FALSE then the unchanged version of to.edit is executed
   #This updates the file name so the correct (new) .apsim file is run
-  if(!overwrite & toEdit==toRun){
-    newName<-paste(gsub(".apsim","",toRun),"-edited",sep="")
-    toRun<-paste(newName,".apsim",sep="")
+  if(!overwrite & to.edit==to.run){
+    newName<-paste(gsub(".apsim","",to.run),"-edited",sep="")
+    to.run<-paste(newName,".apsim",sep="")
   }
   
   for(i in 1:N){
@@ -62,15 +63,15 @@ apsim_sen<-function(X, exe, wd, vars, toRun, toEdit=toRun, overwrite=FALSE, g, m
       valueI[[j]] <- X[i,which(vars==unVar[j])]
     }
     
-    if(length(grep(".apsim$",toEdit))>0){
+    if(length(grep(".apsim$",to.edit))>0){
       #edit the .apsim file
-      edit_apsim(file=toEdit,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
+      edit_apsim(file=to.edit,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
     }else{
-      edit_sim_file(file=toEdit,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
+      edit_sim_file(file=to.edit,wd=wd,var=unVar,value=valueI,overwrite=overwrite)
     }
 
     #Run the edited apsim file and collect the output
-    res <- apsim(exe=exe, wd=wd, files = toRun)
+    res <- apsim(exe=exe, wd=wd, files = to.run)
     if(i==1 & multivariate){
       y <- rep(0,N)
     }else if(i==1 & !multivariate){

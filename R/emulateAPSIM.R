@@ -10,6 +10,23 @@
 #' @param ... Additional arguments passed to the choosen method
 #' @return A data frame of results, the exact form depends on the method
 #' @export
+#' @examples
+#' 
+#' \dontrun{
+#' meanYield<-function(x){
+#' return(mean(x$cowpea.yield))
+#' }
+#' apsimVars <- c("SoilOrganicMatter/SoilCN", "SoilWater/DiffusConst", "SoilWater/CNCov")
+#' n <- 75
+#' X1 <- data.frame(SoilCN = runif(n, 5, 25),
+#'                  DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
+#' emulRes <- apsim_emulator(model = apsim_sen, X = X1, method = "singleGAM", exe = apsimExe, wd = apsimWD,
+#'                           vars = apsimVars, toRun = file, g = meanYield, overwrite = TRUE)
+#' plot(emulRes)
+#' 
+#' }
+
+
 apsim_emulator <- function(model, X, y = NULL, method, ...){
   
   method <- try(match.arg(method,c("singleGAM","separateGAM")),silent=TRUE)
@@ -27,11 +44,11 @@ apsim_emulator <- function(model, X, y = NULL, method, ...){
   
   if(method=='singleGAM'){
     
-    res <- singleGAM(model = model, X = X, y = y, ...)
+    res <- single_GAM(model = model, X = X, y = y, ...)
     
   }else if(method == 'separateGAM'){
     
-    res <- separateGAM(model = model, X = X, y = y, ...)
+    res <- separate_GAM(model = model, X = X, y = y, ...)
     
   }  
   
@@ -41,7 +58,7 @@ apsim_emulator <- function(model, X, y = NULL, method, ...){
 }
 
 
-singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
+single_GAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
   
   #This function evaulates the simulator at each row of X,
   #then uses the simulator outputs to fit only one GAM relating every
@@ -141,7 +158,7 @@ singleGAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
 }
 
 
-separateGAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
+separate_GAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
   #model - the function to produce outputs y, can't be left empty but it's not necessary if y is not null
   #y - the vector of length n of model outputs (takes precedence over model argument)
   #X - the n-by-p matrix of input values

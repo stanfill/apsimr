@@ -19,8 +19,8 @@
 #' \dontrun{
 #' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 #' apsimWd <- "~/APSIM"
-#' to_run <- c("Centro.apsim", "Continuous Wheat.apsim")
-#' results <- apsim(apsimExe, apsimWd, files = to_run)
+#' toRun <- c("Centro.apsim", "Continuous Wheat.apsim")
+#' results <- apsim(apsimExe, apsimWd, files = toRun)
 #' }
 
 apsim<-function(exe, wd = getwd(), files = NULL){
@@ -57,7 +57,7 @@ apsim<-function(exe, wd = getwd(), files = NULL){
     res <- suppressWarnings(system(paste(exe,addCommas(files[i]), sep = " "), show.output.on.console = FALSE))
     
     if(res!=0){
-      stop("APSIM was not exectued correctly.  Please check that the path to APSIM.exe is correct.")
+      stop("An error occured when trying to run APSIM.  Please check your arguments again, especially the path to APSIM.exe.")
     }
     
     #Grab the name of the ouput file from the simulation file
@@ -115,16 +115,16 @@ apsim<-function(exe, wd = getwd(), files = NULL){
 #' @export
 #' @examples
 #' \dontrun{
-#' path <-"C:/Program Files (x86)/Apsim76-r3376/"
-#' wd <- "~/APSIM"
-#' file <- "Canopy.apsim"
-#' example_apsim(path = path, wd = wd, file) #TRUE
+#' apsimPath <-"C:/Program Files (x86)/Apsim75-r3008/"
+#' apsimWd <- "~/APSIM"
+#' toRun <- "Canopy.apsim"
+#' example_apsim(path = apsimPath, wd = apsimWd, files = toRun) #TRUE
 #' 
-#' file <- c("Canopy.apsim", "Continuous Wheat.apsim")
-#' example_apsim(path = path, wd = wd, file) #TRUE TRUE
+#' toRun <- c("Canopy.apsim", "Continuous Wheat.apsim")
+#' example_apsim(path = apsimPath, wd = apsimWd, files = toRun) #TRUE TRUE
 #' 
-#' exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
-#' results <- apsim(exe, wd, files = file)
+#' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
+#' results <- apsim(exe = apsimExe, wd = apsimWd, files = toRun)
 #' }
 
 example_apsim<-function(path, wd = getwd(), files = NULL,...){
