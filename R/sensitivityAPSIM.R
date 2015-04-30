@@ -27,12 +27,12 @@
 #' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 #' apsimFile <- "Canopy.apsim"
 #' 
-#' saRes <- apsim_sen(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar, to.run = apsimFile, 
+#' saRes <- apsim_sa(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar, to.run = apsimFile, 
 #'                  to.edit = apsimFile, g = meanCowpea)
 #' saRes
 #' }
 
-apsim_sen<-function(X, exe, wd, vars, to.run, to.edit=to.run, overwrite=FALSE, g, multivariate=FALSE){
+apsim_sa<-function(X, exe, wd, vars, to.run, to.edit=to.run, overwrite=FALSE, g, multivariate=FALSE){
   #This is a version of the 'apsim' function that can be 
   #used with the sensitivity package
   oldWd<-getwd()

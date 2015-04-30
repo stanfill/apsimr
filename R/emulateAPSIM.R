@@ -14,20 +14,23 @@
 #' 
 #' \dontrun{
 #' meanYield<-function(x){
-#' return(mean(x$cowpea.yield))
+#'  return(mean(x$lai_cowpea))
 #' }
-#' apsimVars <- c("SoilOrganicMatter/SoilCN", "SoilWater/DiffusConst", "SoilWater/CNCov")
 #' n <- 75
-#' X1 <- data.frame(SoilCN = runif(n, 5, 25),
+#' parValues <- data.frame(SoilCN = runif(n, 5, 25),
 #'                  DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
-#' emulRes <- apsim_emulator(model = apsim_sen, X = X1, method = "singleGAM", exe = apsimExe, wd = apsimWD,
-#'                           vars = apsimVars, toRun = file, g = meanYield, overwrite = TRUE)
+#' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
+#' apsimWd <- "~/APSIM"
+#' apsimVars <- c("SoilOrganicMatter/SoilCN", "SoilWater/DiffusConst", "SoilWater/CNCov")
+#' apsimFile <- "Canopy.apsim"
+#' emulRes <- apsim_emul_sa(model = apsim_sa, X = parValues, method = "singleGAM", exe = apsimExe, wd = apsimWd,
+#'                           vars = apsimVars, to.run = apsimFile, g = meanYield, overwrite = TRUE)
 #' plot(emulRes)
 #' 
 #' }
 
 
-apsim_emulator <- function(model, X, y = NULL, method, ...){
+apsim_emul_sa <- function(model, X, y = NULL, method, ...){
   
   method <- try(match.arg(method,c("singleGAM","separateGAM")),silent=TRUE)
   

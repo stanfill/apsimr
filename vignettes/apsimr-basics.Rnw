@@ -140,7 +140,7 @@ X1 <- data.frame(SoilCN = runif(n, 5, 25),
 X2 <- data.frame(SoilCN = runif(n, 5, 25),
                  DiffusConst = runif(n, 20, 50), CNCov = runif(n, 0, 1))
 
-sobolResults <- soboljansen(model = apsim_sen, X1, X2, exe = apsimExe, wd = apsimWD,
+sobolResults <- soboljansen(model = apsim_sa, X1, X2, exe = apsimExe, wd = apsimWD,
                         vars = vars, toRun = file, g = meanYield, overwrite = TRUE)
 plot(sobolResults)
 @
@@ -171,7 +171,7 @@ There are two methods to emulating the \code{model}: a single GAM emulation meth
 The \code{SAemulator} function returns an object of class \code{"gamSA"}, which has its own plotting routine included in the package.  The example code below demonstrates how to call the \code{SAemulator} function and plot the results of the \code{method = "singleGAM"} option.  Figure \ref{fig:SAemulator} is the result of \code{plot(emulRes)} using the \code{ggplot2} functionality.  Note that atleast $8p^2-4p+1$ model runs are required to fit the single GAM where $p$ is the number of parameters included in the.
 
 <<apsimSAEmulator,eval=FALSE,size="footnotesize">>=
-emulRes <- apsim_emulator(model = apsim_sen, X = X1, method = "singleGAM", exe = apsimExe, wd = apsimWD,
+emulRes <- apsim_emulator(model = apsim_sa, X = X1, method = "singleGAM", exe = apsimExe, wd = apsimWD,
                         vars = vars, toRun = file, g = meanYield, overwrite = TRUE)
 plot(emulRes)
 @
@@ -184,7 +184,7 @@ rawYield <- function(x){
   return(x$cowpea.yield)
 }
 
-cowpeaY <- apsim_sen(X = X1, exe = apsimExe, wd = apsimWD, vars = vars, toRun = file, g = rawYield, overwrite = TRUE)
+cowpeaY <- apsim_sa(X = X1, exe = apsimExe, wd = apsimWD, vars = vars, toRun = file, g = rawYield, overwrite = TRUE)
   
 vCowpea<-var(cowpeaY)
 pcsY<-svd(vCowpea)$u
