@@ -22,21 +22,31 @@
 #' }
 #' 
 #' apsimWd <- "~/APSIM"
-#' apsimVar <- c(rep("SoilWater/Thickness",10), "SoilOrganicMatter/SoilCN")
-#' apsimValue <- matrix(c(rep(200, 2), rep(300, 8), 10,rep(350, 2), rep(350, 8), 5),nrow=2,byrow=T)
+#' apsimVar <- c(rep("SoilWater/Thickness",11), "SoilOrganicMatter/SoilCN")
+#' apsimValue <- matrix(c(rep(200, 2), rep(300, 9), 10,rep(350, 2), rep(350, 9), 5),nrow=2,byrow=T)
 #' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 #' apsimFile <- "Canopy.apsim"
 #' 
-#' saRes <- apsim_sa(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar, to.run = apsimFile, 
-#'                  to.edit = apsimFile, g = meanCowpea)
-#' saRes
+#' uniRes <- apsim_vector(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar, to.run = apsimFile, 
+#'                  to.edit = apsimFile, g = meanCowpea, multivariate = FALSE)
+#' uniRes
+#' 
+#' 
+#' allCowpea <- function(x){
+#'  return(x$lai_cowpea)
+#' }
+#' 
+#' multiRes <- apsim_vector(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar, to.run = apsimFile, 
+#'                  to.edit = apsimFile, g = allCowpea, multivariate = TRUE)
+#' multiRes
 #' }
 
-apsim_sa<-function(X, exe, wd, vars, to.run, to.edit=to.run, overwrite=FALSE, g, multivariate=FALSE){
+apsim_vector<-function(X, exe, wd, vars, to.run, to.edit=to.run, overwrite=FALSE, g, multivariate=FALSE){
   #This is a version of the 'apsim' function that can be 
   #used with the sensitivity package
   oldWd<-getwd()
   setwd(wd)
+  
   if(ncol(X)!=length(vars)){
     stop("X must have same number of columns as 'var' is long")
   }
@@ -71,18 +81,30 @@ apsim_sa<-function(X, exe, wd, vars, to.run, to.edit=to.run, overwrite=FALSE, g,
     }
 
     #Run the edited apsim file and collect the output
+
     res <- apsim(exe=exe, wd=wd, files = to.run)
-    if(i==1 & multivariate){
-      y <- rep(0,N)
-    }else if(i==1 & !multivariate){
+    if(i==1){
       g1 <- g(res)
-      y <- matrix(0,N,length(g1))
-    }
-    
-    if(multivariate){
-      y[i] <- g(res)
-    }else{
-      y[i,] <- g(res)
+      
+      if(is.na(g1)){
+        setwd(oldWd)
+        stop("The provided g function returned NA, check that it is defined correctly.")
+      }
+      
+      if(multivariate){
+        y <- matrix(0,N,length(g1))
+        y[1,] <- g1
+      }else{
+        y <- rep(0,N)
+        y[1] <- g1
+      }
+      
+    }else{ 
+      if(multivariate){
+        y[i,] <- g(res)
+      }else{
+        y[i] <- g(res)
+      }
     }
   }
   setwd(oldWd)

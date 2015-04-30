@@ -29,8 +29,8 @@ Each element of the list is of the class \code{"apsim"}.
 \dontrun{
 apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 apsimWd <- "~/APSIM"
-to_run <- c("Centro.apsim", "Continuous Wheat.apsim")
-results <- apsim(apsimExe, apsimWd, files = to_run)
+toRun <- c("Centro.apsim", "Continuous Wheat.apsim")
+results <- apsim(apsimExe, apsimWd, files = toRun)
 }
 }
 

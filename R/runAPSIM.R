@@ -32,6 +32,7 @@ apsim<-function(exe, wd = getwd(), files = NULL){
   fileNames <- dir(,pattern=".apsim$")
 
   if(length(fileNames)==0){
+    setwd(oldWD)
     stop("There are no .apsim files in the folder wd to run.")
   }
   
@@ -57,6 +58,7 @@ apsim<-function(exe, wd = getwd(), files = NULL){
     res <- suppressWarnings(system(paste(exe,addCommas(files[i]), sep = " "), show.output.on.console = FALSE))
     
     if(res!=0){
+      setwd(oldWD)
       stop("An error occured when trying to run APSIM.  Please check your arguments again, especially the path to APSIM.exe.")
     }
     

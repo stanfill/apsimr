@@ -27,16 +27,16 @@ the .apsim file and the ability to write in the "Program Files" folder is limite
 }
 \examples{
 \dontrun{
-path <-"C:/Program Files (x86)/Apsim76-r3376/"
-wd <- "~/APSIM"
-file <- "Canopy.apsim"
-example_apsim(path = path, wd = wd, file) #TRUE
+apsimPath <-"C:/Program Files (x86)/Apsim75-r3008/"
+apsimWd <- "~/APSIM"
+toRun <- "Canopy.apsim"
+example_apsim(path = apsimPath, wd = apsimWd, files = toRun) #TRUE
 
-file <- c("Canopy.apsim", "Continuous Wheat.apsim")
-example_apsim(path = path, wd = wd, file) #TRUE TRUE
+toRun <- c("Canopy.apsim", "Continuous Wheat.apsim")
+example_apsim(path = apsimPath, wd = apsimWd, files = toRun) #TRUE TRUE
 
-exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
-results <- apsim(exe, wd, files = file)
+apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
+results <- apsim(exe = apsimExe, wd = apsimWd, files = toRun)
 }
 }
 

@@ -9,11 +9,11 @@ S3method(plot,gamSA)
 S3method(print,gamSA)
 
 export(apsim)
-export(apsim_sen)
+export(apsim_vector)
 export(edit_apsim)
 export(edit_sim_file)
 export(example_apsim)
-export(apsim_emulator)
+export(apsim_emul_sa)
 
 exportClasses(apsim)
 exportClasses(gamSA)

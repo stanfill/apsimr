@@ -65,7 +65,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
     
     if(lenDiff>0){
       #value[[i]]<-c(value[[i]],rep(value[[i]][lReplace],lenDiff))
-      warning(paste("Only the first",lReplace,"elements were changed",sep=" "))
+      warning(paste("Only the first",lReplace,"of the",lToReplace,"elements of",var[i],"were changed",sep=" "))
     }
     
     for(j in 1:lReplace){
