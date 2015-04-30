@@ -161,7 +161,7 @@ single_GAM <- function(model, X, boot = 1000, conf = 0.95, y = NULL, ...){
 }
 
 
-separate_GAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
+separate_GAM<-function(model, X, boot = 1000, conf = 0.95, y = NULL,...){
   #model - the function to produce outputs y, can't be left empty but it's not necessary if y is not null
   #y - the vector of length n of model outputs (takes precedence over model argument)
   #X - the n-by-p matrix of input values
@@ -219,7 +219,7 @@ separate_GAM<-function(model , X, boot = 1000, conf = 0.95, y = NULL,...){
 #' @return The results of the sensitivity analysis without the estimated output and residuals
 #' @export
 
-plot.gamSA <- function(x,...){
+plot.gamSA <- function(x, ...){
   saRes <- x
   p <- length(saRes$FirstOrder$Est)
   togDF <- data.frame(Parameter=rep(saRes$FirstOrder$Parameter,2))
@@ -256,7 +256,7 @@ plot.gamSA <- function(x,...){
 #' @return The results of the sensitivity analysis without the estimated output and residuals
 #' @export
 
-print.gamSA <- function(x,...){
+print.gamSA <- function(x, ...){
   saRes <- x
   saRes$ehat <- NULL
   saRes$yhat <- NULL

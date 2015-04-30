@@ -46,7 +46,7 @@ apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 apsimFile <- "Canopy.apsim"
 
 uniRes <- apsim_vector(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar, to.run = apsimFile,
-                 to.edit = apsimFile, g = meanCowpea, multivariate = FALSE)
+                       to.edit = apsimFile, g = meanCowpea, multivariate = FALSE)
 uniRes
 
 
@@ -55,7 +55,7 @@ allCowpea <- function(x){
 }
 
 multiRes <- apsim_vector(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar, to.run = apsimFile,
-                 to.edit = apsimFile, g = allCowpea, multivariate = TRUE)
+                         to.edit = apsimFile, g = allCowpea, multivariate = TRUE)
 multiRes
 }
 }

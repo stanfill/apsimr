@@ -30,7 +30,7 @@ Each element of the list is of the class \code{"apsim"}.
 apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 apsimWd <- "~/APSIM"
 toRun <- c("Centro.apsim", "Continuous Wheat.apsim")
-results <- apsim(apsimExe, apsimWd, files = toRun)
+results <- apsim(exe = apsimExe, wd = apsimWd, files = toRun)
 }
 }
 

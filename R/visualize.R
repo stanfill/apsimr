@@ -17,10 +17,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' exe <- "C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
-#' wd <- "~/APSIM"
+#' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
+#' apsimWd <- "~/APSIM"
 #' toRun <- c("Centro.apsim", "Continuous Wheat.apsim")
-#' results <- apsim(exe, wd, files = toRun)
+#' results <- apsim(exe = apsimExe, wd = apsimWd, files = toRun)
 #' 
 #' #Look at all of the results as a function of time in seperate plots
 #' plot(results[[2]])
