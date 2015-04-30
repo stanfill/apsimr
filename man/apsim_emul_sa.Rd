@@ -36,8 +36,9 @@ apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 apsimWd <- "~/APSIM"
 apsimVars <- c("SoilOrganicMatter/SoilCN", "SoilWater/DiffusConst", "SoilWater/CNCov")
 apsimFile <- "Canopy.apsim"
-emulRes <- apsim_emul_sa(model = apsim_vector, X = parValues, method = "singleGAM", exe = apsimExe, wd = apsimWd,
-                          vars = apsimVars, to.run = apsimFile, g = meanYield, overwrite = TRUE)
+emulRes <- apsim_emul_sa(model = apsim_vector, X = parValues, method = "singleGAM",
+             exe = apsimExe, wd = apsimWd, vars = apsimVars, to.run = apsimFile,
+             g = meanYield, overwrite = TRUE)
 plot(emulRes)
 
 }
