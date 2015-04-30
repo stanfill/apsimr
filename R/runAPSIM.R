@@ -54,7 +54,11 @@ apsim<-function(exe, wd = getwd(), files = NULL){
   
   for(i in 1:nFiles){  
     
-    system(paste(exe,addCommas(files[i]), sep = " "), show.output.on.console = FALSE)
+    res <- suppressWarnings(system(paste(exe,addCommas(files[i]), sep = " "), show.output.on.console = FALSE))
+    
+    if(res!=0){
+      stop("APSIM was not exectued correctly.  Please check that the path to APSIM.exe is correct.")
+    }
     
     #Grab the name of the ouput file from the simulation file
     out_files[i]<-paste(xmlAttrs(xmlParse(files[i])[["//simulation"]])[[1]],".out",sep="")
