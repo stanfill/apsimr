@@ -1,11 +1,12 @@
-#' A function to estimate sensitivity indices based on emulation methods
+#' Emulator-Based Sensitivity Analysis
 #' 
 #' This is a generic function that can be used to estimate the sensitivity
 #' indices for complex computer models using GAM-based emulators.
 #' 
 #' Each column of the matrix \code{X} corresponds to a different input and each row corresponds to a
 #' different run of the computer model. Currently the method choices are: \code{"singleGAM"} and 
-#' \code{"separateGAM"}.  The \code{"singleGAM"} method builds a single GAM with terms for all main 
+#' \code{"separateGAM"}.  The \code{"singleGAM"} method builds a single generalized additive model (GAM)
+#' with terms for all main 
 #' effects of inputs plus all two-way interactions between inputs. With this method all first-order
 #' and total sensitivity indices are estimable provided at least 8p^2-4p+1 runs of the computer
 #' model are available.  The \code{"separateGAM"} method builds a separate GAM emulator for each
@@ -18,13 +19,13 @@
 #'  
 #' 
 #' @param model a function that specifies the model of interest
-#' @param X a matrix of input values; columns are inputs and rows are runs
+#' @param X n-by-p matrix of input values; n runs, p inputs
 #' @param boot number of bootstrap replicates
 #' @param conf confidence level of bootstrap calibrated intervals
 #' @param y optional vector of model evaluations that can be used in place of the model statement
 #' @param method method to use to emulate the model; \code{"singleGAM"} or \code{"separateGAM"}
 #' @param ... additional arguments passed to \code{method}
-#' @return A data frame of results, the exact form depends on the method.
+#' @return A data frame of sensitivity measures where the exact form depends on the method, see details.
 #' @export
 #' @examples
 #' 

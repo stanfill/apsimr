@@ -2,14 +2,14 @@
 % Please edit documentation in R/emulateAPSIM.R
 \name{apsim_emul_sa}
 \alias{apsim_emul_sa}
-\title{A function to estimate sensitivity indices based on emulation methods}
+\title{Emulator-Based Sensitivity Analysis}
 \usage{
 apsim_emul_sa(model, X, boot = 1000, conf = 0.95, y = NULL, method, ...)
 }
 \arguments{
 \item{model}{a function that specifies the model of interest}
 
-\item{X}{a matrix of input values; columns are inputs and rows are runs}
+\item{X}{n-by-p matrix of input values; n runs, p inputs}
 
 \item{boot}{number of bootstrap replicates}
 
@@ -22,7 +22,7 @@ apsim_emul_sa(model, X, boot = 1000, conf = 0.95, y = NULL, method, ...)
 \item{...}{additional arguments passed to \code{method}}
 }
 \value{
-A data frame of results, the exact form depends on the method.
+A data frame of sensitivity measures where the exact form depends on the method, see details.
 }
 \description{
 This is a generic function that can be used to estimate the sensitivity
@@ -31,7 +31,8 @@ indices for complex computer models using GAM-based emulators.
 \details{
 Each column of the matrix \code{X} corresponds to a different input and each row corresponds to a
 different run of the computer model. Currently the method choices are: \code{"singleGAM"} and
-\code{"separateGAM"}.  The \code{"singleGAM"} method builds a single GAM with terms for all main
+\code{"separateGAM"}.  The \code{"singleGAM"} method builds a single generalized additive model (GAM)
+with terms for all main
 effects of inputs plus all two-way interactions between inputs. With this method all first-order
 and total sensitivity indices are estimable provided at least 8p^2-4p+1 runs of the computer
 model are available.  The \code{"separateGAM"} method builds a separate GAM emulator for each

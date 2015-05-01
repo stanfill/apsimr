@@ -2,7 +2,7 @@
 % Please edit documentation in R/sensitivityAPSIM.R
 \name{apsim_vector}
 \alias{apsim_vector}
-\title{Edit and run an APSIM simulation}
+\title{Edit and Run an APSIM Simulation}
 \usage{
 apsim_vector(X, exe, wd, vars, to.run, to.edit = to.run, overwrite = FALSE,
   g, multivariate = FALSE)
@@ -30,8 +30,8 @@ apsim_vector(X, exe, wd, vars, to.run, to.edit = to.run, overwrite = FALSE,
 a vector of length N
 }
 \description{
-This function will both edit and run the edited APSIM simulation.  This function is primarily for use
-with the sensitivity package but it can be useful on its own as well.
+This function will edit then run an APSIM simulation.  It can be thought of as a vectorized
+version of \code{\link[apsimr:apsim]{apsim}}
 }
 \examples{
 \dontrun{

@@ -1,5 +1,7 @@
 #' Edit an APSIM Simulation
 #' 
+#' This function allows you to edit a file ending in ".apsim".
+#' 
 #' The variables specified by \code{var} within the .apsim file specified by \code{file} 
 #' in the working directory \code{wd} are edited. The old values are replaced with \code{value}, which
 #' is a list that has the same number of elements as the length of the vector \code{var}.  The current
