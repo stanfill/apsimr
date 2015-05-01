@@ -13,6 +13,9 @@
 The results of the sensitivity analysis without the estimated output and residuals
 }
 \description{
+Plot routine for \code{"gamSA"} class objects
+}
+\details{
 The default plot method for the results of a sensitivity analysis of APSIM using
 the single or separate GAM-based emulator.  Produces a bar chart where the heights of the
 bar represents the magnitude of the estimated sensitivity index estimate.  Error bars represent

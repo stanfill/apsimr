@@ -104,9 +104,9 @@ apsim<-function(exe, wd = getwd(), files = NULL){
   
 }
 
-#' Access example APSIM simulations
+#' Access Example APSIM Simulations
 #' 
-#' There are quite a few standard APSIM simulations provided in the default APSIM installation.
+#' Standard APSIM simulations are provided by the default APSIM installation.
 #' \code{apsim_expample} moves those example files into the working directory \code{wd} so you can run them
 #' or edit them using \code{\link{apsim}} and \code{\link{edit_apsim}}, respectively.  Generally the
 #' example simulations must be moved because the output file is written to the directory containing

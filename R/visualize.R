@@ -1,4 +1,6 @@
-#' Visualize the results of an APSIM simulation
+#' Visualize the Results of an APSIM Simulation
+#' 
+#' Plot routine for \code{"apsim"} class objects
 #' 
 #' Similar to the \code{\link[stats:plot.lm]{plot}} for \code{\link{lm}} objects, \code{plot.apsim} will 
 #' plot each response in the results of an APSIM simulation on its own \code{ggplot2} object.  If the
@@ -7,7 +9,7 @@
 #' in \code{x}.
 #' 
 #' @name plot.apsim
-#' @param x data frame of class "apsim" including the results of an APSIM simulation
+#' @param x data frame of class \code{"apsim"} including the results of an APSIM simulation
 #' @param y variable to plot on y-axis; if left empty all variables will be plotted on separate plots
 #' @param ask logical; if \code{TRUE}, the user is asked before each plot, see \code{\link{par}(ask=.)} 
 #' @param one_plot logical; if \code{TRUE} all variables are plotted on one faceted plot

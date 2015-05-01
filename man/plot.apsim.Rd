@@ -2,12 +2,12 @@
 % Please edit documentation in R/visualize.R
 \name{plot.apsim}
 \alias{plot.apsim}
-\title{Visualize the results of an APSIM simulation}
+\title{Visualize the Results of an APSIM Simulation}
 \usage{
 \method{plot}{apsim}(x, y = NULL, ask = TRUE, one_plot = FALSE, ...)
 }
 \arguments{
-\item{x}{data frame of class "apsim" including the results of an APSIM simulation}
+\item{x}{data frame of class \code{"apsim"} including the results of an APSIM simulation}
 
 \item{y}{variable to plot on y-axis; if left empty all variables will be plotted on separate plots}
 
@@ -18,6 +18,9 @@
 \item{...}{additional arguments passed to \code{\link[ggplot2:qplot]{qplot}}}
 }
 \description{
+Plot routine for \code{"apsim"} class objects
+}
+\details{
 Similar to the \code{\link[stats:plot.lm]{plot}} for \code{\link{lm}} objects, \code{plot.apsim} will
 plot each response in the results of an APSIM simulation on its own \code{ggplot2} object.  If the
 \code{one_plot} argument is set to \code{TRUE} then \code{\link[ggplot2:facet_wrap]{facet_wrap}} is used to plot

@@ -227,6 +227,8 @@ separate_GAM<-function(model, X, boot = 1000, conf = 0.95, y = NULL,...){
 
 #' Plot Sensitivity Analysis Results
 #' 
+#' Plot routine for \code{"gamSA"} class objects
+#' 
 #' The default plot method for the results of a sensitivity analysis of APSIM using
 #' the single or separate GAM-based emulator.  Produces a bar chart where the heights of the
 #' bar represents the magnitude of the estimated sensitivity index estimate.  Error bars represent
@@ -270,7 +272,7 @@ plot.gamSA <- function(x, ...){
 #' the single or separate GAM-based emulator.
 #' 
 #' @name print.gamSA
-#' @param x,... Results of a successful call to \code{apsim_emulator}
+#' @param x,... Results of a successful call to \code{\link[apsimr:apsim_emul_sa]{apsim_emul_sa}}
 #' @return The results of the sensitivity analysis without the estimated output and residuals
 #' @export
 
