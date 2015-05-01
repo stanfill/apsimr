@@ -5,7 +5,7 @@
 \title{Edit and Run an APSIM Simulation}
 \usage{
 apsim_vector(X, exe, wd, vars, to.run, to.edit = to.run, overwrite = FALSE,
-  g, multivariate = FALSE)
+  g)
 }
 \arguments{
 \item{X}{N-by-p matrix of inputs with rows corresponding to runs and columns for variables}
@@ -20,18 +20,23 @@ apsim_vector(X, exe, wd, vars, to.run, to.edit = to.run, overwrite = FALSE,
 
 \item{to.edit}{the .apsim file or .xml file to be edited}
 
-\item{overwrite}{argument passed to the \code{edit_apsim} and \code{edit_sim_file} functions}
-
 \item{g}{a function of the output returned by apsim - must give univariate result}
 
-\item{multivariate}{Is the desired analysis univariate (\code{FALSE}) or multivariate (\code{TRUE})}
+\item{logica;}{overwrite argument passed to the \code{edit_apsim} and \code{edit_sim_file} functions}
 }
 \value{
 a vector of length N
 }
 \description{
 This function will edit then run an APSIM simulation.  It can be thought of as a vectorized
-version of \code{\link[apsimr:apsim]{apsim}}
+version of \code{\link[apsimr:apsim]{apsim}}.
+}
+\details{
+In order for there to be a link between the \code{\link[sensitivity]{sensitivity}} package and
+\code{apsimr}, there needed to be a function that could edit and then run APSIM that also
+could produce a univariate output.  The \code{apsim_vector} function satisfies these conditions
+and can return multivariate output if a multivaraite sensitivity analysis is of interest.
+See the examples section for details.
 }
 \examples{
 \dontrun{
@@ -41,12 +46,14 @@ meanCowpea<-function(X){
 
 apsimWd <- "~/APSIM"
 apsimVar <- c(rep("SoilWater/Thickness",11), "SoilOrganicMatter/SoilCN")
-apsimValue <- matrix(c(rep(200, 2), rep(300, 9), 10,rep(350, 2), rep(350, 9), 5),nrow=2,byrow=T)
+apsimValue <- matrix(c(rep(200, 2), rep(300, 9), 10,
+                       rep(350, 2), rep(350, 9), 5),nrow=2,byrow=T)
 apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 apsimFile <- "Canopy.apsim"
 
+#Run APSIM at each new paramter vector specified by apsimVar and only return the mean cowpea value
 uniRes <- apsim_vector(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar,
-         to.run = apsimFile, to.edit = apsimFile, g = meanCowpea, multivariate = FALSE)
+         to.run = apsimFile, to.edit = apsimFile, g = meanCowpea)
 uniRes
 
 
@@ -54,8 +61,9 @@ allCowpea <- function(x){
  return(x$lai_cowpea)
 }
 
+#Use allCowpea function to return all the cowpea values
 multiRes <- apsim_vector(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar,
-             to.run = apsimFile, to.edit = apsimFile, g = allCowpea, multivariate = TRUE)
+             to.run = apsimFile, to.edit = apsimFile, g = allCowpea)
 multiRes
 }
 }

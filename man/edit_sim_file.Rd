@@ -15,12 +15,16 @@ edit_sim_file(file, wd = getwd(), var, value, overwrite = FALSE)
 
 \item{value}{list of new values for the specified variables}
 
-\item{overwrite}{logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise}
+\item{overwrite}{logical; if \code{TRUE} the old file is overwritten, otherwise a new file is written}
 }
 \value{
-character string containing the resulting XML content
+complete file path to edited simulation file is returned as a character string
 }
 \description{
+Simulation helper files, such as "Soil.xml" have a different format from .apsim files
+and are therefore treated differently.
+}
+\details{
 APSIM uses .xml files to dictate how certain processes are carried out.  Similar to
 \code{\link{edit_apsim}} this function edits a file that will be used in an APSIM simulation.  Unlike
 \code{\link{edit_apsim}} this function edits the .xml simulation files.
@@ -33,17 +37,23 @@ is a list that has the same number of elements as the vector \code{var} is long.
 \examples{
 \dontrun{
 #The file I want to edit is called "Soil.xml" which is the the directory "~/APSIM"
-file <- "Soil.xml"
-wd <- "~/APSIM"
+simFile <- "Soil.xml"
+apsimWd <- "~/APSIM"
 
 #I want to change the potential nitrification and N2O from nitrification
-var <- c("nitrification_pot", "dnit_nitrf_loss","wfnit_values")
+simVar <- c("nitrification_pot", "dnit_nitrf_loss","wfnit_values")
 
 #Change both to absolute values of random N(0,1)
-value <- list(abs(rnorm(1)), abs(rnorm(1)), c(0,2,2,1))
+simValue <- list(abs(rnorm(1)), abs(rnorm(1)), c(0,2,2,1))
 
 #Edit Soil.xml without overwriting it
-edit_sim_file(file, wd, var, value, overwrite = FALSE)
+edit_sim_file(simFile, apsimWd, simVar, simValue, overwrite = FALSE)
+
+#Passing an .apsim file to edit_sim_file will give a warning and redirect it to edit_apsim
+apsimFile <- "Canopy.apsim"
+apsimValue <- list(c(rep(200, 2), rep(300, 9)), 9, "NSW")
+apsimVar <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN", "State")
+edit_sim_file(apsimFile, apsimWd, apsimVar, apsimValue, overwrite = FALSE)
 }
 }
 

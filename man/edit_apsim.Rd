@@ -18,9 +18,12 @@ edit_apsim(file, wd = getwd(), var, value, overwrite = FALSE)
 \item{overwrite}{logical; if \code{TRUE} the old file is overwritten, a new file is written otherwise}
 }
 \value{
-character string containing the resulting XML content
+complete file path to edited .apsim file is returned as a character string
 }
 \description{
+This function allows you to edit a file ending in ".apsim".
+}
+\details{
 The variables specified by \code{var} within the .apsim file specified by \code{file}
 in the working directory \code{wd} are edited. The old values are replaced with \code{value}, which
 is a list that has the same number of elements as the length of the vector \code{var}.  The current
@@ -30,25 +33,31 @@ is a list that has the same number of elements as the length of the vector \code
 \examples{
 \dontrun{
 #The file I want to edit is called "Canopy.apsim" which is in the directory "~/APSIM"
-file <- "Canopy.apsim"
-wd <- "~/APSIM"
+apsimFile <- "Canopy.apsim"
+apsimWd <- "~/APSIM"
 
 #I want to change the Thickness of the Soilwater, the SoilCN of the SoilOrganicMatter and
 #the state at which the simulation is being run.
-var <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN", "State")
+apsimVar <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN", "State")
 
 #Change SoilWater-Thickness to 200,200,300x9
 #Change SoilCN to 10
 #Change "State" to "NSW"
-value <- list(c(rep(200, 2), rep(300, 9)), 9, "NSW")
+apsimValue <- list(c(rep(200, 2), rep(300, 9)), 9, "NSW")
 
 #Edit the apsim file without overwriting it
-edit_apsim(file, wd, var, value, overwrite = FALSE)
+edit_apsim(apsimFile, apsimWd, apsimVar, apsimValue, overwrite = FALSE)
 
 #Run the edited simulation
-exe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
+apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 
-results <- apsim(exe, wd, files = "Canopy-edited.apsim")
+results <- apsim(apsimExe, apsimWd, files = "Canopy-edited.apsim")
+
+#Passing a simulation file to  edit_apsim will give you a warning and redirect it to edit_sim_file
+simFile <- "Soil.xml"
+simValue <- list(abs(rnorm(1)), abs(rnorm(1)), c(0,2,2,1))
+simVar <- c("nitrification_pot", "dnit_nitrf_loss","wfnit_values")
+edit_apsim(simFile, apsimWd, simVar, simValue, overwrite = FALSE)
 }
 }
 
