@@ -3,12 +3,28 @@
 #' This is a generic function that can be used to estimate the sensitivity
 #' indices for complex computer models using GAM-based emulators.
 #' 
-#' @param model The model that is of interest
-#' @param X The matrix of inputs at which to evaluate the model
-#' @param y Optional vector of model evaluations that can be used in place of the model statement
-#' @param method The method to use to emulate the model
-#' @param ... Additional arguments passed to the choosen method
-#' @return A data frame of results, the exact form depends on the method
+#' Each column of the matrix \code{X} corresponds to a different input and each row corresponds to a
+#' different run of the computer model. Currently the method choices are: \code{"singleGAM"} and 
+#' \code{"separateGAM"}.  The \code{"singleGAM"} method builds a single GAM with terms for all main 
+#' effects of inputs plus all two-way interactions between inputs. With this method all first-order
+#' and total sensitivity indices are estimable provided at least 8p^2-4p+1 runs of the computer
+#' model are available.  The \code{"separateGAM"} method builds a separate GAM emulator for each
+#' input to estimate first-order indices for each input.  Since this method emulates the marginal
+#' distribution of \code{y} given each of the inputs, total order indices cannot be computed.  Both
+#' methods can be bootstrapped in order to estimate standard errors and to calibrate confidence 
+#' regions for the sensitivity index estimates.  The argument \code{boot} specifies the number 
+#' of bootstrap replicates and \code{conf} is the confidence level of the bootstrap calibrated
+#' confidence region. 
+#'  
+#' 
+#' @param model a function that specifies the model of interest
+#' @param X a matrix of input values; columns are inputs and rows are runs
+#' @param boot number of bootstrap replicates
+#' @param conf confidence level of bootstrap calibrated intervals
+#' @param y optional vector of model evaluations that can be used in place of the model statement
+#' @param method method to use to emulate the model; \code{"singleGAM"} or \code{"separateGAM"}
+#' @param ... additional arguments passed to \code{method}
+#' @return A data frame of results, the exact form depends on the method.
 #' @export
 #' @examples
 #' 
@@ -31,7 +47,7 @@
 #' }
 
 
-apsim_emul_sa <- function(model, X, y = NULL, method, ...){
+apsim_emul_sa <- function(model, X, boot = 1000, conf = 0.95, y = NULL, method, ...){
   
   method <- try(match.arg(method,c("singleGAM","separateGAM")),silent=TRUE)
   
@@ -48,11 +64,11 @@ apsim_emul_sa <- function(model, X, y = NULL, method, ...){
   
   if(method=='singleGAM'){
     
-    res <- single_GAM(model = model, X = X, y = y, ...)
+    res <- single_GAM(model = model, X = X, y = y, boot = boot, conf = conf, ...)
     
   }else if(method == 'separateGAM'){
     
-    res <- separate_GAM(model = model, X = X, y = y, ...)
+    res <- separate_GAM(model = model, X = X, y = y, boot = boot, conf = conf, ...)
     
   }  
   

@@ -2,7 +2,7 @@ apsimr version 0.2
 ===================================================================
 New Featurs - 
 -------------------------------------------------------------------
-* The 'apsimSEN' function has been added.  This function is compatible with
+* The 'apsim_vector' function has been added.  This function is compatible with
 the sensitivity package.  This allows for a easy sensitivity/uncertainty analysis of APSIM
 with minimal overhead.
 

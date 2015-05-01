@@ -2,13 +2,16 @@ Package: apsimr
 Type: Package
 Title: Edit, Run and Evaluate APSIM Simulations Easily Using R
 Version: 1.0
-Date: 2015-04-29
+Date: 2015-05-01
 Author: Bryan Stanfill
 Maintainer: Bryan Stanfill <bryan.stanfill@csiro.au>
 Description: The Agricultural Production Systems sIMulator (APSIM) is a widely
     used simulator of agricultural systems.  This package includes a few basic
-    functions to create, edit and run APSIM simulations then visualize the
-    results. For more on APSIM including download instructions go to
+    functions to create, edit and run APSIM simulations from R.  It
+    also includes functions to visualize the results of an APSIM simulation
+    and perform sensitivity/uncertainty analysis of APSIM either via functions
+    in the sensitivity package or by included emulator-based sensitivity
+    analysis function. For more on APSIM including download instructions go to
     \url{www.apsim.info}.
 License: GPL (>=3)
 Imports:

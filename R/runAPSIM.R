@@ -1,12 +1,17 @@
-#' Run APSIM simulations from R
+#' Run APSIM Simulations from R
 #' 
-#' This function will run APSIM from R.  The only required input is the 
-#' file path to the APSIM executable.  It is assumed the current working directory contains the .apsim file(s)
+#' This function will run one or many APSIM simulation(s) and read the output into R 
+#' in the form of a list.  If the simulation does not run for some reason then 
+#' an error is returned.
+#' 
+#' The only required input is the path to the APSIM executable (APSIM.exe) usually found in the "Model"
+#' subfolder of the APSIM installation. By default, it is assumed the current working directory contains the .apsim file(s)
 #' to be run.  If that is not the case then the directory containing the .apsim file(s) to be run
 #' can to be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
-#' directory \code{wd} using the \code{files} argument, otherwise all .apsim files within \code{wd} are run. 
+#' directory \code{wd} using the \code{files} argument.  If the \code{files} argument is left blank then all 
+#' .apsim files within the directory specified by \code{wd} are run. 
 #' The results for each .apsim file that is run is an element of the list that is returned.  
-#' Each element of the list is of the class \code{"apsim"}.
+#' Each element of the list is of the class \code{"apsim"}, which has its own \code{print} and \code{plot} routines.
 #' 
 #' @name apsim
 #' @param exe  path to the APSIM executable
