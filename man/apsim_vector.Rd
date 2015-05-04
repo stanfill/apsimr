@@ -20,9 +20,9 @@ apsim_vector(X, exe, wd, vars, to.run, to.edit = to.run, overwrite = FALSE,
 
 \item{to.edit}{the .apsim file or .xml file to be edited}
 
-\item{g}{a function of the output returned by apsim - must give univariate result}
+\item{overwrite}{logical; passed to the \code{edit_apsim} and \code{edit_sim_file} functions}
 
-\item{logica;}{overwrite argument passed to the \code{edit_apsim} and \code{edit_sim_file} functions}
+\item{g}{a function of the output returned by apsim - must give univariate result}
 }
 \value{
 a vector of length N

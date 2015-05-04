@@ -15,7 +15,7 @@
 #' @param vars names of the variables, must be of the same length as 'X' has columns
 #' @param to.run the .apsim file in \code{wd} to run
 #' @param to.edit the .apsim file or .xml file to be edited
-#' @param logica; overwrite argument passed to the \code{edit_apsim} and \code{edit_sim_file} functions
+#' @param overwrite logical; passed to the \code{edit_apsim} and \code{edit_sim_file} functions
 #' @param g a function of the output returned by apsim - must give univariate result
 #' @return a vector of length N
 #' @export
