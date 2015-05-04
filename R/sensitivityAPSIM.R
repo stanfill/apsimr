@@ -93,7 +93,7 @@ apsim_vector<-function(X, exe, wd, vars, to.run, to.edit=to.run, overwrite=FALSE
     if(i==1){
       g1 <- g(res)
       
-      if(is.na(g1)){
+      if(any(is.na(g1))){
         setwd(oldWd)
         stop("The provided g function returned NA, check that it is defined correctly.")
       }

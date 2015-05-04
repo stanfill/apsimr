@@ -36,7 +36,7 @@ See \url{http://www.apsim.info/} for information about APSIM.
 \dontrun{
 apsimExe <-"C:/Program Files (x86)/Apsim76-r3376/Model/Apsim.exe"
 apsimWd <- "~/APSIM"
-apsimResults <- apsim(apsimExe, apsimWd, "Centro.apsim")
+apsimResults <- apsim(exe = apsimExe, wd = apsimWd, files = "Centro.apsim")
 plot(apsimResults)
 }
 }

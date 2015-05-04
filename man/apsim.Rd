@@ -38,7 +38,7 @@ apsimWd <- "~/APSIM"
 toRun <- c("Centro.apsim", "Continuous Wheat.apsim")
 results <- apsim(exe = apsimExe, wd = apsimWd, files = toRun)
 results
-plot(results)
+plot(results$Centro)
 }
 }
 
