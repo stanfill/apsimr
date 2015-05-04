@@ -4,7 +4,7 @@
 #'version of \code{\link[apsimr:apsim]{apsim}}.
 #'
 #'In order for there to be a link between the \code{\link[sensitivity]{sensitivity}} package and 
-#'\code{apsimr}, there needed to be a function that could edit and then run APSIM that also
+#'\code{apsimr}, there needs to be a function that could edit and then run APSIM that also
 #'could produce a univariate output.  The \code{apsim_vector} function satisfies these conditions
 #'and can return multivariate output if a multivaraite sensitivity analysis is of interest.
 #'See the examples section for details.
@@ -16,7 +16,7 @@
 #' @param to.run the .apsim file in \code{wd} to run
 #' @param to.edit the .apsim file or .xml file to be edited
 #' @param overwrite logical; passed to the \code{edit_apsim} and \code{edit_sim_file} functions
-#' @param g a function of the output returned by apsim - must give univariate result
+#' @param g a function of the output returned by apsim - must give vector or scalar result
 #' @return a vector of length N
 #' @export
 #' @examples

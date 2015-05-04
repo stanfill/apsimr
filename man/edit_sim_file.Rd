@@ -21,8 +21,8 @@ edit_sim_file(file, wd = getwd(), var, value, overwrite = FALSE)
 complete file path to edited simulation file is returned as a character string
 }
 \description{
-Simulation helper files, such as "Soil.xml" have a different format from .apsim files
-and are therefore treated differently.
+APSIM helper files, such as "Soil.xml" have a different format from .apsim files
+and are therefore edited differently.
 }
 \details{
 APSIM uses .xml files to dictate how certain processes are carried out.  Similar to
@@ -47,13 +47,13 @@ simVar <- c("nitrification_pot", "dnit_nitrf_loss","wfnit_values")
 simValue <- list(abs(rnorm(1)), abs(rnorm(1)), c(0,2,2,1))
 
 #Edit Soil.xml without overwriting it
-edit_sim_file(simFile, apsimWd, simVar, simValue, overwrite = FALSE)
+edit_sim_file(file = simFile, wd = apsimWd, var = simVar, value = simValue, overwrite = FALSE)
 
 #Passing an .apsim file to edit_sim_file will give a warning and redirect it to edit_apsim
 apsimFile <- "Canopy.apsim"
 apsimValue <- list(c(rep(200, 2), rep(300, 9)), 9, "NSW")
 apsimVar <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN", "State")
-edit_sim_file(apsimFile, apsimWd, apsimVar, apsimValue, overwrite = FALSE)
+edit_sim_file(file = apsimFile, wd = apsimWd, var = apsimVar, value = apsimValue, overwrite = FALSE)
 }
 }
 

@@ -46,7 +46,7 @@ apsimVar <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN", "State")
 apsimValue <- list(c(rep(200, 2), rep(300, 9)), 9, "NSW")
 
 #Edit the apsim file without overwriting it
-edit_apsim(apsimFile, apsimWd, apsimVar, apsimValue, overwrite = FALSE)
+edit_apsim(file = apsimFile, wd = apsimWd, var = apsimVar, value = apsimValue, overwrite = FALSE)
 
 #Run the edited simulation
 apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
@@ -57,7 +57,7 @@ results <- apsim(apsimExe, apsimWd, files = "Canopy-edited.apsim")
 simFile <- "Soil.xml"
 simValue <- list(abs(rnorm(1)), abs(rnorm(1)), c(0,2,2,1))
 simVar <- c("nitrification_pot", "dnit_nitrf_loss","wfnit_values")
-edit_apsim(simFile, apsimWd, simVar, simValue, overwrite = FALSE)
+edit_apsim(file = simFile, wd = apsimWd, var = simVar, value = simValue, overwrite = FALSE)
 }
 }
 

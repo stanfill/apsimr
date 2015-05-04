@@ -24,8 +24,8 @@ Plot routine for \code{"apsim"} class objects
 Similar to the \code{\link[stats:plot.lm]{plot}} for \code{\link{lm}} objects, \code{plot.apsim} will
 plot each response in the results of an APSIM simulation on its own \code{ggplot2} object.  If the
 \code{one_plot} argument is set to \code{TRUE} then \code{\link[ggplot2:facet_wrap]{facet_wrap}} is used to plot
-all of the responses on one screen.  Or only one response can be plotted by setting \code{y} to a column name
-in \code{x}.
+all of the responses on one screen.  Alternatively, one response can be plotted by setting \code{y} to
+one variable corresponding to a column in \code{x}.
 }
 \examples{
 \dontrun{

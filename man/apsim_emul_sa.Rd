@@ -35,7 +35,8 @@ different run of the computer model. Currently the method choices are: \code{"si
 with terms for all main
 effects of inputs plus all two-way interactions between inputs. With this method all first-order
 and total sensitivity indices are estimable provided at least 8p^2-4p+1 runs of the computer
-model are available.  The \code{"separateGAM"} method builds a separate GAM emulator for each
+model are available where p is the number of parameters considered.
+The \code{"separateGAM"} method builds a separate GAM emulator for each
 input to estimate first-order indices for each input.  Since this method emulates the marginal
 distribution of \code{y} given each of the inputs, total order indices cannot be computed.  Both
 methods can be bootstrapped in order to estimate standard errors and to calibrate confidence

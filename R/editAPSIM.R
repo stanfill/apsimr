@@ -32,7 +32,7 @@
 #' apsimValue <- list(c(rep(200, 2), rep(300, 9)), 9, "NSW")
 #' 
 #' #Edit the apsim file without overwriting it
-#' edit_apsim(apsimFile, apsimWd, apsimVar, apsimValue, overwrite = FALSE)
+#' edit_apsim(file = apsimFile, wd = apsimWd, var = apsimVar, value = apsimValue, overwrite = FALSE)
 #' 
 #' #Run the edited simulation
 #' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
@@ -43,7 +43,7 @@
 #' simFile <- "Soil.xml"
 #' simValue <- list(abs(rnorm(1)), abs(rnorm(1)), c(0,2,2,1))
 #' simVar <- c("nitrification_pot", "dnit_nitrf_loss","wfnit_values")
-#' edit_apsim(simFile, apsimWd, simVar, simValue, overwrite = FALSE)
+#' edit_apsim(file = simFile, wd = apsimWd, var = simVar, value = simValue, overwrite = FALSE)
 #' }
 
 edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
@@ -116,8 +116,8 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 
 #' Edit an APSIM Module File
 #' 
-#' Simulation helper files, such as "Soil.xml" have a different format from .apsim files
-#' and are therefore treated differently.
+#' APSIM helper files, such as "Soil.xml" have a different format from .apsim files
+#' and are therefore edited differently.
 #' 
 #' APSIM uses .xml files to dictate how certain processes are carried out.  Similar to
 #' \code{\link{edit_apsim}} this function edits a file that will be used in an APSIM simulation.  Unlike
@@ -149,13 +149,13 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 #' simValue <- list(abs(rnorm(1)), abs(rnorm(1)), c(0,2,2,1))
 #' 
 #' #Edit Soil.xml without overwriting it
-#' edit_sim_file(simFile, apsimWd, simVar, simValue, overwrite = FALSE)
+#' edit_sim_file(file = simFile, wd = apsimWd, var = simVar, value = simValue, overwrite = FALSE)
 #' 
 #' #Passing an .apsim file to edit_sim_file will give a warning and redirect it to edit_apsim
 #' apsimFile <- "Canopy.apsim"
 #' apsimValue <- list(c(rep(200, 2), rep(300, 9)), 9, "NSW")
 #' apsimVar <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN", "State")
-#' edit_sim_file(apsimFile, apsimWd, apsimVar, apsimValue, overwrite = FALSE)
+#' edit_sim_file(file = apsimFile, wd = apsimWd, var = apsimVar, value = apsimValue, overwrite = FALSE)
 #' }
 
 edit_sim_file <- function(file, wd = getwd(), var, value, overwrite = FALSE){

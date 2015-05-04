@@ -22,7 +22,7 @@ apsim_vector(X, exe, wd, vars, to.run, to.edit = to.run, overwrite = FALSE,
 
 \item{overwrite}{logical; passed to the \code{edit_apsim} and \code{edit_sim_file} functions}
 
-\item{g}{a function of the output returned by apsim - must give univariate result}
+\item{g}{a function of the output returned by apsim - must give vector or scalar result}
 }
 \value{
 a vector of length N
@@ -33,7 +33,7 @@ version of \code{\link[apsimr:apsim]{apsim}}.
 }
 \details{
 In order for there to be a link between the \code{\link[sensitivity]{sensitivity}} package and
-\code{apsimr}, there needed to be a function that could edit and then run APSIM that also
+\code{apsimr}, there needs to be a function that could edit and then run APSIM that also
 could produce a univariate output.  The \code{apsim_vector} function satisfies these conditions
 and can return multivariate output if a multivaraite sensitivity analysis is of interest.
 See the examples section for details.

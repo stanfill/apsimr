@@ -1,13 +1,13 @@
 #' Run APSIM Simulations from R
 #' 
-#' This function will run one or many APSIM simulation(s) and read the output into R 
+#' This function will run one or many APSIM simulations and read the output into R 
 #' in the form of a list.  If the simulation does not run for some reason then 
 #' an error is returned.
 #' 
 #' The only required input is the path to the APSIM executable (APSIM.exe) usually found in the "Model"
 #' subfolder of the APSIM installation. By default, it is assumed the current working directory contains the .apsim file(s)
 #' to be run.  If that is not the case then the directory containing the .apsim file(s) to be run
-#' can to be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
+#' should be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
 #' directory \code{wd} using the \code{files} argument.  If the \code{files} argument is left blank then all 
 #' .apsim files within the directory specified by \code{wd} are run. 
 #' The results for each .apsim file that is run is an element of the list that is returned.  
@@ -26,6 +26,8 @@
 #' apsimWd <- "~/APSIM"
 #' toRun <- c("Centro.apsim", "Continuous Wheat.apsim")
 #' results <- apsim(exe = apsimExe, wd = apsimWd, files = toRun)
+#' results
+#' plot(results)
 #' }
 
 apsim<-function(exe, wd = getwd(), files = NULL){
