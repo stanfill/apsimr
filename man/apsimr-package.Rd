@@ -13,7 +13,7 @@ The \bold{A}gricultural \bold{P}roduction \bold{S}ystems s\bold{IM}ulator (APSIM
 Package: \tab apsimr\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
-Date: \tab 2015-05-01\cr
+Date: \tab 2015-05-04\cr
 License: \tab GPL(>=3) \cr
 }
 }
