@@ -6,7 +6,7 @@
 #'In order for there to be a link between the \code{\link[sensitivity]{sensitivity}} package and 
 #'\code{apsimr}, there needs to be a function that could edit and then run APSIM that also
 #'could produce a univariate output.  The \code{apsim_vector} function satisfies these conditions
-#'and can return multivariate output if a multivaraite sensitivity analysis is of interest.
+#'and can return multivariate output if a multivariate sensitivity analysis is of interest.
 #'See the examples section for details.
 #'
 #' @param X N-by-p matrix of inputs with rows corresponding to runs and columns for variables
@@ -32,7 +32,7 @@
 #' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 #' apsimFile <- "Canopy.apsim"
 #' 
-#' #Run APSIM at each new paramter vector specified by apsimVar and only return the mean cowpea value
+#' #Run APSIM at each new parameter vector specified by apsimVar and only return the mean cowpea value
 #' uniRes <- apsim_vector(X = apsimValue, exe = apsimExe, wd = apsimWd, vars = apsimVar, 
 #'          to.run = apsimFile, to.edit = apsimFile, g = meanCowpea)
 #' uniRes

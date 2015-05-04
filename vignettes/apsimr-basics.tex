@@ -81,7 +81,7 @@
 
 The {\bf A}gricultural {\bf P}roduction {\bf S}ystem s{\bf IM}ulator (APSIM) is a widely used, powerful and highly complex computer program \citep{keating2003overview, holzworth2014apsim}.  Based on information about weather, soil properties, farming practices and land use, APSIM can predict crop and environmental outcomes such as yield, nitrogen runoff and sediment loss as a function of time and space.  
 
-APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) with limited analysis and visualization tools available, or from the command line which requires a high level of familiarity with APSIM and a substantial amount of ad hoc programming.  The \CRANpkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations easily using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which has given APSIM users access to a wide variety of uncertainty quantification tools that APSIM needs \citep{pujol2014sensitivity}.  Other packages that could be of interest for uncertainty/sensitivity analysis of APSIM are \CRANpkg{spartan} and \CRANpkg{multisensi} \citep{alden2014applying,lamboni2011multivariate}.
+APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) with limited analysis and visualization tools available, or from the command line, whic requires a high level of familiarity with APSIM and a substantial amount of ad hoc programming.  The \CRANpkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which provides APSIM users with access to a wide variety of uncertainty quantification tools \citep{pujol2014sensitivity}.  Other packages that could be of interest for uncertainty/sensitivity analysis of APSIM are \CRANpkg{spartan} and \CRANpkg{multisensi} \citep{alden2014applying,lamboni2011multivariate}.
 
 \begin{figure}[h]
 \centering
@@ -90,9 +90,11 @@ APSIM is currently run either from a clunky and unappealing user interface (Figu
 \label{fig:UI}
 \end{figure}
 
+In the remainer of this vignette I give a general overview of APSIM then explain how the \pkg{apsimr} package can be used to run, edit, visualize and analyze APSIM using R.
+
 \section{APSIM Overview}
 
-This section gives a brief account of how APSIM works because it will inform the construction of the package.  For a detailed description see \cite{keating2003overview}, \cite{holzworth2014apsim} and the references therein.
+This section gives a brief account of how APSIM works because it will inform the construction of the package.  For a detailed description see \cite{keating2003overview}, or \cite{holzworth2014apsim} and the references therein.
 
 APSIM is composed of several independent modules, each of which controls a specific apsect of the simulation.  Modules control everything, including crop growth, soil water balance, soil nitrogen levels, and farming practices (e.g.~how much fertilizer to apply and when).  Crop growth statistics are produced for each day in the simulation and are determined by daily weather information, soil characteristics and management choices.  The weather data is provided by the user in the form of a \verb=.met= file.  Soil characteristics and management choices are controlled by the soil and management modules, respectively.
 
@@ -108,9 +110,9 @@ The function used to run APSIM from R is called \code{apsim}.  Its only required
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{apsimExe} \hlkwb{<-}\hlstr{"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"}
-\hlstd{apsimWD} \hlkwb{<-} \hlstr{"~/APSIM"}
+\hlstd{apsimWd} \hlkwb{<-} \hlstr{"~/APSIM"}
 \hlstd{to_run} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Canopy.apsim"}\hlstd{,} \hlstr{"Continuous Wheat.apsim"}\hlstd{)}
-\hlstd{results} \hlkwb{<-} \hlkwd{apsim}\hlstd{(}\hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWD,} \hlkwc{files} \hlstd{= to_run)}
+\hlstd{results} \hlkwb{<-} \hlkwd{apsim}\hlstd{(}\hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWd,} \hlkwc{files} \hlstd{= to_run)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -122,8 +124,8 @@ The file I want to edit is called "Canopy.apsim" which is in the directory "$\si
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{file} \hlkwb{<-} \hlstr{"Canopy.apsim"}
-\hlstd{apsimWD} \hlkwb{<-} \hlstr{"~/APSIM"}
+\hlstd{apsimFile} \hlkwb{<-} \hlstr{"Canopy.apsim"}
+\hlstd{apsimWd} \hlkwb{<-} \hlstr{"~/APSIM"}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -144,7 +146,7 @@ The next snippit edits the apsim file without overwriting it.  This results in t
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{edit_apsim}\hlstd{(file, apsimWD, var, value,} \hlkwc{overwrite} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlkwd{edit_apsim}\hlstd{(apsimFile, apsimWd, var, value,} \hlkwc{overwrite} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -209,19 +211,19 @@ The \pkg{sensitivity} package includes several methods to perform sensitivity an
 \hlkwd{library}\hlstd{(sensitivity)}
 
 \hlstd{meanYield}\hlkwb{<-}\hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)\{}
-  \hlkwd{return}\hlstd{(}\hlkwd{mean}\hlstd{(x}\hlopt{$}\hlstd{cowpea.yield))}
+  \hlkwd{return}\hlstd{(}\hlkwd{mean}\hlstd{(x}\hlopt{$}\hlstd{lai_cowpea))}
 \hlstd{\}}
 
 \hlstd{vars} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SoilOrganicMatter/SoilCN"}\hlstd{,} \hlstr{"SoilWater/DiffusConst"}\hlstd{,} \hlstr{"SoilWater/CNCov"}\hlstd{)}
 
-\hlstd{n} \hlkwb{<-} \hlnum{75}
+\hlstd{n} \hlkwb{<-} \hlnum{20}
 \hlstd{X1} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{SoilCN} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{5}\hlstd{,} \hlnum{25}\hlstd{),}
                  \hlkwc{DiffusConst} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{20}\hlstd{,} \hlnum{50}\hlstd{),} \hlkwc{CNCov} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{))}
 \hlstd{X2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{SoilCN} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{5}\hlstd{,} \hlnum{25}\hlstd{),}
                  \hlkwc{DiffusConst} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{20}\hlstd{,} \hlnum{50}\hlstd{),} \hlkwc{CNCov} \hlstd{=} \hlkwd{runif}\hlstd{(n,} \hlnum{0}\hlstd{,} \hlnum{1}\hlstd{))}
 
-\hlstd{sobolResults} \hlkwb{<-} \hlkwd{soboljansen}\hlstd{(}\hlkwc{model} \hlstd{= apsim_sen, X1, X2,} \hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWD,}
-                        \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= file,} \hlkwc{g} \hlstd{= meanYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{sobolResults} \hlkwb{<-} \hlkwd{soboljansen}\hlstd{(}\hlkwc{model} \hlstd{= apsim_vector, X1, X2,} \hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWd,}
+                        \hlkwc{vars} \hlstd{= vars,} \hlkwc{to.run} \hlstd{= apsimFile,} \hlkwc{g} \hlstd{= meanYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlkwd{plot}\hlstd{(sobolResults)}
 \end{alltt}
 \end{kframe}
@@ -255,8 +257,8 @@ The \code{SAemulator} function returns an object of class \code{"gamSA"}, which 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlstd{emulRes} \hlkwb{<-} \hlkwd{apsim_emulator}\hlstd{(}\hlkwc{model} \hlstd{= apsim_sen,} \hlkwc{X} \hlstd{= X1,} \hlkwc{method} \hlstd{=} \hlstr{"singleGAM"}\hlstd{,} \hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWD,}
-                        \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= file,} \hlkwc{g} \hlstd{= meanYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{emulRes} \hlkwb{<-} \hlkwd{apsim_emul_sa}\hlstd{(}\hlkwc{model} \hlstd{= apsim_vector,} \hlkwc{X} \hlstd{= X1,} \hlkwc{method} \hlstd{=} \hlstr{"singleGAM"}\hlstd{,} \hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWd,}
+                        \hlkwc{vars} \hlstd{= vars,} \hlkwc{to.run} \hlstd{= apsimFile,} \hlkwc{g} \hlstd{= meanYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlkwd{plot}\hlstd{(emulRes)}
 \end{alltt}
 \end{kframe}
@@ -271,7 +273,7 @@ The ability to simply include model runs instead of the model itself sets the \c
   \hlkwd{return}\hlstd{(x}\hlopt{$}\hlstd{cowpea.yield)}
 \hlstd{\}}
 
-\hlstd{cowpeaY} \hlkwb{<-} \hlkwd{apsim_sen}\hlstd{(}\hlkwc{X} \hlstd{= X1,} \hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWD,} \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= file,} \hlkwc{g} \hlstd{= rawYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{cowpeaY} \hlkwb{<-} \hlkwd{apsim_vector}\hlstd{(}\hlkwc{X} \hlstd{= X1,} \hlkwc{exe} \hlstd{= apsimExe,} \hlkwc{wd} \hlstd{= apsimWd,} \hlkwc{vars} \hlstd{= vars,} \hlkwc{toRun} \hlstd{= apsimFile,} \hlkwc{g} \hlstd{= rawYield,} \hlkwc{overwrite} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 
 \hlstd{vCowpea}\hlkwb{<-}\hlkwd{var}\hlstd{(cowpeaY)}
 \hlstd{pcsY}\hlkwb{<-}\hlkwd{svd}\hlstd{(vCowpea)}\hlopt{$}\hlstd{u}
