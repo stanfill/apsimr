@@ -4,7 +4,7 @@
 \usepackage{RJournal_edited}
 \usepackage{amsmath,amssymb,array,float,subcaption}
 \usepackage{booktabs}
-%\VignetteIndexEntry{Introduction to rotations}
+%\VignetteIndexEntry{Introduction to apsimr}
 %\VignetteDepends{knitr}
 %\VignetteEngine{knitr::knitr}
 
