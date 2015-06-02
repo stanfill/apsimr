@@ -58,8 +58,9 @@ apsim<-function(exe, wd = getwd(), files = NULL){
   }
   
   nFiles<-length(files)
-  out_files<-rep(NA,nFiles)
-  
+  #Allow for multiple output files per simulation and record their names
+  out_files <- NULL
+
   for(i in 1:nFiles){  
     
     res <- suppressWarnings(system(paste(exe,addCommas(files[i]), sep = " "), show.output.on.console = FALSE))
@@ -69,14 +70,21 @@ apsim<-function(exe, wd = getwd(), files = NULL){
       stop("An error occured when trying to run APSIM.  Please check your arguments again, especially the path to APSIM.exe.")
     }
     
-    #Grab the name of the ouput file from the simulation file
-    out_files[i]<-paste(xmlAttrs(xmlParse(files[i])[["//simulation"]])[[1]],".out",sep="")
+    #Get the list of output files for simulation file i
+    noutsi <- xmlParse(files[i])["//outputfile"]
+    
+    #Extract the names of the output files 
+    for(j in 1:length(noutsi)){
+      out_files <- c(out_files,xmlValue(noutsi[[j]]["filename"][[1]]))
+    }
   }
   
 
-  results<-vector("list",nFiles)
-  skipline<-1
-  for(i in 1:nFiles){
+  n_out_files <- length(out_files)
+  results<-vector("list",n_out_files)
+
+  for(i in 1:n_out_files){
+    skipline<-1
     res<-try(read.table(out_files[i],skip=skipline,header=T),TRUE)
     
     while(class(res)=="try-error" & skipline < 50){
@@ -84,25 +92,35 @@ apsim<-function(exe, wd = getwd(), files = NULL){
       res<-try(read.table(out_files[i],skip=skipline,header=T),TRUE)
     }
     
-    res<-res[-1,]
+    if(skipline<50){
+      
+      res<-res[-1,]
+      res_col_names <- colnames(res)
     
-    if("Date"%in%colnames(res)) res$Date<-dmy(res$Date)
+      if("Date"%in%res_c_names){
+        res$Date<-dmy(res$Date)
+        res_c_names <- res_c_names[-which(res_c_names=="Date")]
+      }
     
-    for(j in 2:ncol(res)){
-      res[,j]<-as.numeric(as.character(res[,j])) #Coerce each output to be numeric
+      for(j in res_c_names){
+        res[,which(colnames(res)==j)]<-as.numeric(as.character(res[,which(colnames(res)==j)])) #Coerce each output to be numeric
+      }
+      class(res)<-c("apsim","data.frame")
+      results[[i]]<-res
+      
+    }else{
+      warning(paste("File name ",out_files[i]," could not be read properly.  Please check it exists and is non-empty."))
     }
-    class(res)<-c("apsim","data.frame")
-    results[[i]]<-res
   }
   
   setwd(oldWD)
   
-  if(nFiles==1){return(res)
-  }else{
-    names(results)<-gsub(".apsim$","",files)
-    return(results)
+  if(n_out_files==1){
+    return(res)
   }
   
+  names(results)<-gsub(".out$","",out_files)
+  return(results)
   
 }
 
