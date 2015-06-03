@@ -17,7 +17,7 @@
 #' @param exe  path to the APSIM executable
 #' @param wd  working directory containing the .apsim files to be run; defaults to the current working directory
 #' @param files  .apsim files to be run; if left empty all .apsim files in \code{wd} will be run
-#' @return list of output files; each element corresponds to an .apsim file
+#' @return list of output files; each element corresponds to an output file specified by the .apsim files executed
 #' @export
 #' @examples
 #' 
@@ -109,7 +109,7 @@ apsim<-function(exe, wd = getwd(), files = NULL){
       results[[i]]<-res
       
     }else{
-      warning(paste("File name ",out_files[i]," could not be read properly.  Please check it exists and is non-empty."))
+      warning(paste0("The file \"",out_files[i],"\" could not be read properly.  Please check it exists and is nonempty."))
     }
   }
   

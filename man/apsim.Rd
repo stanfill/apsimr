@@ -14,7 +14,7 @@ apsim(exe, wd = getwd(), files = NULL)
 \item{files}{.apsim files to be run; if left empty all .apsim files in \code{wd} will be run}
 }
 \value{
-list of output files; each element corresponds to an .apsim file
+list of output files; each element corresponds to an output file specified by the .apsim files executed
 }
 \description{
 This function will run one or many APSIM simulations and read the output into R
