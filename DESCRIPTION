@@ -1,7 +1,7 @@
 Package: apsimr
 Type: Package
 Title: Edit, Run and Evaluate APSIM Simulations Easily Using R
-Version: 1.0
+Version: 1.1.1
 Date: 2015-05-04
 Author: Bryan Stanfill
 Maintainer: Bryan Stanfill <bryan.stanfill@csiro.au>

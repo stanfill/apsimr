@@ -1,6 +1,28 @@
+apsimr version 1.1
+===================================================================
+Minor Changes -
+-------------------------------------------------------------------
+* Multiple output files per APSIM simulation are now allowed and
+treated appropriately.
+
+
+apsimr version 1.0
+===================================================================
+New Features - 
+-------------------------------------------------------------------
+* The 'apsim_emul_sa' function has been added.  This function uses either
+a single, or several generalized additive models to emulate APSIM
+then compute sensitivity indices.
+
+Minor Changes -
+-------------------------------------------------------------------
+* New naming conventions have been adopted.
+* The vignette has been updated.
+
+
 apsimr version 0.2
 ===================================================================
-New Featurs - 
+New Features - 
 -------------------------------------------------------------------
 * The 'apsim_vector' function has been added.  This function is compatible with
 the sensitivity package.  This allows for a easy sensitivity/uncertainty analysis of APSIM
