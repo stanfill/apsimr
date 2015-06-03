@@ -56,7 +56,7 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
     return(edit_sim_file(file = file, wd = wd, var = var, value = value, overwrite = overwrite))
   }
   
-  fileNames <- dir(,pattern=".apsim$")
+  fileNames <- dir(,pattern=".apsim$",ignore.case=TRUE)
   
   if(length(fileNames)==0){
     stop("There are no .apsim files in the specified directory 'wd' to edit.")
