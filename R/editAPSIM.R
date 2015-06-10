@@ -94,23 +94,32 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
     return(saveXML(pXML,file=addWd))
   }else{
     
-    #Remove .apsim tag if present and add edited tag
-    newName<-paste(gsub(".apsim","",addWd),"-edited",sep="")
+    oldFileName <- gsub(".APSIM$","",gsub(".apsim$","",addWd))
+    newFileName <- paste0(oldFileName,"-edited.apsim")
     
     #Rename the simulation
-    wholeSim<-pXML[["//simulation"]]    
-    xmlAttrs(wholeSim)<-c(name=newName)
+    wholeSim<-pXML["//simulation"]  
+    for(i in 1:length(wholeSim)){
+      newName <- paste0(xmlAttrs(wholeSim[[i]]),"-edited")
+      xmlAttrs(wholeSim[[i]])<-c(name=newName)
+    }
     
     #Rename the output filename to match the new file name
-    outName<-pXML[["//outputfile/filename"]]
-    xmlValue(outName)<-paste(newName,".out",sep="")
+    outName<-pXML["//outputfile/filename"]
+    for(i in 1:length(outName)){
+      newName <- paste0(gsub(".out$","",xmlValue(outName[[i]])),"-edited")
+      xmlValue(outName[[i]])<-paste(newName,".out",sep="")
+    }
     
     #Also update title for output file
-    outTitle<-pXML[["//outputfile/title"]]
-    xmlValue(outTitle)<-newName
+    outTitle<-pXML["//outputfile/title"]
+    for(i in 1:length(outTitle)){
+      newName <- paste0(xmlValue(outTitle[[i]]),"-edited")
+      xmlValue(outTitle[[i]])<-newName
+    }   
     
     setwd(oldWD)
-    return(saveXML(pXML,file=paste(newName,".apsim",sep="")))
+    return(saveXML(pXML,file=newFileName))
   }
 }
 
