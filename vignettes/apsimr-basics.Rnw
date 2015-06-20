@@ -67,12 +67,12 @@ The results of a call to \code{apsim}, including the variable \code{results} abo
 
 After \code{apsim} has been called, one can visualize all of the results as a function of time in separate plots with a call to \code{plot.apsim}.  To visualize the results of the ``Continuous Wheat.apsim" simulation do the following.
 <<p1,eval=FALSE>>=
-plot(results[[2]], geom = 'line')
+plot(results$"Continuous Wheat", geom = 'line')
 @
 
 Instead of cycling through each of the plots, one can visualize all variables on one faceted plot by setting \code{one\_plot=TRUE} (Figure \ref{fig:allon1}).
 <<p2,eval=FALSE>>=
-plot(results[[2]], one_plot = TRUE, geom = 'line') + theme_bw()
+plot(results$"Continuous Wheat", one_plot = TRUE, geom = 'line') + theme_bw()
 @
 
 \begin{figure}[H]
