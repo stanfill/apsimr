@@ -97,12 +97,12 @@ apsim<-function(exe, wd = getwd(), files = NULL){
       res<-res[-1,]
       res_col_names <- colnames(res)
     
-      if("Date"%in%res_c_names){
+      if("Date"%in%res_col_names){
         res$Date<-dmy(res$Date)
-        res_c_names <- res_c_names[-which(res_c_names=="Date")]
+        res_col_names <- res_col_names[-which(res_col_names=="Date")]
       }
     
-      for(j in res_c_names){
+      for(j in res_col_names){
         res[,which(colnames(res)==j)]<-as.numeric(as.character(res[,which(colnames(res)==j)])) #Coerce each output to be numeric
       }
       class(res)<-c("apsim","data.frame")
