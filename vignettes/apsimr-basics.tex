@@ -53,7 +53,7 @@
 \usepackage{RJournal_edited}
 \usepackage{amsmath,amssymb,array,float,subcaption}
 \usepackage{booktabs}
-%\VignetteIndexEntry{Introduction to rotations}
+%\VignetteIndexEntry{Introduction to apsimr}
 %\VignetteDepends{knitr}
 %\VignetteEngine{knitr::knitr}
 
@@ -81,7 +81,7 @@
 
 The {\bf A}gricultural {\bf P}roduction {\bf S}ystem s{\bf IM}ulator (APSIM) is a widely used, powerful and highly complex computer program \citep{keating2003overview, holzworth2014apsim}.  Based on information about weather, soil properties, farming practices and land use, APSIM can predict crop and environmental outcomes such as yield, nitrogen runoff and sediment loss as a function of time and space.  
 
-APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) with limited analysis and visualization tools available, or from the command line, which requires a high level of familiarity with APSIM and a substantial amount of ad hoc programming.  The \CRANpkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which provides APSIM users with access to a wide variety of uncertainty quantification tools \citep{pujol2014sensitivity}.  Other packages that could be of interest for uncertainty/sensitivity analysis of APSIM are \CRANpkg{spartan} and \CRANpkg{multisensi} \citep{alden2014applying,lamboni2011multivariate}.
+APSIM is currently run either from a clunky and unappealing user interface (Figure \ref{fig:UI}) where limited analysis and visualization tools available, or from the command line, which requires a deep understanding of APSIM and a substantial amount of ad hoc programming.  We propose the \CRANpkg{apsimr} to ease the pain of editing and running several APSIM simulations using the UI or command line.  The \pkg{apsimr} package includes functions to create, edit, run and analyze APSIM simulations using R.  Additionally, \pkg{apsimr} acts as a bridge between the \CRANpkg{sensitivity} package and APSIM, which provides APSIM users with access to a wide variety of uncertainty quantification tools \citep{pujol2014sensitivity}.  Other packages that could be of interest for uncertainty/sensitivity analysis of APSIM are \CRANpkg{spartan} and \CRANpkg{multisensi} \citep{alden2014applying,lamboni2011multivariate}.
 
 \begin{figure}[h]
 \centering
@@ -98,10 +98,9 @@ This section gives a brief account of how APSIM works because it will inform the
 
 APSIM is composed of several independent modules, each of which controls a specific aspect of the simulation.  Modules control everything from crop growth to soil water balance, and soil nitrogen levels to farming practices (e.g.~how much fertilizer to apply and when).  Crop growth statistics are produced for each day in the simulation and are determined by daily weather information, soil characteristics and management choices.  The weather data is provided by the user in the form of a \verb=.met= file.  Soil characteristics and management choices are controlled by the soil and management modules, respectively.
 
+Each simulation is defined by a \verb=.apsim= file, which controls when and if each module is called.  Each module relies on a separate \verb=.xml= file for instructions including parameter values.  The module \verb=.xml= files can have any name, but are often titled \verb=Soil.xml=, \verb=Wheat.xml= or something similar.  Note that \verb=.apsim= files are actually \verb=.xml= files with a different extension.  The \verb=.apsim= simulation file controls the simulation metadata, such as what outputs to report, how often to report those outputs (e.g.~daily, weekly), where to find the module files and where to write the results file.  
 
-Each simulation is designed by a \verb=.apsim= file, which controls when and if each module is called.  Each module relies on a separate \verb=.xml= file for instructions including parameter values.  The module \verb=.xml= files can have any name, but are often titled \verb=Soil.xml=, \verb=Wheat.xml= or something similar.  Note that \verb=.apsim= files are actually \verb=.xml= files with a different extension.  The \verb=.apsim= simulation file controls the simulation metadata, such as what outputs to report, how often to report those outputs (e.g.~daily, weekly), where to find the module files and where to write the results file.  
-
-A successful call to APSIM will produce a text file with the extension \verb=.sum=, which contains a detailed summary of the simulation including possible errors.  When an APSIM simulation has run successfully, an additional text file with the extension \verb=.out= is written, which contains the specified outcomes at the specified time steps.  The user can specify the file names as well as where the files are written.  By default, both files inherit the name of the simulation and are written in the same directory as the \verb=.apsim= simulation fill.  For example, if no output name or location is specified by the user then the results of the simulation \verb=Millet.apsim= currently stored on the user's desktop, then APSIM will create files \verb=Millet.sum= and \verb=Millet.out= on the user's desktop. 
+If APSIM is executed successfully, a text file with the extension \verb=.sum= is produced, which contains a detailed summary of the simulation including possible errors.  When an APSIM simulation has run successfully, an additional text file with the extension \verb=.out= is written, which contains the specified outcomes at the specified time steps.  The user can specify the file names as well as where the files are written.  By default, both files inherit the name of the simulation and are written in the same directory as the \verb=.apsim= simulation fill.  For example, if no output name or location is specified by the user then the results of the simulation \verb=Millet.apsim= currently stored on the user's desktop, then APSIM will create files \verb=Millet.sum= and \verb=Millet.out= on the user's desktop. 
 
 \section{Run and Visualize APSIM}
 
@@ -123,7 +122,7 @@ After \code{apsim} has been called, one can visualize all of the results as a fu
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(results[[}\hlnum{2}\hlstd{]],} \hlkwc{geom} \hlstd{=} \hlstr{'line'}\hlstd{)}
+\hlkwd{plot}\hlstd{(results}\hlopt{$}\hlstr{"Continuous Wheat"}\hlstd{,} \hlkwc{geom} \hlstd{=} \hlstr{'line'}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -132,7 +131,7 @@ Instead of cycling through each of the plots, one can visualize all variables on
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(results[[}\hlnum{2}\hlstd{]],} \hlkwc{one_plot} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{geom} \hlstd{=} \hlstr{'line'}\hlstd{)} \hlopt{+} \hlkwd{theme_bw}\hlstd{()}
+\hlkwd{plot}\hlstd{(results}\hlopt{$}\hlstr{"Continuous Wheat"}\hlstd{,} \hlkwc{one_plot} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{geom} \hlstd{=} \hlstr{'line'}\hlstd{)} \hlopt{+} \hlkwd{theme_bw}\hlstd{()}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -148,7 +147,7 @@ Variables can also be plotted individually using the \code{y} argument.  To plot
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{plot}\hlstd{(results[[}\hlnum{2}\hlstd{]],} \hlkwc{y} \hlstd{=} \hlstr{'yield'}\hlstd{)} \hlopt{+} \hlkwd{geom_line}\hlstd{(}\hlkwc{colour} \hlstd{=} \hlstr{'red'}\hlstd{)} \hlopt{+} \hlkwd{theme_bw}\hlstd{()}
+\hlkwd{plot}\hlstd{(results}\hlopt{$}\hlstr{"Continuous Wheat"}\hlstd{,} \hlkwc{y} \hlstd{=} \hlstr{'yield'}\hlstd{)} \hlopt{+} \hlkwd{geom_line}\hlstd{(}\hlkwc{colour} \hlstd{=} \hlstr{'red'}\hlstd{)} \hlopt{+} \hlkwd{theme_bw}\hlstd{()}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -172,7 +171,7 @@ To edit an APSIM simulation file, i.e.~files ending in \verb=.apsim=, use the \c
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-The variable we want to change are the soil water thickness and the carbon to nitrogen ratio in the soil organic matter.  In ``Canopy.apsim" these variables correspond to the elements \verb=soilWater/Thickness= and \verb=SoilOrganicMatter/SoilCN=.  The soil water thickness needs to be specified for all 11 layers of the soil considered while the carbon to nitrogen ratio is controlled by a single value.  We want the top two layers of soil to have a thickness of 200 while the last nine layers have a thickness of 300.  We want the carbon to nitrogen ratio to be 10.
+In this example the variables to be changed are the soil water thickness and the carbon to nitrogen ratio in the soil organic matter.  In ``Canopy.apsim" these variables correspond to the elements \verb=soilWater/Thickness= and \verb=SoilOrganicMatter/SoilCN=.  The soil water thickness needs to be specified for all 11 layers of the soil considered while the carbon to nitrogen ratio is controlled by a single value.  In this example, the top two layers of soil are edited to have a thickness of 200 while the last nine layers have a thickness of 300.  The carbon to nitrogen ratio is changed to 10.
 
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -183,7 +182,7 @@ The variable we want to change are the soil water thickness and the carbon to ni
 \end{kframe}
 \end{knitrout}
 
-The next snippit edits the apsim file without overwriting it.  This results in the new file being written into the \code{wd} with the additional tag "-edited.apsim".  In this case the new file "Canopy-edited.apsim" is identical to "Canopy.apsim" except for the variables that have been changed by the above code snippet.  If the option \code{overwrite=TRUE} then "Canopy.apsim" is overwritten with the new variable values.
+The next snippit edits the .apsim file without overwriting it.  This results in the new file being written into the working directionary specified by \code{wd} with the additional tag ``-edited.apsim".  In this case the new file ``Canopy-edited.apsim" is identical to "Canopy.apsim" except for the variables that have been changed by the above code snippet (up to differences in spacing and tabbing).  If the user instead specifies \code{overwrite=TRUE} then ``Canopy.apsim" is overwritten with the new variable values.
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -210,11 +209,11 @@ To edit a module file, such as ``Soil.xml," use the \code{edit\_sim\_file}.  Thi
 
 \section{Sensitivity Analysis}
 
-The function \code{apsim\_vector} is a ``vectorized" version of \code{apsim}, meaning the editing and running of APSIM is done at the same time making the process more automated.  The \code{apsim\_vector} function was created to act as a bridge between APSIM and the \CRANpkg{sensitivity} package.  
+The function \code{apsim\_vector} is a ``vectorized" version of \code{apsim}, meaning the editing and running of APSIM is done with the same call making the process more automated.  The \code{apsim\_vector} function can be used to bridge APSIM and the package \pkg{sensitivity}. 
 
-The idea is as follows: the function \code{apsim} returns a data frame that includes different outputs over the specified time frame at specified time intervals.  The \code{apsim\_vector} function takes that data frame and translates it into a univaraite outcome according to the user specified function \code{g}.  This way, the function \code{apsim\_vector} can be used as the \code{model} argument for the \code{soboljansen} function within the \code{sensitivity} package.  The function \code{g} is allowed to return a univariate or multivariate outcome, but only univariate outcomes are allowed by the \pkg{sensitivity} package.  
+The idea is as follows: the function \code{apsim} returns a data frame that includes different outputs over the specified time frame at specified time intervals.  The \code{apsim\_vector} function takes that data frame and translates it into a univaraite outcome according to the user specified function \code{g}.  This way, the function \code{apsim\_vector} can be used as the \code{model} argument for the, e.g., \code{soboljansen} function within the \code{sensitivity} package.  The function \code{g} is allowed to return a univariate or multivariate outcome, but only univariate outcomes are allowed by the \pkg{sensitivity} package.  
 
-Below is an example of a \code{g} function and how sensitivity analysis of APSIM can be accomplished.  First, load the sensitivity package and define a \code{g} function.  In this example we are interested in how sensitive the average cowpea yield is to initial values in the soil organic matter and soil water.  Therefore we define the \code{g} function so that the average cowpea yield is returned every time APSIM is executed.  We define the  three inputs of interest in the \code{vars} argument: the soil organic matters soil carbon (\code{SoiCN}), the soilwaters diffuse constant (\code{DiffusConst}) and the carbon-nitrogen covariance (\code{CNCov}).  
+Below is an example of a \code{g} function and how sensitivity analysis of APSIM can be accomplished.  First, load the sensitivity package and define a \code{g} function.  In this example we are interested in how sensitive the average cowpea yield is to initial values in the soil organic matter and soil water.  Therefore we define the \code{g} function so that only the average cowpea yield is saved every time APSIM is executed.  We define the  three inputs of interest in the \code{vars} argument: the soil organic matters soil carbon (\code{SoiCN}), the soilwaters diffuse constant (\code{DiffusConst}) and the carbon-nitrogen covariance (\code{CNCov}).  
 
 \begin{knitrout}\footnotesize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -240,7 +239,7 @@ Below is an example of a \code{g} function and how sensitivity analysis of APSIM
 \end{kframe}
 \end{knitrout}
 
-The \pkg{sensitivity} package includes several methods to perform sensitivity analysis.  For this example we chose the \code{soboljansen} function which estimates first and total Sobol' indices as described in \cite{saltelli2010variance}. The \code{soboljansen} function requires two data frames, \code{X1} and \code{X2}, to define the points in the input space at which to run the \code{model}.  The function in the \pkg{apsimr} package to use for sensitivity analysis is \code{apsim\_vector}, therefore we set \code{model=apsim\_vector}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on an appropriate interval.  The \code{soboljansen} function allows for additional arguments to be passed to the \code{model} argument.  The function \code{apsim\_vector} requires the following additional arguments: the APSIM executable location \code{exe}, the working directory to find the .apsim file to run \code{wd}, and if the edits .apsim file should be overwritten or not (\code{overwrite}).  The results of this sensitivity analysis are give in Figure \ref{fig:soboljansen}, which was produced by the \code{plot} routine for the output of the call to \code{soboljansen}.  \emph{Note:} the function \code{soboljansen} requires $p\times n$ model evaluations, where $n$ is a user specified number of model evaluations (500) and $p$ is the number of input parameter considered (3).
+The \pkg{sensitivity} package includes several methods to perform sensitivity analysis.  For this example we chose the \code{soboljansen} function which estimates first and total Sobol' indices as described in \cite{saltelli2010variance}. The \code{soboljansen} function requires two data frames, \code{X1} and \code{X2}, to define the points in the input space at which to execute the function specified by the \code{model} argument.  The function in the \pkg{apsimr} package to use for sensitivity analysis is \code{apsim\_vector}, therefore we set \code{model=apsim\_vector}.  We define the \code{X1} and \code{X2} matrices so that each variable is an independent uniform random variable on an appropriate interval.  The \code{soboljansen} function allows for additional arguments to be passed to the \code{model} argument.  The function \code{apsim\_vector} requires the following additional arguments: the APSIM executable location \code{exe}, the working directory to find the .apsim file to run \code{wd}, and if the edits .apsim file should be overwritten or not \code{overwrite}.  The results of this sensitivity analysis are give in Figure \ref{fig:soboljansen}, which was produced by the \code{plot} routine for the output of the call to \code{soboljansen}.  \emph{Note:} the function \code{soboljansen} requires $p\times n$ model evaluations, where $n$ is a user specified number of model evaluations (500 here) and $p$ is the number of input parameter considered (3 here).
 
 
 \begin{figure}[H]
@@ -257,13 +256,13 @@ The \pkg{sensitivity} package includes several methods to perform sensitivity an
 \label{fig:apsim_emul_sa}
 \end{subfigure}%\vspace{-1em}
 \caption{The results of the sensitivity analysis of the APSIM Canopy simulation for the average cowpea yield over time.}
-\label{fig:yield}
+\label{fig:sa_plots}
 \end{figure}
 
 
 An alternative, and potentially more efficient, method for sensitivity analysis is via emulators.  The function \code{apsim\_emul\_sa} estimates sensitivity indices for each input (column of \code{X}) for the computer program specified by the \code{model} argument.  If computer model runs corresponding to the input matrix \code{X} are available then the one can forgo the \code{model} argument and include the computer model runs directly using the \code{y} argument.  \emph{Note:} the \code{y} argument takes precedence over the \code{model} argument and an error is returned if the number of rows in \code{X} does not match the length of \code{y}.  
 
-There are two methods to emulate the computer model defined by \code{model}: a single GAM emulation method or a separate GAM method differentiated by \code{method = "singleGAM"} and \code{method = "separateGAM"}, respectively.  Data frames consisting of first-order and total sensitivity index estimates along with a standard error, bias, lower and upper confidence bounds are returned along with the fitted values and residuals.  The fitted values and residuals are provided  so that the assumptions of the emulator can be verified, e.g.~homoscedasticity, normality and agreement with the true computer model.  The separate GAM method cannot be used to estimate the total sensitivity indices, but the single GAM method can.  
+There are two methods to emulate the computer model defined by \code{model}: a single GAM emulation method or a separate GAM method differentiated by \code{method = "singleGAM"} and \code{method = "separateGAM"}, respectively.  Data frames consisting of first-order and total sensitivity index estimates along with a standard error, bias, lower and upper confidence bounds are returned along with the fitted values and residuals.  The fitted values and residuals are provided  so that the assumptions of the emulator can be verified, e.g.~homoscedasticity, normality and agreement with the true computer model.  The separate GAM option typically takes less time to run than the single GAM method, but it cannot be used to estimate the total sensitivity indices while the latter can.  
 
 The \code{apsim\_emul\_sa} function returns an object of class \code{"gamSA"}, which has its own plotting routine included in the package.  The example code below demonstrates how to call the \code{apsim\_emul\_sa} function and plot the results of the \code{method = "singleGAM"} option.  Figure \ref{fig:apsim_emul_sa} is the result of \code{plot(emulRes)}.  Note: an error is returned if less than $8p^2-4p+1$ model runs are available to fit the single GAM where $p$ is the number of parameters included in the analysis.
 
