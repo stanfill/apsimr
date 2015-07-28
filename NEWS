@@ -1,5 +1,9 @@
 apsimr version 1.1
 ===================================================================
+Bug Fixes -
+-------------------------------------------------------------------
+* A bug in "edit_apsim" that happens when "overwrite=TRUE" has been fixed.
+
 Minor Changes -
 -------------------------------------------------------------------
 * Multiple output files per APSIM simulation are now allowed and
