@@ -44,6 +44,8 @@
 #' emulRes <- apsim_emul_sa(model = apsim_vector, X = parValues, method = "singleGAM", 
 #'              exe = apsimExe, wd = apsimWd, vars = apsimVars, to.run = apsimFile, 
 #'              g = meanYield, overwrite = TRUE)
+#'              
+#' emulRes
 #' plot(emulRes)
 #' 
 #' }

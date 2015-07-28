@@ -152,6 +152,7 @@ apsim<-function(exe, wd = getwd(), files = NULL){
 #' 
 #' apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 #' results <- apsim(exe = apsimExe, wd = apsimWd, files = toRun)
+#' plot(results[[1]])
 #' }
 
 example_apsim<-function(path, wd = getwd(), files = NULL,...){
