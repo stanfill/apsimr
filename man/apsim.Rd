@@ -14,21 +14,21 @@ apsim(exe, wd = getwd(), files = NULL)
 \item{files}{.apsim files to be run; if left empty all .apsim files in \code{wd} will be run}
 }
 \value{
-list of output files; each element corresponds to an output file specified by the .apsim files executed
+list of output files; each element of the list corresponds to an output file specified by the .apsim files executed
 }
 \description{
 This function will run one or many APSIM simulations and read the output into R
-in the form of a list.  If the simulation does not run for some reason then
+in the form of a list of data frames.  If the simulation does not run for some reason then
 an error is returned.
 }
 \details{
 The only required input is the path to the APSIM executable (APSIM.exe) usually found in the "Model"
 subfolder of the APSIM installation. By default, it is assumed the current working directory contains the .apsim file(s)
 to be run.  If that is not the case then the directory containing the .apsim file(s) to be run
-should be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
+should be specified by the \code{wd} argument.  One can specify a list of .apsim files to be run within the
 directory \code{wd} using the \code{files} argument.  If the \code{files} argument is left blank then all
 .apsim files within the directory specified by \code{wd} are run.
-The results for each .apsim file that is run is an element of the list that is returned.
+The results for each .apsim file is saved as a data frame which are complied into a list.
 Each element of the list is of the class \code{"apsim"}, which has its own \code{print} and \code{plot} routines.
 }
 \examples{

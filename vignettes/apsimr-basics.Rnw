@@ -108,7 +108,7 @@ apsimVar <- c("SoilWater/Thickness", "SoilOrganicMatter/SoilCN")
 apsimValue <- list(c(rep(200, 2), rep(300, 9)), 10)
 @
 
-The next snippit edits the .apsim file without overwriting it.  This results in the new file being written into the working directionary specified by \code{wd} with the additional tag ``-edited.apsim".  In this case the new file ``Canopy-edited.apsim" is identical to "Canopy.apsim" except for the variables that have been changed by the above code snippet (up to differences in spacing and tabbing).  If the user instead specifies \code{overwrite=TRUE} then ``Canopy.apsim" is overwritten with the new variable values.
+The next snippit edits the .apsim file without overwriting it.  This results in the new file being written into the working directory specified by \code{wd} with the additional tag ``-edited.apsim".  In this case the new file ``Canopy-edited.apsim" is identical to "Canopy.apsim" except for the variables that have been changed by the above code snippet (up to differences in spacing and tabbing).  If the user instead specifies \code{overwrite=TRUE} then ``Canopy.apsim" is overwritten with the new variable values.
 <<edit,eval=FALSE>>=
 edit_apsim(file = apsimFile, wd = apsimWd, var = apsimVar, 
            value = apsimValue, overwrite = FALSE)

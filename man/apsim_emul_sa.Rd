@@ -35,7 +35,7 @@ different run of the computer model. Currently the method choices are: \code{"si
 with terms for all main
 effects of inputs plus all two-way interactions between inputs. With this method all first-order
 and total sensitivity indices are estimable provided at least 8p^2-4p+1 runs of the computer
-model are available where p is the number of parameters considered.
+model are available where p is the number of parameters included in the analysis.
 The \code{"separateGAM"} method builds a separate GAM emulator for each
 input to estimate first-order indices for each input.  Since this method emulates the marginal
 distribution of \code{y} given each of the inputs, total order indices cannot be computed.  Both
@@ -59,6 +59,8 @@ apsimFile <- "Canopy.apsim"
 emulRes <- apsim_emul_sa(model = apsim_vector, X = parValues, method = "singleGAM",
              exe = apsimExe, wd = apsimWd, vars = apsimVars, to.run = apsimFile,
              g = meanYield, overwrite = TRUE)
+
+emulRes
 plot(emulRes)
 
 }

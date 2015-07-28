@@ -32,11 +32,11 @@ This function will edit then run an APSIM simulation.  It can be thought of as a
 version of \code{\link[apsimr:apsim]{apsim}}.
 }
 \details{
-In order for there to be a link between the \code{\link[sensitivity]{sensitivity}} package and
-\code{apsimr}, there needs to be a function that could edit and then run APSIM that also
-could produce a univariate output.  The \code{apsim_vector} function satisfies these conditions
+In order to link between the \code{\link[sensitivity]{sensitivity}} package and
+APSIM, there needs to be a function that can edit then run APSIM that produces
+a univariate output.  The \code{apsim_vector} function satisfies these conditions
 and can return multivariate output if a multivariate sensitivity analysis is of interest.
-See the examples section for details.
+See the examples section or the package vignette for details.
 }
 \examples{
 \dontrun{

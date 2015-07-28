@@ -6,7 +6,7 @@
 Run, edit, visualize APSIM from R
 }
 \description{
-The \bold{A}gricultural \bold{P}roduction \bold{S}ystems s\bold{IM}ulator (APSIM) is a widely used simulator of agricultural systems.  This package includes functions to create, edit and run APSIM simulations from R.  It also includes functions to visualize the results of an APSIM simulation and perform sensitivity/uncertainty analysis of APSIM either via functions in the sensitivity package or by novel emulator-based functions.  An installation of APSIM is required for this package to be of any use.  Assuming non-commercial use, APSIM can be downloaded for free from \url{http://www.apsim.info/Products/Downloads.aspx}.
+The \bold{A}gricultural \bold{P}roduction \bold{S}ystems s\bold{IM}ulator (APSIM) is a widely used simulator of agricultural systems.  This package includes functions to create, edit and run APSIM simulations from R.  It also includes functions to visualize the results of an APSIM simulation and perform sensitivity/uncertainty analysis of APSIM either via functions in the \code{sensitivity} package or by novel emulator-based functions.  An installation of APSIM is required for this package to be of any use.  Assuming non-commercial use, APSIM can be downloaded for free from \url{http://www.apsim.info/Products/Downloads.aspx}.
 }
 \details{
 \tabular{ll}{

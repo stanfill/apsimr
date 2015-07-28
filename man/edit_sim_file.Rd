@@ -21,8 +21,8 @@ edit_sim_file(file, wd = getwd(), var, value, overwrite = FALSE)
 complete file path to edited simulation file is returned as a character string
 }
 \description{
-APSIM helper files, such as "Soil.xml" have a different format from .apsim files
-and are therefore edited differently.
+APSIM helper files, such as "Soil.xml", have a different format from .apsim files
+and are therefore handled separately
 }
 \details{
 APSIM uses .xml files to dictate how certain processes are carried out.  Similar to
@@ -32,7 +32,8 @@ The variables specified by \code{var} within the .xml file specified by \code{fi
 in the working directory \code{wd} are edited. The old values are replaced with \code{value}, which
 is a list that has the same number of elements as the vector \code{var} is long.  The current
 .xml file will be overwritten if \code{overwrite} is set to \code{TRUE}; otherwise the file
-\emph{file-edited.xml} will be created.  The name of the written file is returned.
+\emph{file-edited.xml} will be created.  If the file was successfully edited, then the name
+ of the written file is returned.
 }
 \examples{
 \dontrun{

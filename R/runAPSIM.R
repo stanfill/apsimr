@@ -1,23 +1,23 @@
 #' Run APSIM Simulations from R
 #' 
 #' This function will run one or many APSIM simulations and read the output into R 
-#' in the form of a list.  If the simulation does not run for some reason then 
+#' in the form of a list of data frames.  If the simulation does not run for some reason then 
 #' an error is returned.
 #' 
 #' The only required input is the path to the APSIM executable (APSIM.exe) usually found in the "Model"
 #' subfolder of the APSIM installation. By default, it is assumed the current working directory contains the .apsim file(s)
 #' to be run.  If that is not the case then the directory containing the .apsim file(s) to be run
-#' should be specified by \code{wd}.  One can specify a list of .apsim files to be run within the
+#' should be specified by the \code{wd} argument.  One can specify a list of .apsim files to be run within the
 #' directory \code{wd} using the \code{files} argument.  If the \code{files} argument is left blank then all 
 #' .apsim files within the directory specified by \code{wd} are run. 
-#' The results for each .apsim file that is run is an element of the list that is returned.  
+#' The results for each .apsim file is saved as a data frame which are complied into a list.  
 #' Each element of the list is of the class \code{"apsim"}, which has its own \code{print} and \code{plot} routines.
 #' 
 #' @name apsim
 #' @param exe  path to the APSIM executable
 #' @param wd  working directory containing the .apsim files to be run; defaults to the current working directory
 #' @param files  .apsim files to be run; if left empty all .apsim files in \code{wd} will be run
-#' @return list of output files; each element corresponds to an output file specified by the .apsim files executed
+#' @return list of output files; each element of the list corresponds to an output file specified by the .apsim files executed
 #' @export
 #' @examples
 #' 
@@ -127,10 +127,10 @@ apsim<-function(exe, wd = getwd(), files = NULL){
 #' Access Example APSIM Simulations
 #' 
 #' Standard APSIM simulations are provided by the default APSIM installation.
-#' \code{apsim_expample} moves those example files into the working directory \code{wd} so you can run them
+#' \code{apsim_example} moves those example files into the working directory \code{wd} so you can run them
 #' or edit them using \code{\link{apsim}} and \code{\link{edit_apsim}}, respectively.  Generally the
 #' example simulations must be moved because the output file is written to the directory containing
-#' the .apsim file and the ability to write in the "Program Files" folder is limited in most cases.
+#' the .apsim file and the ability to write in the "Program Files" can be limited in some cases.
 #' 
 #' 
 #' @name example_apsim

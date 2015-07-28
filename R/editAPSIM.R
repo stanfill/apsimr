@@ -1,12 +1,13 @@
 #' Edit an APSIM Simulation
 #' 
-#' This function allows you to edit a file ending in ".apsim".
+#' This function allows you to edit an APSIM simulation file.
 #' 
 #' The variables specified by \code{var} within the .apsim file specified by \code{file} 
 #' in the working directory \code{wd} are edited. The old values are replaced with \code{value}, which
 #' is a list that has the same number of elements as the length of the vector \code{var}.  The current
 #' .apsim file will be overwritten if \code{overwrite} is set to \code{TRUE}; otherwise the file
-#' \emph{file-edited.apsim} will be created.  The name of the written file is returned.
+#' \emph{file-edited.apsim} will be created.  If the file was successfully edited, then the name
+#'  of the written file is returned.
 #' 
 #' @name edit_apsim
 #' @param file file ending in .apsim to be edited
@@ -125,8 +126,8 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 
 #' Edit an APSIM Module File
 #' 
-#' APSIM helper files, such as "Soil.xml" have a different format from .apsim files
-#' and are therefore edited differently.
+#' APSIM helper files, such as "Soil.xml", have a different format from .apsim files
+#' and are therefore handled separately
 #' 
 #' APSIM uses .xml files to dictate how certain processes are carried out.  Similar to
 #' \code{\link{edit_apsim}} this function edits a file that will be used in an APSIM simulation.  Unlike
@@ -135,7 +136,8 @@ edit_apsim <- function(file, wd = getwd(), var, value, overwrite = FALSE){
 #' in the working directory \code{wd} are edited. The old values are replaced with \code{value}, which
 #' is a list that has the same number of elements as the vector \code{var} is long.  The current
 #' .xml file will be overwritten if \code{overwrite} is set to \code{TRUE}; otherwise the file
-#' \emph{file-edited.xml} will be created.  The name of the written file is returned.
+#' \emph{file-edited.xml} will be created.  If the file was successfully edited, then the name
+#'  of the written file is returned.
 #' 
 #' @name edit_sim_file
 #' @param file .xml module file to be edited

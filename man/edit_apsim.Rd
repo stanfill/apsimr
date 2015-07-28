@@ -21,14 +21,15 @@ edit_apsim(file, wd = getwd(), var, value, overwrite = FALSE)
 complete file path to edited .apsim file is returned as a character string
 }
 \description{
-This function allows you to edit a file ending in ".apsim".
+This function allows you to edit an APSIM simulation file.
 }
 \details{
 The variables specified by \code{var} within the .apsim file specified by \code{file}
 in the working directory \code{wd} are edited. The old values are replaced with \code{value}, which
 is a list that has the same number of elements as the length of the vector \code{var}.  The current
 .apsim file will be overwritten if \code{overwrite} is set to \code{TRUE}; otherwise the file
-\emph{file-edited.apsim} will be created.  The name of the written file is returned.
+\emph{file-edited.apsim} will be created.  If the file was successfully edited, then the name
+ of the written file is returned.
 }
 \examples{
 \dontrun{

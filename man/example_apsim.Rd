@@ -20,10 +20,10 @@ logical; if \code{TRUE} the corresponding file was successfully copied, \code{FA
 }
 \description{
 Standard APSIM simulations are provided by the default APSIM installation.
-\code{apsim_expample} moves those example files into the working directory \code{wd} so you can run them
+\code{apsim_example} moves those example files into the working directory \code{wd} so you can run them
 or edit them using \code{\link{apsim}} and \code{\link{edit_apsim}}, respectively.  Generally the
 example simulations must be moved because the output file is written to the directory containing
-the .apsim file and the ability to write in the "Program Files" folder is limited in most cases.
+the .apsim file and the ability to write in the "Program Files" can be limited in some cases.
 }
 \examples{
 \dontrun{
@@ -37,6 +37,7 @@ example_apsim(path = apsimPath, wd = apsimWd, files = toRun) #TRUE TRUE
 
 apsimExe <-"C:/Program Files (x86)/Apsim75-r3008/Model/Apsim.exe"
 results <- apsim(exe = apsimExe, wd = apsimWd, files = toRun)
+plot(results[[1]])
 }
 }
 

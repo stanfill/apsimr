@@ -9,7 +9,7 @@
 #' with terms for all main 
 #' effects of inputs plus all two-way interactions between inputs. With this method all first-order
 #' and total sensitivity indices are estimable provided at least 8p^2-4p+1 runs of the computer
-#' model are available where p is the number of parameters considered.
+#' model are available where p is the number of parameters included in the analysis.
 #' The \code{"separateGAM"} method builds a separate GAM emulator for each
 #' input to estimate first-order indices for each input.  Since this method emulates the marginal
 #' distribution of \code{y} given each of the inputs, total order indices cannot be computed.  Both
@@ -233,7 +233,7 @@ separate_GAM<-function(model, X, boot = 1000, conf = 0.95, y = NULL,...){
 #' Plot routine for \code{"gamSA"} class objects
 #' 
 #' The default plot method for the results of a sensitivity analysis of APSIM using
-#' the single or separate GAM-based emulator.  Produces a bar chart where the heights of the
+#' the single or separate GAM-based emulator.  This function produces a bar chart where the heights of the
 #' bar represents the magnitude of the estimated sensitivity index estimate.  Error bars represent
 #' bootstrap calibrated confidence regions.
 #' 
