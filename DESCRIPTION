@@ -2,7 +2,7 @@ Package: apsimr
 Type: Package
 Title: Edit, Run and Evaluate APSIM Simulations Easily Using R
 Version: 1.1
-Date: 2015-07-28
+Date: 2015-07-29
 Author: Bryan Stanfill
 Maintainer: Bryan Stanfill <bryan.stanfill@csiro.au>
 Description: The Agricultural Production Systems sIMulator (APSIM) is a widely
