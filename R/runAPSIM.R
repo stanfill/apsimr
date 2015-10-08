@@ -36,11 +36,11 @@ apsim<-function(exe, wd = getwd(), files = NULL){
   oldWD<-getwd()
   setwd(wd)
 
-  fileNames <- dir(,pattern=".apsim$")
-
+  fileNames <- c(dir(,pattern=".apsim$",ignore.case=TRUE),dir(,pattern=".apsimx$",ignore.case=TRUE))
+  
   if(length(fileNames)==0){
     setwd(oldWD)
-    stop("There are no .apsim files in the folder wd to run.")
+    stop("There are no .apsim or .apsimx files in the folder wd to run.")
   }
   
   if(is.null(files)){
